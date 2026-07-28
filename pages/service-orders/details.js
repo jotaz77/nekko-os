@@ -93,14 +93,15 @@ function setupEvents() {
 
 
     document
-        .getElementById("printButton")
-        .addEventListener("click", () => {
+    .getElementById("printButton")
+    .addEventListener("click", () => {
 
-            window.print();
+        window.open(
+            `print.html?id=${order.id}`,
+            "_blank"
+        );
 
-        });
-
-}
+    });
 
 // ======================================================
 // Renderização
