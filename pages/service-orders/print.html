@@ -1,322 +1,58 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Impressão da Ordem de Serviço</title>
-
-    <link rel="stylesheet" href="../../assets/css/style.css">
-
-    <style>
-
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-        }
-
-        body{
-
-            font-family: Arial, Helvetica, sans-serif;
-            background:#fff;
-            color:#000;
-
-            width:72mm;
-            margin:0 auto;
-
-            font-size:12px;
-            line-height:1.45;
-
-            padding:6mm;
-
-        }
-
-        .center{
-            text-align:center;
-        }
-
-        .divider{
-
-            margin:12px 0;
-
-            border-top:1px dashed #000;
-
-        }
-
-        h1{
-
-            font-size:18px;
-
-            margin-bottom:4px;
-
-        }
-
-        h2{
-
-            font-size:13px;
-
-            margin-bottom:6px;
-
-        }
-
-        .label{
-
-            font-weight:bold;
-
-            margin-top:8px;
-
-        }
-
-        .value{
-
-            margin-top:2px;
-
-            white-space:pre-wrap;
-
-            word-break:break-word;
-
-        }
-
-        .signature{
-
-            margin-top:32px;
-
-            text-align:center;
-
-        }
-
-        .signature-line{
-
-            margin-top:30px;
-
-            border-top:1px solid #000;
-
-        }
-
-        @page{
-
-            size:72mm auto;
-
-            margin:0;
-
-        }
-
-        @media screen{
-
-            body{
-
-                border:1px solid #ddd;
-
-                margin:20px auto;
-
-            }
-
-        }
-
-    </style>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Impressão OS</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+@page{size:72mm auto;margin:2mm}
+body{width:68mm;margin:0 auto;padding:2mm;font-family:Arial,sans-serif;font-size:8px;line-height:1;color:#000;background:#fff}
+.center{text-align:center}.divider{border-top:1px dashed #000;margin:3px 0}.section{margin:3px 0}.title{font-weight:bold}.line{margin:0}.signature{text-align:center;margin-top:12px}.signature hr{border:none;border-top:1px solid #000;margin-bottom:2px}h1{font-size:13px}h2{font-size:9px;font-weight:normal}
+</style>
 </head>
-
 <body>
-
-    <!-- CABEÇALHO -->
-
-    <div class="center">
-
-        <h1 id="companyName">
-            Empresa
-        </h1>
-
-        <h2 id="storeName">
-            Loja
-        </h2>
-
-        <div id="storePhone">
-            (00) 00000-0000
-        </div>
-
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="center">
-
-        <strong>ORDEM DE SERVIÇO</strong>
-
-        <br><br>
-
-        <strong>OS:</strong>
-        <span id="osNumber"></span>
-
-        <br>
-
-        <strong>Data:</strong>
-        <span id="createdAt"></span>
-
-    </div>
-
-    <div class="divider"></div>
-
-    <!-- CLIENTE -->
-
-    <strong>CLIENTE</strong>
-
-    <div class="label">
-        Nome
-    </div>
-
-    <div
-        id="customerName"
-        class="value">
-    </div>
-
-    <div class="label">
-        Telefone
-    </div>
-
-    <div
-        id="customerPhone"
-        class="value">
-    </div>
-
-    <div class="divider"></div>
-
-    <!-- APARELHO -->
-
-    <strong>APARELHO</strong>
-
-    <div class="label">
-        Tipo
-    </div>
-
-    <div
-        id="deviceType"
-        class="value">
-    </div>
-
-    <div class="label">
-        Marca
-    </div>
-
-    <div
-        id="deviceBrand"
-        class="value">
-    </div>
-
-    <div class="label">
-        Modelo
-    </div>
-
-    <div
-        id="deviceModel"
-        class="value">
-    </div>
-
-    <div class="label">
-        Bloqueio
-    </div>
-
-    <div
-        id="deviceLockType"
-        class="value">
-    </div>
-
-    <div class="label">
-        Senha
-    </div>
-
-    <div
-        id="deviceLockValue"
-        class="value">
-    </div>
-
-    <div class="divider"></div>
-
-    <!-- DEFEITO -->
-
-    <strong>DEFEITO RELATADO</strong>
-
-    <div
-        id="reportedProblem"
-        class="value">
-    </div>
-
-    <div class="divider"></div>
-
-    <!-- OBSERVAÇÕES -->
-
-    <strong>OBSERVAÇÕES</strong>
-
-    <div
-        id="observations"
-        class="value">
-    </div>
-
-    <div class="divider"></div>
-
-    <!-- SERVIÇO -->
-
-    <strong>SERVIÇO</strong>
-
-    <div
-        id="serviceName"
-        class="value">
-    </div>
-
-    <br>
-
-    <strong>Valor:</strong>
-
-    <span id="servicePrice"></span>
-
-    <div class="divider"></div>
-
-    <div>
-
-        Declaro que entreguei este aparelho para
-        avaliação/manutenção e estou ciente das
-        condições informadas pela assistência.
-
-    </div>
-
-    <div class="signature">
-
-        <div class="signature-line"></div>
-
-        Assinatura do Cliente
-
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="center">
-
-        Impresso em:
-
-        <br>
-
-        <span id="printedAt"></span>
-
-        <br><br>
-
-        <strong>NEKKO OS</strong>
-
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <script src="../../assets/js/config.js"></script>
-    <script src="../../assets/js/supabase.js"></script>
-    <script src="../../assets/js/storage.js"></script>
-    <script src="../../assets/js/auth.js"></script>
-    <script src="../../assets/js/api.js"></script>
-    <script src="../../assets/js/bootstrap.js"></script>
-
-    <script src="print.js"></script>
-
+<div class="center">
+<h1 id="companyName">Empresa</h1>
+<h2 id="storeName">Loja 01 - Nome da Loja</h2>
+<div id="storePhone">(00) 00000-0000</div>
+</div>
+<div class="divider"></div>
+<div class="line"><b>OS:</b> <span id="osNumber"></span></div>
+<div class="line"><b>Data:</b> <span id="createdAt"></span></div>
+<div class="divider"></div>
+<div class="section">
+<div class="title">CLIENTE</div>
+<div class="line"><b>Nome:</b> <span id="customerName"></span></div>
+<div class="line"><b>Telefone:</b> <span id="customerPhone"></span></div>
+</div>
+<div class="divider"></div>
+<div class="section">
+<div class="title">APARELHO</div>
+<div class="line"><b>Tipo:</b> <span id="deviceType"></span></div>
+<div class="line"><b>Marca:</b> <span id="deviceBrand"></span></div>
+<div class="line"><b>Modelo:</b> <span id="deviceModel"></span></div>
+<div class="line"><b>Bloqueio:</b> <span id="deviceLockType"></span></div>
+<div class="line"><b>Senha:</b> <span id="deviceLockValue"></span></div>
+</div>
+<div class="divider"></div>
+<div class="section"><div class="title">DEFEITO RELATADO</div><div id="reportedProblem"></div></div>
+<div class="divider"></div>
+<div class="section"><div class="title">OBSERVAÇÕES</div><div id="observations"></div></div>
+<div class="divider"></div>
+<div class="section"><div class="title">SERVIÇO</div><div id="serviceName"></div><div class="line"><b>Valor:</b> <span id="servicePrice"></span></div></div>
+<div class="divider"></div>
+<div class="center">Declaro que entreguei este aparelho para avaliação/manutenção e estou ciente das condições da assistência.</div>
+<div class="signature"><hr>Assinatura do Cliente</div>
+<div class="divider"></div>
+<div class="center">Impresso em<br><span id="printedAt"></span><br><br><b>NEKKO OS</b></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../assets/js/config.js"></script>
+<script src="../../assets/js/supabase.js"></script>
+<script src="../../assets/js/storage.js"></script>
+<script src="../../assets/js/auth.js"></script>
+<script src="../../assets/js/api.js"></script>
+<script src="../../assets/js/bootstrap.js"></script>
+<script src="print.js"></script>
 </body>
-
 </html>
