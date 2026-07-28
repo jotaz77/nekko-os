@@ -1,58 +1,157 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Impressão OS</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-@page{size:72mm auto;margin:2mm}
-body{width:68mm;margin:0 auto;padding:2mm;font-family:Arial,sans-serif;font-size:8px;line-height:1;color:#000;background:#fff}
-.center{text-align:center}.divider{border-top:1px dashed #000;margin:3px 0}.section{margin:3px 0}.title{font-weight:bold}.line{margin:0}.signature{text-align:center;margin-top:12px}.signature hr{border:none;border-top:1px solid #000;margin-bottom:2px}h1{font-size:13px}h2{font-size:9px;font-weight:normal}
-</style>
+
+    <meta charset="UTF-8">
+
+    <title>Impressão OS</title>
+
+    <link rel="stylesheet" href="print.css">
+
 </head>
+
 <body>
-<div class="center">
-<h1 id="companyName">Empresa</h1>
-<h2 id="storeName">Loja 01 - Nome da Loja</h2>
-<div id="storePhone">(00) 00000-0000</div>
+
+<div class="receipt">
+
+    <header>
+
+        <h1 id="companyName">EMPRESA</h1>
+
+        <p id="storeName">Loja</p>
+
+        <p id="storePhone">WhatsApp</p>
+
+    </header>
+
+    <hr>
+
+    <section>
+
+        <h2>ORDEM DE SERVIÇO</h2>
+
+        <div class="row">
+            <span>OS</span>
+            <span id="osNumber"></span>
+        </div>
+
+        <div class="row">
+            <span>Data</span>
+            <span id="createdAt"></span>
+        </div>
+
+    </section>
+
+    <hr>
+
+    <section>
+
+        <h2>CLIENTE</h2>
+
+        <p id="customerName"></p>
+
+        <p id="customerPhone"></p>
+
+    </section>
+
+    <hr>
+
+    <section>
+
+        <h2>APARELHO</h2>
+
+        <p id="deviceType"></p>
+
+        <p id="deviceBrand"></p>
+
+        <p id="deviceModel"></p>
+
+        <div class="row">
+            <span id="deviceLockType"></span>
+            <span id="deviceLockValue"></span>
+        </div>
+
+    </section>
+
+    <hr>
+
+    <section>
+
+        <h2>DEFEITO</h2>
+
+        <p id="reportedProblem"></p>
+
+    </section>
+
+    <hr>
+
+    <section>
+
+        <h2>OBSERVAÇÕES</h2>
+
+        <p id="observations"></p>
+
+    </section>
+
+    <hr>
+
+    <section>
+
+        <h2>SERVIÇO</h2>
+
+        <p id="serviceName"></p>
+
+        <div class="row total">
+            <span>Valor</span>
+            <span id="servicePrice"></span>
+        </div>
+
+    </section>
+
+    <hr>
+
+    <section>
+
+        <p>
+
+            Declaro que entreguei este aparelho para avaliação e/ou manutenção.
+
+        </p>
+
+        <br><br><br>
+
+        <div class="signature">
+
+            _______________________________
+
+            <br>
+
+            Assinatura do Cliente
+
+        </div>
+
+    </section>
+
+    <hr>
+
+    <footer>
+
+        <p>
+
+            Impresso em
+
+        </p>
+
+        <p id="printedAt"></p>
+
+        <strong>NEKKO OS</strong>
+
+    </footer>
+
 </div>
-<div class="divider"></div>
-<div class="line"><b>OS:</b> <span id="osNumber"></span></div>
-<div class="line"><b>Data:</b> <span id="createdAt"></span></div>
-<div class="divider"></div>
-<div class="section">
-<div class="title">CLIENTE</div>
-<div class="line"><b>Nome:</b> <span id="customerName"></span></div>
-<div class="line"><b>Telefone:</b> <span id="customerPhone"></span></div>
-</div>
-<div class="divider"></div>
-<div class="section">
-<div class="title">APARELHO</div>
-<div class="line"><b>Tipo:</b> <span id="deviceType"></span></div>
-<div class="line"><b>Marca:</b> <span id="deviceBrand"></span></div>
-<div class="line"><b>Modelo:</b> <span id="deviceModel"></span></div>
-<div class="line"><b>Bloqueio:</b> <span id="deviceLockType"></span></div>
-<div class="line"><b>Senha:</b> <span id="deviceLockValue"></span></div>
-</div>
-<div class="divider"></div>
-<div class="section"><div class="title">DEFEITO RELATADO</div><div id="reportedProblem"></div></div>
-<div class="divider"></div>
-<div class="section"><div class="title">OBSERVAÇÕES</div><div id="observations"></div></div>
-<div class="divider"></div>
-<div class="section"><div class="title">SERVIÇO</div><div id="serviceName"></div><div class="line"><b>Valor:</b> <span id="servicePrice"></span></div></div>
-<div class="divider"></div>
-<div class="center">Declaro que entreguei este aparelho para avaliação/manutenção e estou ciente das condições da assistência.</div>
-<div class="signature"><hr>Assinatura do Cliente</div>
-<div class="divider"></div>
-<div class="center">Impresso em<br><span id="printedAt"></span><br><br><b>NEKKO OS</b></div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../../assets/js/config.js"></script>
-<script src="../../assets/js/supabase.js"></script>
-<script src="../../assets/js/storage.js"></script>
-<script src="../../assets/js/auth.js"></script>
-<script src="../../assets/js/api.js"></script>
-<script src="../../assets/js/bootstrap.js"></script>
+
 <script src="print.js"></script>
+
 </body>
 </html>
