@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Criar Conta • Nekko OS</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="../../assets/js/config.js"></script>
+    <script src="../../assets/js/supabase.js"></script>
+</head>
+
+<body class="min-h-screen bg-slate-100 flex items-center justify-center p-6">
+
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
+
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-slate-800">Criar Conta</h1>
+            <p class="text-slate-500 mt-2">
+                Cadastre sua assistência técnica
+            </p>
+        </div>
+
+        <form id="registerForm" class="space-y-5">
+
+            <div>
+                <label class="block mb-2 text-sm font-medium">Email</label>
+
+                <input
+                    id="email"
+                    type="email"
+                    required
+                    class="w-full border rounded-xl px-4 py-3">
+            </div>
+
+            <div>
+                <label class="block mb-2 text-sm font-medium">Senha</label>
+
+                <input
+                    id="password"
+                    type="password"
+                    minlength="6"
+                    required
+                    class="w-full border rounded-xl px-4 py-3">
+            </div>
+
+            <button
+                type="submit"
+                class="w-full bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700">
+
+                Criar Conta
+
+            </button>
+
+        </form>
+
+        <div class="mt-6 text-center">
+            <a
+                href="login.html"
+                class="text-blue-600 hover:underline">
+
+                Já tenho conta
+
+            </a>
+        </div>
+
+    </div>
+
+    <script src="register.js"></script>
+
+</body>
+</html>

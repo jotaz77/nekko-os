@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Nova Ordem de Serviço • Nekko OS</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+</head>
+
+<body class="bg-[#0B0F0C] text-white min-h-screen">
+
+<div class="max-w-6xl mx-auto px-8 py-10">
+
+    <!-- HEADER -->
+
+    <div class="flex items-center justify-between mb-10">
+
+        <div>
+
+            <a
+                href="../menu/index.html"
+                class="inline-flex items-center gap-2 text-slate-400 hover:text-green-400 transition mb-5">
+
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+
+                Voltar
+
+            </a>
+
+            <h1 class="text-4xl font-bold">
+
+                Nova Ordem de Serviço
+
+            </h1>
+
+            <p class="text-slate-500 mt-2">
+
+                Preencha as informações abaixo.
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- FORM -->
+
+    <form
+        id="serviceOrderForm"
+        class="space-y-8">
+
+        <!-- CLIENTE -->
+
+        <section class="bg-[#141A16] border border-[#29322C] rounded-3xl p-8">
+
+            <h2 class="text-xl font-semibold mb-6">
+                👤 Cliente
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-5">
+
+                <input id="customerName" type="text" placeholder="Nome do cliente"
+                    class="bg-[#0F1411] border border-[#29322C] rounded-xl p-3">
+
+                <input id="customerCpf" type="text" placeholder="CPF (Opcional)"
+                    class="bg-[#0F1411] border border-[#29322C] rounded-xl p-3">
+
+                <input id="customerCep" type="text" placeholder="CEP"
+                    class="bg-[#0F1411] border border-[#29322C] rounded-xl p-3">
+
+                <input id="customerPhone" type="text" placeholder="Contato"
+                    class="bg-[#0F1411] border border-[#29322C] rounded-xl p-3">
+
+            </div>
+
+        </section>
+
+        <!-- DISPOSITIVO -->
+
+        <section class="bg-[#141A16] border border-[#29322C] rounded-3xl p-8">
+
+            <h2 class="text-xl font-semibold mb-6">
+                📱 Dispositivo
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-5">
+
+                <select id="deviceType"
+                    class="bg-[#0F1411] border border-[#29322C] rounded-xl p-3">
+
+                    <option>Selecione o tipo</option>
+                    <option>Smartphone</option>
+                    <option>Notebook</option>
+                    <option>Tablet</option>
+                    <option>Smartwatch</option>
+                    <option>Videogame</option>
+                    <option>Desktop</option>
+                    <option>Outro</option>
+
+                </select>
+
+                <input
+                    id="brand"
+                    type="text"
+                    placeholder="Marca"
+                    class="bg-[#0F1411] border border-[#29322C] rounded-xl p-3">
+
+                <input
+                    id="model"
+                    type="text"
+                    placeholder="Modelo"
+                    class="bg-[#0F1411] border border-[#29322C] rounded-xl p-3">
+
+                <input
+                    id="imei"
+                    type="text"
+                    placeholder="IMEI / Número de Série (Opcional)"
+                    class="bg-[#0F1411] border border-[#29322C] rounded-xl p-3">
+
+            </div>
+
+        </section>
+
+        <!-- SEGURANÇA -->
+
+        <section class="bg-[#141A16] border border-[#29322C] rounded-3xl p-8">
+
+            <h2 class="text-xl font-semibold mb-6">
+                🔒 Segurança
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-5">
+
+                <select
+                    id="lockType"
+                    class="bg-[#0F1411] border border-[#29322C] rounded-xl p-3">
+
+                    <option value="">Tipo de bloqueio</option>
+
+                    <option value="none">Sem senha</option>
+                    <option value="pin">PIN</option>
+                    <option value="password">Senha</option>
+                    <option value="pattern">Desenho</option>
+
+                </select>
+
+                <div id="lockField"></div>
+
+            </div>
+
+            <div
+                id="patternContainer"
+                class="hidden mt-8">
+
+            </div>
+
+        </section>
+
+        <!-- SERVIÇO -->
+
+        <section class="bg-[#141A16] border border-[#29322C] rounded-3xl p-8">
+
+            <h2 class="text-xl font-semibold mb-6">
+                🔧 Serviço
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-5">
+
+                <input
+                    id="service"
+                    type="text"
+                    placeholder="Serviço"
+                    class="bg-[#0F1411] border border-[#29322C] rounded-xl p-3">
+
+                <input
+                    id="price"
+                    type="text"
+                    placeholder="Valor"
+                    class="bg-[#0F1411] border border-[#29322C] rounded-xl p-3">
+
+            </div>
+
+        </section>
+
+        <!-- DIAGNÓSTICO -->
+
+        <section class="bg-[#141A16] border border-[#29322C] rounded-3xl p-8">
+
+            <h2 class="text-xl font-semibold mb-6">
+                📝 Diagnóstico
+            </h2>
+
+            <div class="space-y-5">
+
+                <textarea
+                    id="problem"
+                    rows="5"
+                    placeholder="Defeito relatado..."
+                    class="w-full bg-[#0F1411] border border-[#29322C] rounded-xl p-4 resize-none"></textarea>
+
+                <textarea
+                    id="notes"
+                    rows="5"
+                    placeholder="Observações internas..."
+                    class="w-full bg-[#0F1411] border border-[#29322C] rounded-xl p-4 resize-none"></textarea>
+
+            </div>
+
+        </section>
+
+        <!-- EXECUÇÃO -->
+
+        <section class="bg-[#141A16] border border-[#29322C] rounded-3xl p-8">
+
+            <h2 class="text-xl font-semibold mb-6">
+                👨‍🔧 Execução
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-5">
+
+                <select
+                    id="technician"
+                    class="bg-[#0F1411] border border-[#29322C] rounded-xl p-3">
+
+                    <option>Selecione o técnico</option>
+
+                </select>
+
+                <select
+                    id="status"
+                    class="bg-[#0F1411] border border-[#29322C] rounded-xl p-3">
+
+                    <option>Aberta</option>
+                    <option>Aguardando peça</option>
+                    <option>Em manutenção</option>
+                    <option>Pronta</option>
+                    <option>Entregue</option>
+                    <option>Cancelada</option>
+
+                </select>
+
+            </div>
+
+        </section>
+
+        <!-- BOTÕES -->
+
+        <div class="flex justify-end gap-4 pb-10">
+
+            <a
+                href="../menu/index.html"
+                class="px-6 py-3 rounded-xl border border-[#29322C] hover:border-slate-500 transition">
+
+                Cancelar
+
+            </a>
+
+            <button
+                id="btnCreate"
+                type="submit"
+                class="px-8 py-3 rounded-xl bg-green-600 hover:bg-green-500 transition font-semibold">
+
+                Salvar Ordem de Serviço
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+<script>
+    lucide.createIcons();
+</script>
+
+<!-- Config -->
+<script src="../../assets/js/config.js"></script>
+
+<!-- Core -->
+<script src="../../assets/js/supabase.js"></script>
+<script src="../../assets/js/storage.js"></script>
+<script src="../../assets/js/auth.js"></script>
+<script src="../../assets/js/api.js"></script>
+<script src="../../assets/js/bootstrap.js"></script>
+
+<!-- Página -->
+<script src="./create.js"></script>
+
+</body>
+</html>

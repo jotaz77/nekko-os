@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login • Nekko OS</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+</head>
+
+<body class="min-h-screen bg-slate-100 flex items-center justify-center p-6">
+
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
+
+        <div class="text-center mb-8">
+
+            <h1 class="text-3xl font-bold text-slate-800">
+                Nekko OS
+            </h1>
+
+            <p class="text-slate-500 mt-2">
+                Faça login para continuar
+            </p>
+
+        </div>
+
+        <form id="loginForm" class="space-y-5">
+
+            <div>
+
+                <label class="block mb-2 text-sm font-medium">
+                    Email
+                </label>
+
+                <input
+                    id="email"
+                    type="email"
+                    class="w-full border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="email@empresa.com"
+                    required>
+
+            </div>
+
+            <div>
+
+                <label class="block mb-2 text-sm font-medium">
+                    Senha
+                </label>
+
+                <input
+                    id="password"
+                    type="password"
+                    class="w-full border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="********"
+                    required>
+
+            </div>
+
+            <button
+                type="submit"
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold transition">
+
+                Entrar
+
+            </button>
+
+        </form>
+
+        <div class="mt-6 text-center">
+
+            <a
+                href="#"
+                id="registerLink"
+                class="text-blue-600 hover:underline">
+
+                Criar conta
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- Configuração -->
+    <script src="../../assets/js/config.js"></script>
+
+    <!-- Supabase -->
+    <script src="../../assets/js/supabase.js"></script>
+
+    <!-- Serviços -->
+    <script src="../../assets/js/storage.js"></script>
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/api.js"></script>
+    <script src="../../assets/js/bootstrap.js"></script>
+
+    <!-- Página -->
+    <script src="login.js"></script>
+
+</body>
+
+</html>

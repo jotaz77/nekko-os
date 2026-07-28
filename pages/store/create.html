@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Criar Loja • Nekko OS</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+</head>
+
+<body class="bg-[#0F1115] text-white min-h-screen flex items-center justify-center p-6">
+
+    <div class="w-full max-w-2xl bg-[#1F242D] rounded-3xl shadow-2xl p-10">
+
+        <div class="text-center mb-10">
+
+            <div class="text-6xl mb-4">
+                🏪
+            </div>
+
+            <h1 class="text-3xl font-bold">
+                Primeira Loja
+            </h1>
+
+            <p class="text-slate-400 mt-2">
+                Cadastre a primeira loja da sua empresa.
+            </p>
+
+        </div>
+
+        <div
+            id="message"
+            class="hidden rounded-xl p-4 mb-6 text-sm font-medium transition-all duration-300">
+        </div>
+
+        <form id="storeForm" class="space-y-6">
+
+            <!-- Nome -->
+
+            <div>
+
+                <label class="block mb-2 text-sm text-slate-300">
+                    Nome da Loja *
+                </label>
+
+                <input
+                    id="name"
+                    type="text"
+                    required
+                    placeholder="Ex.: Loja Centro"
+                    class="w-full rounded-xl bg-[#2B313C] border border-[#3A414C] px-4 py-3 outline-none transition focus:border-green-500">
+
+            </div>
+
+            <!-- Telefone / Email -->
+
+            <div class="grid grid-cols-2 gap-4">
+
+                <div>
+
+                    <label class="block mb-2 text-sm text-slate-300">
+                        Telefone
+                    </label>
+
+                    <input
+                        id="phone"
+                        type="text"
+                        placeholder="(81) 99999-9999"
+                        class="w-full rounded-xl bg-[#2B313C] border border-[#3A414C] px-4 py-3 outline-none transition focus:border-green-500">
+
+                </div>
+
+                <div>
+
+                    <label class="block mb-2 text-sm text-slate-300">
+                        E-mail
+                    </label>
+
+                    <input
+                        id="email"
+                        type="email"
+                        placeholder="loja@email.com"
+                        class="w-full rounded-xl bg-[#2B313C] border border-[#3A414C] px-4 py-3 outline-none transition focus:border-green-500">
+
+                </div>
+
+            </div>
+
+            <!-- Rua -->
+
+            <div>
+
+                <label class="block mb-2 text-sm text-slate-300">
+                    Rua
+                </label>
+
+                <input
+                    id="street"
+                    type="text"
+                    placeholder="Rua das Flores"
+                    class="w-full rounded-xl bg-[#2B313C] border border-[#3A414C] px-4 py-3 outline-none transition focus:border-green-500">
+
+            </div>
+
+            <!-- Número / Bairro -->
+
+            <div class="grid grid-cols-3 gap-4">
+
+                <div>
+
+                    <label class="block mb-2 text-sm text-slate-300">
+                        Número
+                    </label>
+
+                    <input
+                        id="number"
+                        type="text"
+                        placeholder="123"
+                        class="w-full rounded-xl bg-[#2B313C] border border-[#3A414C] px-4 py-3 outline-none transition focus:border-green-500">
+
+                </div>
+
+                <div class="col-span-2">
+
+                    <label class="block mb-2 text-sm text-slate-300">
+                        Bairro
+                    </label>
+
+                    <input
+                        id="neighborhood"
+                        type="text"
+                        placeholder="Centro"
+                        class="w-full rounded-xl bg-[#2B313C] border border-[#3A414C] px-4 py-3 outline-none transition focus:border-green-500">
+
+                </div>
+
+            </div>
+
+            <!-- Complemento -->
+
+            <div>
+
+                <label class="block mb-2 text-sm text-slate-300">
+                    Complemento
+                </label>
+
+                <input
+                    id="complement"
+                    type="text"
+                    placeholder="Sala, bloco, etc."
+                    class="w-full rounded-xl bg-[#2B313C] border border-[#3A414C] px-4 py-3 outline-none transition focus:border-green-500">
+
+            </div>
+
+            <!-- Cidade / Estado -->
+
+            <div class="grid grid-cols-3 gap-4">
+
+                <div class="col-span-2">
+
+                    <label class="block mb-2 text-sm text-slate-300">
+                        Cidade
+                    </label>
+
+                    <input
+                        id="city"
+                        type="text"
+                        placeholder="Recife"
+                        class="w-full rounded-xl bg-[#2B313C] border border-[#3A414C] px-4 py-3 outline-none transition focus:border-green-500">
+
+                </div>
+
+                <div>
+
+                    <label class="block mb-2 text-sm text-slate-300">
+                        UF
+                    </label>
+
+                    <input
+                        id="state"
+                        maxlength="2"
+                        type="text"
+                        placeholder="PE"
+                        class="w-full rounded-xl bg-[#2B313C] border border-[#3A414C] px-4 py-3 outline-none uppercase transition focus:border-green-500">
+
+                </div>
+
+            </div>
+
+            <!-- CEP -->
+
+            <div>
+
+                <label class="block mb-2 text-sm text-slate-300">
+                    CEP
+                </label>
+
+                <input
+                    id="zip"
+                    type="text"
+                    placeholder="50000-000"
+                    class="w-full rounded-xl bg-[#2B313C] border border-[#3A414C] px-4 py-3 outline-none transition focus:border-green-500">
+
+            </div>
+
+            <!-- Botão -->
+
+            <button
+                id="btnCreate"
+                type="submit"
+                class="w-full py-4 rounded-xl bg-green-500 hover:bg-green-600 transition font-semibold text-lg">
+
+                Criar Loja
+
+            </button>
+
+        </form>
+
+    </div>
+
+    <script src="../../assets/js/config.js"></script>
+    <script src="../../assets/js/supabase.js"></script>
+    <script src="../../assets/js/ui.js"></script>
+
+    <script src="create.js"></script>
+
+</body>
+
+</html>

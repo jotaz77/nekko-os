@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Criar Empresa • Nekko OS</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+</head>
+
+<body class="bg-[#0F1115] text-white min-h-screen flex items-center justify-center p-6">
+
+    <div class="w-full max-w-xl bg-[#1F242D] rounded-3xl shadow-2xl p-10 transition-all duration-300">
+
+        <div class="text-center mb-10">
+
+            <div class="text-6xl mb-4">
+                🏢
+            </div>
+
+            <h1 class="text-3xl font-bold">
+                Bem-vindo ao Nekko OS
+            </h1>
+
+            <p class="text-slate-400 mt-2">
+                Antes de começar, vamos cadastrar sua empresa.
+            </p>
+
+        </div>
+
+        <!-- Mensagens -->
+        <div
+            id="message"
+            class="hidden rounded-xl p-4 mb-6 text-sm font-medium transition-all duration-300">
+        </div>
+
+        <form
+            id="companyForm"
+            class="space-y-6"
+            novalidate>
+
+            <div>
+
+                <label
+                    for="name"
+                    class="block mb-2 text-sm text-slate-300">
+
+                    Nome da Empresa *
+
+                </label>
+
+                <input
+                    id="name"
+                    type="text"
+                    required
+                    maxlength="120"
+                    autocomplete="organization"
+                    placeholder="Ex.: Assistência Catatau"
+                    class="w-full rounded-xl bg-[#2B313C] border border-[#3A414C] px-4 py-3 outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-500/30">
+
+            </div>
+
+            <div>
+
+                <label
+                    for="document"
+                    class="block mb-2 text-sm text-slate-300">
+
+                    CNPJ (Opcional)
+
+                </label>
+
+                <input
+                    id="document"
+                    type="text"
+                    maxlength="18"
+                    autocomplete="off"
+                    placeholder="00.000.000/0001-00"
+                    class="w-full rounded-xl bg-[#2B313C] border border-[#3A414C] px-4 py-3 outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-500/30">
+
+            </div>
+
+            <div>
+
+                <label
+                    for="phone"
+                    class="block mb-2 text-sm text-slate-300">
+
+                    Telefone
+
+                </label>
+
+                <input
+                    id="phone"
+                    type="tel"
+                    maxlength="20"
+                    autocomplete="tel"
+                    placeholder="(81) 99999-9999"
+                    class="w-full rounded-xl bg-[#2B313C] border border-[#3A414C] px-4 py-3 outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-500/30">
+
+            </div>
+
+            <div>
+
+                <label
+                    for="email"
+                    class="block mb-2 text-sm text-slate-300">
+
+                    E-mail
+
+                </label>    
+
+                <input
+                    id="email"
+                    type="email"
+                    maxlength="120"
+                    autocomplete="email"
+                    placeholder="contato@empresa.com"
+                    class="w-full rounded-xl bg-[#2B313C] border border-[#3A414C] px-4 py-3 outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-500/30">
+
+            </div>
+
+            <button
+                id="btnCreate"
+                type="submit"
+                class="w-full py-4 rounded-xl bg-green-500 hover:bg-green-600 transition-all duration-200 font-semibold text-lg disabled:opacity-60 disabled:cursor-not-allowed">
+
+                Criar Empresa
+
+            </button>
+
+        </form>
+
+    </div>
+
+    <script src="../../assets/js/config.js"></script>
+    <script src="../../assets/js/supabase.js"></script>
+    <script src="../../assets/js/ui.js"></script>
+    <script src="../../assets/js/roles.js"></script>
+    <script src="create.js"></script>
+
+</body>
+
+</html>

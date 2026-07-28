@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NEKKO OS | Ordens de Serviço</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+</head>
+
+<body class="bg-[#0B0F0C] text-white min-h-screen">
+
+    <main class="max-w-7xl mx-auto px-6 py-8">
+
+        <!-- Cabeçalho -->
+
+        <div class="flex items-center justify-between mb-8">
+
+            <div>
+
+                <h1 class="text-3xl font-bold">
+
+                    Lista de Ordens de Serviço
+
+                </h1>
+
+                <p class="text-slate-400 mt-2">
+
+                    Consulte e acompanhe todas as ordens de serviço.
+
+                </p>
+
+            </div>
+
+            <a href="../menu/index.html"
+                class="flex items-center gap-2
+                       bg-[#1B231D]
+                       hover:bg-[#243128]
+                       px-5
+                       py-3
+                       rounded-xl
+                       transition">
+
+                <i data-lucide="arrow-left"></i>
+
+                Voltar
+
+            </a>
+
+        </div>
+
+        <!-- Filtros -->
+
+        <div class="bg-[#141A16] border border-[#29322C] rounded-3xl p-6 mb-8">
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+                <input
+                    id="searchInput"
+                    type="text"
+                    placeholder="Pesquisar cliente, aparelho ou OS..."
+                    class="bg-[#0F1411]
+                           border border-[#29322C]
+                           rounded-xl
+                           px-4
+                           py-3
+                           outline-none
+                           focus:border-green-500">
+
+                <select
+                    id="statusFilter"
+                    class="bg-[#0F1411]
+                           border border-[#29322C]
+                           rounded-xl
+                           px-4
+                           py-3
+                           outline-none
+                           focus:border-green-500">
+
+                    <option value="">Todos os status</option>
+                    <option value="ABERTA">Aberta</option>
+                    <option value="EM_ANDAMENTO">Em andamento</option>
+                    <option value="AGUARDANDO_PECA">Aguardando peça</option>
+                    <option value="PRONTA">Pronta</option>
+                    <option value="ENTREGUE">Entregue</option>
+                    <option value="CANCELADA">Cancelada</option>
+
+                </select>
+
+                <button
+                    id="refreshButton"
+                    class="bg-green-500
+                           hover:bg-green-600
+                           rounded-xl
+                           font-semibold
+                           transition">
+
+                    Atualizar
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- Quantidade -->
+
+        <div class="flex justify-between items-center mb-6">
+
+            <h2 class="text-xl font-semibold">
+
+                Ordens encontradas
+
+            </h2>
+
+            <span
+                id="ordersCount"
+                class="bg-[#141A16]
+                       border
+                       border-[#29322C]
+                       px-4
+                       py-2
+                       rounded-xl">
+
+                0
+
+            </span>
+
+        </div>
+
+        <!-- Lista -->
+
+        <div
+            id="ordersContainer"
+            class="
+                grid
+                grid-cols-1
+                xl:grid-cols-2
+                gap-6
+            ">
+        </div>
+
+    </main>
+
+    <!-- Scripts -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="../../assets/js/config.js"></script>
+    <script src="../../assets/js/supabase.js"></script>
+    <script src="../../assets/js/storage.js"></script>
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/api.js"></script>
+    <script src="../../assets/js/bootstrap.js"></script>
+    <script src="../../assets/js/roles.js"></script>
+
+    <script src="index.js"></script>
+
+    <script>
+
+        lucide.createIcons();
+
+    </script>
+
+</body>
+
+</html>
