@@ -4,69 +4,55 @@ let order = null;
 document.addEventListener("DOMContentLoaded", init);
 
 async function init() {
-
     try {
 
         const result = await Bootstrap.init();
         context = result.context;
 
-        const id = new URLSearchParams(location.search).get("id");
+        const id = new URLSearchParams(window.location.search).get("id");
 
         if (!id) {
-
             alert("Ordem de serviço não encontrada.");
-            window.close();
             return;
-
         }
 
         order = await Api.getServiceOrder(id);
 
         if (!order) {
-
             alert("Ordem de serviço não encontrada.");
-            window.close();
             return;
-
         }
 
-        fillReceipt();
+        preencherCupom();
 
-        // Aguarda a renderização completa
         setTimeout(() => {
-
             window.print();
-
-            // Fecha automaticamente após a impressão
-            setTimeout(() => {
-
-                window.close();
-
-            }, 1000);
-
-        }, 500);
+        }, 300);
 
     } catch (error) {
 
         console.error(error);
 
-        alert("Erro ao carregar impressão.");
+        alert("Erro ao carregar a impressão.");
 
     }
-
 }
 
-function fillReceipt() {
+function preencherCupom() {
 
-    // Empresa / Loja
-
+    // Cabeçalho
     setText("companyName", context.company?.name);
 
     setText("storeName", context.store?.name);
 
-    setText("storePhone", context.store?.phone);
+    setText(
+        "storePhone",
+        context.store?.phone
+            ? `WhatsApp: ${context.store.phone}`
+            : "-"
+    );
 
-    // Cabeçalho
+    // Ordem de Serviço
 
     setText("osNumber", order.os_number);
 
@@ -76,7 +62,7 @@ function fillReceipt() {
 
     setText("customerName", order.customer_name);
 
-    setText("customerPhone", order.customer_phone);
+    setText("customerPhone", formatPhone(order.customer_phone));
 
     // Aparelho
 
@@ -94,14 +80,17 @@ function fillReceipt() {
 
     setText(
         "reportedProblem",
-        order.reported_issue || order.problem
+        order.reported_issue ||
+        order.problem ||
+        "-"
     );
 
     // Observações
 
     setText(
         "observations",
-        order.notes
+        order.notes ||
+        "-"
     );
 
     // Serviço
@@ -113,14 +102,14 @@ function fillReceipt() {
 
     setText(
         "servicePrice",
-        formatCurrency(order.price)
+        formatMoney(order.price)
     );
 
     // Rodapé
 
     setText(
         "printedAt",
-        formatDateTime(new Date())
+        formatDate(new Date())
     );
 
 }
@@ -137,20 +126,23 @@ function setText(id, value) {
 
 function getLockType(type) {
 
-    if (!type) return "-";
-
     const types = {
 
         pin: "PIN",
+
         password: "Senha",
+
         pattern: "Padrão",
+
         biometric: "Biometria",
+
         face: "Face ID",
+
         none: "Sem bloqueio"
 
     };
 
-    return types[type] || type;
+    return types[type] || "Bloqueio";
 
 }
 
@@ -174,11 +166,12 @@ function getLockValue(order) {
 
 }
 
-function formatCurrency(value) {
+function formatMoney(value) {
 
     return Number(value || 0).toLocaleString("pt-BR", {
 
         style: "currency",
+
         currency: "BRL"
 
     });
@@ -189,12 +182,25 @@ function formatDate(date) {
 
     if (!date) return "-";
 
-    return new Date(date).toLocaleDateString("pt-BR");
+    return new Date(date).toLocaleString("pt-BR");
 
 }
 
-function formatDateTime(date) {
+function formatPhone(phone) {
 
-    return new Date(date).toLocaleString("pt-BR");
+    if (!phone) return "-";
+
+    const numbers = phone.replace(/\D/g, "");
+
+    if (numbers.length === 11) {
+
+        return numbers.replace(
+            /(\d{2})(\d{5})(\d{4})/,
+            "($1) $2-$3"
+        );
+
+    }
+
+    return phone;
 
 }
