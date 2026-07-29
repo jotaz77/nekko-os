@@ -27,6 +27,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             role
         } = result.context;
 
+        console.log("ROLE:", role);
+        console.log("STORE:", store);
+        console.log("CONTEXT:", result.context);
+
         // ---------------------------------
         // Usuário
         // ---------------------------------
