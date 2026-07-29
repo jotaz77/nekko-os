@@ -7,6 +7,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const form = document.getElementById("storeForm");
 
+    const isAddStore =
+        new URLSearchParams(window.location.search)
+            .get("mode") === "add-store";
+    
+    if (isAddStore) {
+    
+        document.getElementById("pageTitle").textContent =
+            "Nova Loja";
+    
+        document.getElementById("pageSubtitle").textContent =
+            "Cadastre uma nova unidade da empresa.";
+    
+    }
+
     if (!form) {
         console.error("Formulário 'storeForm' não encontrado.");
         return;
