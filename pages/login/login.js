@@ -30,13 +30,16 @@ form.addEventListener("submit", async (event) => {
         // ---------------------------------
         // Login
         // ---------------------------------
-
+        
         await Auth.login(email, password);
-
+        
+        // Limpa o contexto da sessão anterior
+        Storage.clear();
+        
         // ---------------------------------
         // Bootstrap
         // ---------------------------------
-
+        
         const result = await Bootstrap.init();
 
         switch (result.status) {
