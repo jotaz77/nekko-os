@@ -187,7 +187,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 grid.innerHTML += `
                     <a
-                        href="${module.href}"
+                        href="${module.href || "#"}"
+                        ${module.action ? `data-action="${module.action}"` : ""}
                         class="group
                                bg-[#141A16]
                                border
