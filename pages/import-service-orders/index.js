@@ -1,6 +1,28 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
 
     lucide.createIcons();
+
+    // ---------------------------------
+    // Bootstrap
+    // ---------------------------------
+
+    const boot = await Bootstrap.init();
+
+    if (boot.status !== "READY") {
+
+        alert("Sua sessão expirou.");
+
+        location.href = "../login/index.html";
+
+        return;
+
+    }
+
+    const context = boot.context;
+
+    // ---------------------------------
+    // Elementos
+    // ---------------------------------
 
     const dropArea = document.getElementById("dropArea");
     const fileInput = document.getElementById("fileInput");
@@ -9,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let selectedFile = null;
     let spreadsheetData = [];
+    let importing = false;
 
     // ---------------------------------
     // Atualizar Interface
@@ -66,45 +89,62 @@ document.addEventListener("DOMContentLoaded", () => {
                 const data = new Uint8Array(event.target.result);
 
                 const workbook = XLSX.read(data, {
+
                     type: "array"
+
                 });
 
-                const firstSheet = workbook.Sheets[
-                    workbook.SheetNames[0]
-                ];
+                const firstSheet =
+                    workbook.Sheets[
+                        workbook.SheetNames[0]
+                    ];
 
-                spreadsheetData = XLSX.utils.sheet_to_json(firstSheet, {
-                    defval: ""
-                });
+                spreadsheetData =
+                    XLSX.utils.sheet_to_json(firstSheet, {
+
+                        defval: ""
+
+                    });
 
                 console.clear();
 
-                console.log("Planilha:", spreadsheetData);
+                console.table(spreadsheetData);
 
-                const columns = Object.keys(
-                    spreadsheetData[0] || {}
-                );
+                const columns =
+                    Object.keys(
+                        spreadsheetData[0] || {}
+                    );
 
                 statusText.innerHTML = `
+
                     <div class="space-y-2">
 
                         <div class="text-green-500 font-semibold">
+
                             ✔ ${file.name}
+
                         </div>
 
                         <div class="text-slate-300">
+
                             📄 ${spreadsheetData.length} registros encontrados
+
                         </div>
 
                         <div class="text-slate-300">
+
                             📑 ${columns.length} colunas encontradas
+
                         </div>
 
                         <div class="text-green-400">
+
                             ✔ Planilha carregada com sucesso
+
                         </div>
 
                     </div>
+
                 `;
 
                 importButton.innerHTML =
@@ -117,9 +157,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.error(error);
 
                 statusText.innerHTML = `
+
                     <span class="text-red-500">
+
                         Erro ao ler a planilha.
+
                     </span>
+
                 `;
 
             }
@@ -131,6 +175,226 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ---------------------------------
+    // Converter Linha
+    // ---------------------------------
+
+    function buildServiceOrder(row) {
+
+        return {
+
+            company_id: context.company.id,
+
+            store_id: context.store
+                ? context.store.id
+                : null,
+
+            user_id: context.user.id,
+
+            created_by: context.user.id,
+
+            customer_name:
+                row["Cliente"] || "",
+
+            customer_phone:
+                row["Telefone"] || null,
+
+            customer_cpf:
+                row["CPF/CNPJ"] || null,
+
+            brand:
+                row["Marca"] || "",
+
+            model:
+                row["Modelo"] || "",
+
+            device_type:
+                row["Tipo"] || "Celular",
+
+            imei:
+                row["IMEI / Serial"] ||
+                row["IMEI"] ||
+                null,
+
+            service:
+                row["Serviço"] ||
+                "Importação",
+
+            reported_issue:
+                row["Defeito"] || "",
+
+            problem:
+                row["Defeito"] || "",
+
+            observations:
+                row["Observações"] || null,
+
+            notes:
+                row["Observações"] || null,
+
+            technician:
+                row["Técnico"] || null,
+
+            lock_password:
+                row["Senha"] || null,
+
+            price:
+                Number(
+                    String(
+                        row["Valor"] || 0
+                    ).replace(",", ".")
+                ) || 0,
+
+            entry_date:
+                row["Data de Entrada"] || null,
+
+            delivery_date:
+                row["Data de Saída"] || null,
+
+            status:
+                row["Status"] ||
+                "Aguardando análise"
+
+        };
+
+    }
+
+    // ---------------------------------
+    // Salvar Ordem
+    // ---------------------------------
+
+    async function saveServiceOrder(order) {
+
+        return await Api.createServiceOrder(order);
+
+    }
+    
+    // ---------------------------------
+    // Importar
+    // ---------------------------------
+
+    async function importServiceOrders() {
+
+        if (importing)
+            return;
+
+        importing = true;
+
+        importButton.disabled = true;
+
+        let success = 0;
+        let failed = 0;
+
+        const errors = [];
+
+        try {
+
+            for (let i = 0; i < spreadsheetData.length; i++) {
+
+                const row = spreadsheetData[i];
+
+                statusText.innerHTML = `
+
+                    <div class="space-y-2">
+
+                        <div class="text-yellow-400 font-semibold">
+
+                            Importando...
+
+                        </div>
+
+                        <div class="text-slate-300">
+
+                            ${i + 1} de ${spreadsheetData.length}
+
+                        </div>
+
+                    </div>
+
+                `;
+
+                try {
+
+                    const order = buildServiceOrder(row);
+
+                    await saveServiceOrder(order);
+
+                    success++;
+
+                }
+
+                catch (error) {
+
+                    console.error(error);
+
+                    failed++;
+
+                    errors.push({
+
+                        linha: i + 2,
+
+                        cliente: row["Cliente"],
+
+                        erro: error.message
+
+                    });
+
+                }
+
+            }
+
+            console.table(errors);
+
+            statusText.innerHTML = `
+
+                <div class="space-y-2">
+
+                    <div class="text-green-500 font-bold">
+
+                        ✔ Importação concluída
+
+                    </div>
+
+                    <div>
+
+                        Sucesso:
+                        <strong>${success}</strong>
+
+                    </div>
+
+                    <div>
+
+                        Falhas:
+                        <strong>${failed}</strong>
+
+                    </div>
+
+                </div>
+
+            `;
+
+            alert(
+
+                `Importação concluída!
+
+Sucesso: ${success}
+
+Falhas: ${failed}`
+
+            );
+
+        }
+
+        finally {
+
+            importing = false;
+
+            importButton.disabled = false;
+
+        }
+
+    }
+
+    // ---------------------------------
     // Seleção pelo Input
     // ---------------------------------
 
@@ -138,7 +402,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const file = event.target.files[0];
 
-        if (!file) return;
+        if (!file)
+            return;
 
         updateUI(file);
 
@@ -153,8 +418,11 @@ document.addEventListener("DOMContentLoaded", () => {
         event.preventDefault();
 
         dropArea.classList.add(
+
             "border-green-500",
+
             "bg-[#182019]"
+
         );
 
     });
@@ -166,8 +434,11 @@ document.addEventListener("DOMContentLoaded", () => {
     dropArea.addEventListener("dragleave", () => {
 
         dropArea.classList.remove(
+
             "border-green-500",
+
             "bg-[#182019]"
+
         );
 
     });
@@ -181,13 +452,17 @@ document.addEventListener("DOMContentLoaded", () => {
         event.preventDefault();
 
         dropArea.classList.remove(
+
             "border-green-500",
+
             "bg-[#182019]"
+
         );
 
         const file = event.dataTransfer.files[0];
 
-        if (!file) return;
+        if (!file)
+            return;
 
         fileInput.files = event.dataTransfer.files;
 
@@ -196,12 +471,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // ---------------------------------
-    // Importar
+    // Botão Importar
     // ---------------------------------
 
-    importButton.addEventListener("click", () => {
+    importButton.addEventListener("click", async () => {
 
-        if (!selectedFile) return;
+        if (!selectedFile)
+            return;
 
         if (spreadsheetData.length === 0) {
 
@@ -211,13 +487,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
-        console.log("Dados prontos para importar:");
-
-        console.table(spreadsheetData);
-
-        alert(
-            `Tudo pronto!\n\n${spreadsheetData.length} registros carregados.\n\nPróximo passo: importar para o Supabase.`
-        );
+        await importServiceOrders();
 
     });
 
