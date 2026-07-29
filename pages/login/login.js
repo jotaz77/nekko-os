@@ -110,3 +110,17 @@ form.addEventListener("submit", async (event) => {
     }
 
 });
+
+// =========================================
+// Criar conta
+// =========================================
+
+document
+    .getElementById("registerLink")
+    .addEventListener("click", (event) => {
+
+        event.preventDefault();
+
+        window.location.href = "register.html";
+
+    });
