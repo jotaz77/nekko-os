@@ -3,6 +3,26 @@
 // Menu
 // =========================================
 
+async function changeStore() {
+
+    const context = Storage.getContext();
+
+    if (context.role === Roles.CEO) {
+
+        window.location.href = "../mode/index.html";
+        return;
+
+    }
+
+    await Auth.logout();
+
+    Storage.clear();
+    sessionStorage.clear();
+
+    window.location.href = "../login/login.html";
+
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
 
     try {
