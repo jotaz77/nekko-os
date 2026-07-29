@@ -229,3 +229,11 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
 });
+
+document
+    .getElementById("create-store")
+    ?.addEventListener("click", () => {
+
+        window.location.href = "../store/create.html?mode=add-store";
+
+    });
