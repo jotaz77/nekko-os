@@ -1,1 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
 
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Importar Ordens de Serviço</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="../../assets/css/style.css">
+
+</head>
+
+<body class="bg-[#0D1117] text-white min-h-screen">
+
+    <main class="max-w-5xl mx-auto px-6 py-10">
+
+        <!-- Header -->
+
+        <div class="flex items-center justify-between mb-10">
+
+            <div>
+
+                <a
+                    href="../menu/index.html"
+                    class="inline-flex items-center gap-2 text-slate-400 hover:text-green-400 transition">
+
+                    <i data-lucide="arrow-left" class="w-5 h-5"></i>
+
+                    Voltar
+
+                </a>
+
+                <h1 class="text-4xl font-bold mt-5">
+                    Importar Ordens de Serviço
+                </h1>
+
+                <p class="text-slate-400 mt-2">
+                    Migre rapidamente uma planilha para o NEKKO OS.
+                </p>
+
+            </div>
+
+            <div
+                class="hidden md:flex w-20 h-20 rounded-3xl bg-[#141A16] border border-[#29322C] items-center justify-center">
+
+                <i
+                    data-lucide="file-up"
+                    class="w-10 h-10 text-green-500">
+                </i>
+
+            </div>
+
+        </div>
+
+        <!-- Upload -->
+
+        <div
+            class="bg-[#141A16] border border-[#29322C] rounded-3xl p-10">
+
+            <input
+                id="fileInput"
+                type="file"
+                accept=".xlsx,.xls,.csv"
+                class="hidden">
+
+            <label
+                for="fileInput"
+                id="dropArea"
+                class="flex flex-col items-center justify-center text-center cursor-pointer border-2 border-dashed border-[#29322C] rounded-3xl py-20 transition hover:border-green-500 hover:bg-[#182019]">
+
+                <div
+                    class="w-20 h-20 rounded-full bg-[#1B231D] flex items-center justify-center mb-6">
+
+                    <i
+                        data-lucide="upload-cloud"
+                        class="w-10 h-10 text-green-500">
+                    </i>
+
+                </div>
+
+                <h2 class="text-2xl font-semibold">
+                    Arraste sua planilha aqui
+                </h2>
+
+                <p class="text-slate-400 mt-3">
+                    ou clique para selecionar um arquivo
+                </p>
+
+                <div
+                    class="mt-8 inline-flex gap-2 text-sm text-slate-500">
+
+                    <span>XLSX</span>
+
+                    <span>•</span>
+
+                    <span>XLS</span>
+
+                    <span>•</span>
+
+                    <span>CSV</span>
+
+                </div>
+
+            </label>
+
+        </div>
+
+        <!-- Status -->
+
+        <div
+            class="mt-8 bg-[#141A16] border border-[#29322C] rounded-3xl p-6">
+
+            <div class="flex items-start gap-4">
+
+                <div
+                    class="w-12 h-12 rounded-xl bg-[#1B231D] flex items-center justify-center">
+
+                    <i
+                        data-lucide="info"
+                        class="w-6 h-6 text-green-500">
+                    </i>
+
+                </div>
+
+                <div>
+
+                    <h3 class="font-semibold text-lg">
+                        Status da Importação
+                    </h3>
+
+                    <p
+                        id="statusText"
+                        class="text-slate-400 mt-2">
+
+                        Nenhum arquivo selecionado.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Botão -->
+
+        <div class="flex justify-end mt-8">
+
+            <button
+                id="importButton"
+                disabled
+                class="px-8 py-4 rounded-2xl bg-green-600/40 text-white font-semibold cursor-not-allowed opacity-50 transition">
+
+                Importar Ordens de Serviço
+
+            </button>
+
+        </div>
+
+    </main>
+
+    <script src="./index.js"></script>
+
+    <script>
+
+        lucide.createIcons();
+
+    </script>
+
+</body>
+
+</html>
