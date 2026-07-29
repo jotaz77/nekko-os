@@ -174,7 +174,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     user,
                     company,
                     store,
-                    role: membership.role
+                    role: Roles.MANAGER
 
                 });
 
