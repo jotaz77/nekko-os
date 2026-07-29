@@ -130,8 +130,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
-    lucide.createIcons();
-
     // ---------------------------------
     // Card Nova Loja
     // ---------------------------------
@@ -240,5 +238,7 @@ document
             "../store/create.html?mode=add-store";
 
     });
+
+    lucide.createIcons();
 
 });
