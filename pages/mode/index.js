@@ -202,38 +202,43 @@ document.addEventListener("DOMContentLoaded", () => {
     // ---------------------------------
 
     document
-        .querySelectorAll(".enter-store")
-        .forEach(button => {
+    .querySelectorAll(".enter-store")
+    .forEach(button => {
 
-            button.addEventListener("click", () => {
+        button.addEventListener("click", () => {
 
-                const store = stores.find(
-                    s => s.id === button.dataset.id
-                );
+            const store = stores.find(
+                s => s.id === button.dataset.id
+            );
 
-                Storage.setContext({
+            Storage.setContext({
 
-                    user,
-                    company,
-                    store,
-                    role: Roles.MANAGER
-
-                });
-
-                sessionStorage.removeItem("nekko_mode_context");
-
-                window.location.href = "../menu/index.html";
+                user,
+                company,
+                store,
+                role: Roles.MANAGER
 
             });
 
+            sessionStorage.removeItem("nekko_mode_context");
+
+            window.location.href = "../menu/index.html";
+
         });
 
-});
+    });
+
+// ---------------------------------
+// Criar nova loja
+// ---------------------------------
 
 document
     .getElementById("create-store")
-    ?.addEventListener("click", () => {
+    .addEventListener("click", () => {
 
-        window.location.href = "../store/create.html?mode=add-store";
+        window.location.href =
+            "../store/create.html?mode=add-store";
 
     });
+
+});
