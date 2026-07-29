@@ -6,11 +6,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Importar Ordens de Serviço</title>
+    <title>Importar Ordens de Serviço • Nekko OS</title>
 
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <!-- Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- XLSX -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
     <link rel="stylesheet" href="./style.css">
 
@@ -60,8 +68,7 @@
 
         <!-- Upload -->
 
-        <div
-            class="bg-[#141A16] border border-[#29322C] rounded-3xl p-10">
+        <div class="bg-[#141A16] border border-[#29322C] rounded-3xl p-10">
 
             <input
                 id="fileInput"
@@ -70,12 +77,11 @@
                 class="hidden">
 
             <label
-                for="fileInput"
                 id="dropArea"
+                for="fileInput"
                 class="flex flex-col items-center justify-center text-center cursor-pointer border-2 border-dashed border-[#29322C] rounded-3xl py-20 transition hover:border-green-500 hover:bg-[#182019]">
 
-                <div
-                    class="w-20 h-20 rounded-full bg-[#1B231D] flex items-center justify-center mb-6">
+                <div class="w-20 h-20 rounded-full bg-[#1B231D] flex items-center justify-center mb-6">
 
                     <i
                         data-lucide="upload-cloud"
@@ -92,8 +98,7 @@
                     ou clique para selecionar um arquivo
                 </p>
 
-                <div
-                    class="mt-8 inline-flex gap-2 text-sm text-slate-500">
+                <div class="mt-8 inline-flex gap-2 text-sm text-slate-500">
 
                     <span>XLSX</span>
                     <span>•</span>
@@ -109,13 +114,11 @@
 
         <!-- Status -->
 
-        <div
-            class="mt-8 bg-[#141A16] border border-[#29322C] rounded-3xl p-6">
+        <div class="mt-8 bg-[#141A16] border border-[#29322C] rounded-3xl p-6">
 
             <div class="flex items-start gap-4">
 
-                <div
-                    class="w-12 h-12 rounded-xl bg-[#1B231D] flex items-center justify-center">
+                <div class="w-12 h-12 rounded-xl bg-[#1B231D] flex items-center justify-center">
 
                     <i
                         data-lucide="info"
@@ -161,21 +164,18 @@
 
     </main>
 
-<!-- XLSX -->
-<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+    <!-- Configuração -->
+    <script src="../../assets/js/config.js"></script>
 
-<!-- Supabase -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Sistema -->
+    <script src="../../assets/js/supabase.js"></script>
+    <script src="../../assets/js/storage.js"></script>
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/api.js"></script>
+    <script src="../../assets/js/bootstrap.js"></script>
 
-<!-- Sistema -->
-<script src="../../assets/js/supabase.js"></script>
-<script src="../../assets/js/storage.js"></script>
-<script src="../../assets/js/auth.js"></script>
-<script src="../../assets/js/api.js"></script>
-<script src="../../assets/js/bootstrap.js"></script>
-
-<!-- Página -->
-<script src="./index.js"></script>
+    <!-- Página -->
+    <script src="./index.js"></script>
 
     <script>
         lucide.createIcons();
