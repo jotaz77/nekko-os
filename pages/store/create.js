@@ -26,13 +26,29 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    const companyId = localStorage.getItem("company_id");
+    let companyId = localStorage.getItem("company_id");
 
+    // Se estiver adicionando uma nova loja, pega a empresa do contexto
+    if (!companyId && isAddStore) {
+    
+        const raw = sessionStorage.getItem("nekko_mode_context");
+    
+        if (raw) {
+    
+            const { company } = JSON.parse(raw);
+    
+            companyId = company.id;
+    
+        }
+    
+    }
+    
+    // Continua sendo obrigatório existir uma empresa
     if (!companyId) {
-
+    
         window.location.href = "../company/create.html";
         return;
-
+    
     }
 
     form.addEventListener("submit", async (e) => {
