@@ -133,6 +133,48 @@ document.addEventListener("DOMContentLoaded", () => {
     lucide.createIcons();
 
     // ---------------------------------
+    // Card Nova Loja
+    // ---------------------------------
+    
+    grid.innerHTML += `
+        <div
+            class="bg-[#141A16]
+                   border-2
+                   border-dashed
+                   border-[#29322C]
+                   rounded-3xl
+                   p-6
+                   hover:border-pink-500
+                   transition">
+    
+            <div class="flex items-center justify-between">
+    
+                <div>
+    
+                    <h2 class="text-2xl font-semibold">
+                        ➕ Nova Loja
+                    </h2>
+    
+                    <p class="text-slate-400 mt-2">
+                        Cadastre uma nova unidade
+                    </p>
+    
+                </div>
+    
+                <button
+                    id="create-store"
+                    class="bg-pink-500 hover:bg-pink-600 px-5 py-3 rounded-xl font-medium">
+    
+                    Criar
+    
+                </button>
+    
+            </div>
+    
+        </div>
+    `;
+
+    // ---------------------------------
     // Entrar como CEO
     // ---------------------------------
 
