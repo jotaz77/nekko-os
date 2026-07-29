@@ -170,6 +170,14 @@ document.addEventListener("DOMContentLoaded", async () => {
             },
 
             {
+                title: "Importar OS",
+                description: "Migrar ordens de serviço de outro sistema",
+                icon: "file-up",
+                href: "../import-service-orders/index.html",
+                roles: [Roles.CEO]
+            },
+
+            {
                 title: "Configurações",
                 description: "Preferências do sistema",
                 icon: "settings",
@@ -178,15 +186,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
         ];
-
-        {
-            title: "Importar OS",
-            description: "Migrar ordens de serviço de outro sistema",
-            icon: "file-up",
-            href: "../import-service-orders/index.html",
-            roles: [Roles.CEO]
-        },
-
         // ---------------------------------
         // Renderizar módulos
         // ---------------------------------
