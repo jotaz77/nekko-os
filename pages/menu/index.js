@@ -131,6 +131,19 @@ document.addEventListener("DOMContentLoaded", async () => {
             },
 
             {
+                title: "Trocar Loja",
+                description: "Entrar em outra unidade",
+                icon: "repeat",
+                href: "#",
+                action: "change-store",
+                roles: [
+                    Roles.MANAGER,
+                    Roles.EMPLOYEE,
+                    Roles.TECHNICIAN
+                ]
+            },
+
+            {
                 title: "Configurações",
                 description: "Preferências do sistema",
                 icon: "settings",
