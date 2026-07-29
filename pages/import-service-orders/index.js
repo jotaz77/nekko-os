@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const importButton = document.getElementById("importButton");
 
     let selectedFile = null;
+    let spreadsheetData = [];
 
     // ---------------------------------
     // Atualizar Interface
@@ -21,9 +22,17 @@ document.addEventListener("DOMContentLoaded", () => {
             <span class="text-green-500 font-semibold">
                 ✔ ${file.name}
             </span>
+
             <br>
+
             <span class="text-slate-400">
                 ${(file.size / 1024).toFixed(2)} KB
+            </span>
+
+            <br><br>
+
+            <span class="text-yellow-400">
+                Clique em "Importar" para analisar a planilha.
             </span>
         `;
 
@@ -39,6 +48,85 @@ document.addEventListener("DOMContentLoaded", () => {
             "bg-green-600",
             "hover:bg-green-700"
         );
+
+    }
+
+    // ---------------------------------
+    // Ler Planilha
+    // ---------------------------------
+
+    function readSpreadsheet(file) {
+
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+
+            try {
+
+                const data = new Uint8Array(event.target.result);
+
+                const workbook = XLSX.read(data, {
+                    type: "array"
+                });
+
+                const firstSheet = workbook.Sheets[
+                    workbook.SheetNames[0]
+                ];
+
+                spreadsheetData = XLSX.utils.sheet_to_json(firstSheet, {
+                    defval: ""
+                });
+
+                console.clear();
+
+                console.log("Planilha:", spreadsheetData);
+
+                const columns = Object.keys(
+                    spreadsheetData[0] || {}
+                );
+
+                statusText.innerHTML = `
+                    <div class="space-y-2">
+
+                        <div class="text-green-500 font-semibold">
+                            ✔ ${file.name}
+                        </div>
+
+                        <div class="text-slate-300">
+                            📄 ${spreadsheetData.length} registros encontrados
+                        </div>
+
+                        <div class="text-slate-300">
+                            📑 ${columns.length} colunas encontradas
+                        </div>
+
+                        <div class="text-green-400">
+                            ✔ Planilha carregada com sucesso
+                        </div>
+
+                    </div>
+                `;
+
+                importButton.innerHTML =
+                    `Importar ${spreadsheetData.length} Ordens de Serviço`;
+
+            }
+
+            catch (error) {
+
+                console.error(error);
+
+                statusText.innerHTML = `
+                    <span class="text-red-500">
+                        Erro ao ler a planilha.
+                    </span>
+                `;
+
+            }
+
+        };
+
+        reader.readAsArrayBuffer(file);
 
     }
 
@@ -115,10 +203,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!selectedFile) return;
 
-        console.log("Arquivo selecionado:", selectedFile);
+        if (spreadsheetData.length === 0) {
+
+            readSpreadsheet(selectedFile);
+
+            return;
+
+        }
+
+        console.log("Dados prontos para importar:");
+
+        console.table(spreadsheetData);
 
         alert(
-            "Próximo passo: ler a planilha e importar para o Supabase."
+            `Tudo pronto!\n\n${spreadsheetData.length} registros carregados.\n\nPróximo passo: importar para o Supabase.`
         );
 
     });
