@@ -1,1 +1,118 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
+html,
+body{
+
+    width:72mm;
+    background:#fff;
+    color:#000;
+
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:8px;
+    line-height:1.15;
+
+}
+
+.receipt{
+
+    width:72mm;
+
+    padding:2mm;
+
+}
+
+header,
+section,
+footer{
+
+    margin-bottom:2mm;
+
+}
+
+h1{
+
+    font-size:11px;
+    text-align:center;
+
+}
+
+h2{
+
+    font-size:8px;
+
+    margin-bottom:1mm;
+
+}
+
+p{
+
+    margin:0.5mm 0;
+
+    word-break:break-word;
+
+}
+
+.row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:5px;
+
+}
+
+hr{
+
+    border:none;
+
+    border-top:1px dashed #000;
+
+    margin:2mm 0;
+
+}
+
+.signature{
+
+    text-align:center;
+
+    margin-top:8mm;
+
+}
+
+.total{
+
+    font-weight:bold;
+
+    font-size:9px;
+
+}
+
+@page{
+
+    size:72mm auto;
+
+    margin:2mm;
+
+}
+
+@media print{
+
+    html,
+    body{
+
+        width:72mm;
+
+    }
+
+    .receipt{
+
+        width:68mm;
+
+    }
+
+}
