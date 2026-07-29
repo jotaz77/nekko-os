@@ -143,11 +143,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             },
 
             {
-                title: "Lojas",
-                description: "Gerenciar unidades",
-                icon: "store",
-                href: "../stores/index.html",
-                roles: [Roles.CEO]
+                title: "Trocar Loja",
+                description: "Entrar em outra unidade",
+                icon: "repeat",
+                href: "#",
+                action: "change-store",
+                roles: [
+                    Roles.CEO,
+                    Roles.MANAGER,
+                    Roles.EMPLOYEE,
+                    Roles.TECHNICIAN
+                ]
             },
 
             {
@@ -225,6 +231,20 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
 
         lucide.createIcons();
+
+        document
+            .querySelectorAll('[data-action="change-store"]')
+            .forEach(button => {
+        
+                button.addEventListener("click", async (event) => {
+        
+                    event.preventDefault();
+        
+                    await changeStore();
+        
+                });
+        
+            });
 
         console.log("✅ Menu carregado.");
         console.log("Contexto:", result.context);
