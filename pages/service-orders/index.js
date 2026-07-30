@@ -322,7 +322,7 @@ function renderOrders(orders) {
                                transition"
                         data-id="${order.id}">
                     
-                        🖨 Imprimir
+                        Imprimir
                     
                     </button>
 
