@@ -144,7 +144,7 @@ const Api = {
     // =====================================
 
     async getServiceOrders(context) {
-
+    
         let query = supabaseClient
             .from("service_orders")
             .select(`
@@ -154,75 +154,64 @@ const Api = {
                     name
                 )
             `)
-                stores (
-                    id,
-                    name
-                )
-            )
-            *,
-            stores (
-                id,
-                name
-            )
-            )
             .eq("company_id", context.company.id);
-
+    
         if (context.store) {
-
+    
             query = query.eq(
                 "store_id",
                 context.store.id
             );
-
+    
         }
-
+    
         const { data, error } = await query
             .order("created_at", {
                 ascending: false
             });
-
+    
         if (error)
             throw error;
-
+    
         return data;
-
+    
     },
-
-    async getServiceOrder(id) {
-
-        const { data, error } = await supabaseClient
-            .from("service_orders")
-            .select(
-                *,
-                stores (
-                    id,
-                    name
+    
+        async getServiceOrder(id) {
+    
+            const { data, error } = await supabaseClient
+                .from("service_orders")
+                .select(
+                    *,
+                    stores (
+                        id,
+                        name
+                    )
                 )
-            )
-            .eq("id", id)
-            .maybeSingle();
-
-        if (error)
-            throw error;
-
-        return data;
-
-    },
-
-    async createServiceOrder(order) {
-
-        const { data, error } = await supabaseClient
-            .from("service_orders")
-            .insert(order)
-            .select()
-            .single();
-
-        if (error)
-            throw error;
-
-        return data;
-
-    },
+                .eq("id", id)
+                .maybeSingle();
+    
+            if (error)
+                throw error;
+    
+            return data;
+    
+        },
+    
+        async createServiceOrder(order) {
+    
+            const { data, error } = await supabaseClient
+                .from("service_orders")
+                .insert(order)
+                .select()
+                .single();
+    
+            if (error)
+                throw error;
+    
+            return data;
+    
+        },
 
     async updateServiceOrder(id, order) {
 
