@@ -347,6 +347,21 @@ function renderOrders(orders) {
 
         });
 
+    document
+        .querySelectorAll(".print-order")
+        .forEach(button => {
+    
+            button.addEventListener("click", () => {
+    
+                window.open(
+                    `print.html?id=${button.dataset.id}`,
+                    "_blank"
+                );
+    
+            });
+    
+        });
+
 }
 
 // =========================================
