@@ -4,6 +4,7 @@
 // =========================================
 
 let serviceOrders = [];
+let appContext = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
 
@@ -14,6 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         // ---------------------------------
 
         const result = await Bootstrap.init();
+        appContext = result.context;
 
         if (result.status !== "READY") {
 
@@ -188,6 +190,7 @@ function renderOrders(orders) {
 
     }
 
+    const isCEO = appContext?.role === Roles.CEO;
     orders.forEach(order => {
 
         container.innerHTML += `
@@ -232,8 +235,16 @@ function renderOrders(orders) {
                         <p class="text-slate-400 mt-2">
 
                             👨‍🔧 ${order.technician || "--"}
-
+                            
                         </p>
+
+                        ${isCEO ? `
+                            <p class="text-slate-400 mt-2">
+                        
+                                🏪 ${order.stores?.name || "--"}
+                        
+                            </p>
+                        ` : ""}
 
                         <p class="text-slate-500 mt-2">
 
