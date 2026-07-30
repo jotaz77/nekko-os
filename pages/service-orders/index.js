@@ -292,7 +292,7 @@ function renderOrders(orders) {
                                transition"
                         data-id="${order.id}">
 
-                        👁 Ver
+                        Ver
 
                     </button>
 
@@ -308,7 +308,7 @@ function renderOrders(orders) {
                                transition"
                         data-id="${order.id}">
 
-                        ✏️ Editar
+                        Editar
 
                     </button>
 
