@@ -72,9 +72,7 @@ function preencherCupom() {
 
     setText("deviceModel", order.model);
 
-    setText("deviceLockType", getLockType(order.lock_type));
-
-    setText("deviceLockValue", getLockValue(order));
+    renderDeviceLock(order);
 
     // Defeito
 
@@ -124,43 +122,185 @@ function setText(id, value) {
 
 }
 
-function getLockType(type) {
+function renderDeviceLock(order) {
 
-    const types = {
+    const container =
+        document.getElementById("deviceLockContainer");
 
-        pin: "PIN",
+    if (!container) return;
 
-        password: "Senha",
+    // -------------------------
+    // SEM SENHA
+    // -------------------------
 
-        pattern: "Padrão",
+    if (
+        !order.lock_type ||
+        order.lock_type === "none"
+    ) {
 
-        biometric: "Biometria",
+        container.innerHTML = `
+            <div class="no-lock">
+                SEM SENHA
+            </div>
+        `;
 
-        face: "Face ID",
+        return;
 
-        none: "Sem bloqueio"
+    }
 
-    };
+    // -------------------------
+    // PIN
+    // -------------------------
 
-    return types[type] || "Bloqueio";
+    if (order.lock_type === "pin") {
+
+        container.innerHTML = `
+            <div class="lock-title">
+                Senha:
+            </div>
+
+            <div class="lock-value">
+                ${order.lock_pin || "-"}
+            </div>
+        `;
+
+        return;
+
+    }
+
+    // -------------------------
+    // SENHA
+    // -------------------------
+
+    if (order.lock_type === "password") {
+
+        container.innerHTML = `
+            <div class="lock-title">
+                Senha:
+            </div>
+
+            <div class="lock-value">
+                ${order.lock_password || "-"}
+            </div>
+        `;
+
+        return;
+
+    }
+
+    // -------------------------
+    // PADRÃO
+    // -------------------------
+
+    if (order.lock_type === "pattern") {
+
+        container.innerHTML = `
+            <div class="lock-title">
+                Senha:
+            </div>
+
+            <svg
+                id="patternSVG"
+                class="pattern"
+                viewBox="0 0 100 100">
+            </svg>
+        `;
+
+        drawPattern(
+            order.lock_pattern || ""
+        );
+
+        return;
+
+    }
+
+    // -------------------------
+    // Outros
+    // -------------------------
+
+    container.innerHTML = `
+        <div class="lock-title">
+            ${getLockType(order.lock_type)}
+        </div>
+    `;
 
 }
 
-function getLockValue(order) {
+function drawPattern(pattern) {
 
-    switch (order.lock_type) {
+    const svg =
+        document.getElementById("patternSVG");
 
-        case "pin":
-            return order.lock_pin || "-";
+    if (!svg) return;
 
-        case "password":
-            return order.lock_password || "-";
+    svg.innerHTML = "";
 
-        case "pattern":
-            return order.lock_pattern || "-";
+    const points = {
 
-        default:
-            return "-";
+        1:{x:15,y:15},
+        2:{x:50,y:15},
+        3:{x:85,y:15},
+
+        4:{x:15,y:50},
+        5:{x:50,y:50},
+        6:{x:85,y:50},
+
+        7:{x:15,y:85},
+        8:{x:50,y:85},
+        9:{x:85,y:85}
+
+    };
+
+    const sequence = pattern
+        .split("-")
+        .map(Number)
+        .filter(n => points[n]);
+
+    // Desenha as linhas
+
+    for (let i = 0; i < sequence.length - 1; i++) {
+
+        const a = points[sequence[i]];
+        const b = points[sequence[i + 1]];
+
+        const line =
+            document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "line"
+            );
+
+        line.setAttribute("x1", a.x);
+        line.setAttribute("y1", a.y);
+
+        line.setAttribute("x2", b.x);
+        line.setAttribute("y2", b.y);
+
+        svg.appendChild(line);
+
+    }
+
+    // Desenha os pontos
+
+    for (let i = 1; i <= 9; i++) {
+
+        const circle =
+            document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "circle"
+            );
+
+        circle.setAttribute("cx", points[i].x);
+        circle.setAttribute("cy", points[i].y);
+
+        circle.setAttribute("r", 6);
+
+        if (sequence.includes(i)) {
+
+            circle.classList.add("active");
+
+        }
+
+        svg.appendChild(circle);
 
     }
 
