@@ -181,7 +181,13 @@ const Api = {
 
         const { data, error } = await supabaseClient
             .from("service_orders")
-            .select("*")
+            .select(`
+                *,
+                stores (
+                    id,
+                    name
+                )
+            `)
             .eq("id", id)
             .maybeSingle();
 
