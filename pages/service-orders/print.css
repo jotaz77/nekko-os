@@ -92,6 +92,86 @@ hr{
 
 }
 
+/* =========================================
+   BLOQUEIO DO APARELHO
+========================================= */
+
+#deviceLockContainer{
+
+    margin-top:2mm;
+
+}
+
+.lock-title{
+
+    font-weight:bold;
+
+    margin-bottom:1.5mm;
+
+    font-size:8px;
+
+}
+
+.lock-value{
+
+    font-size:10px;
+
+    font-weight:bold;
+
+    letter-spacing:1px;
+
+}
+
+.no-lock{
+
+    font-size:10px;
+
+    font-weight:bold;
+
+    text-align:center;
+
+    padding:4mm 0;
+
+}
+
+.pattern{
+
+    width:42mm;
+
+    height:42mm;
+
+    margin:2mm auto;
+
+    display:block;
+
+}
+
+.pattern circle{
+
+    fill:#fff;
+
+    stroke:#000;
+
+    stroke-width:2;
+
+}
+
+.pattern circle.active{
+
+    fill:#000;
+
+}
+
+.pattern line{
+
+    stroke:#000;
+
+    stroke-width:3;
+
+    stroke-linecap:round;
+
+}
+
 @page{
 
     size:72mm auto;
