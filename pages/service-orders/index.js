@@ -312,6 +312,20 @@ function renderOrders(orders) {
 
                     </button>
 
+                    <button
+                        class="print-order
+                               bg-blue-600
+                               hover:bg-blue-700
+                               px-5
+                               py-2
+                               rounded-xl
+                               transition"
+                        data-id="${order.id}">
+                    
+                        🖨 Imprimir
+                    
+                    </button>
+
                 </div>
 
             </div>
