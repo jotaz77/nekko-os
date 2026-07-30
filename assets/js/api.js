@@ -154,6 +154,12 @@ const Api = {
                     name
                 )
             `)
+                *,
+                stores (
+                    id,
+                    name
+                )
+            `)
             .eq("company_id", context.company.id);
 
         if (context.store) {
