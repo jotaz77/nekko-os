@@ -178,25 +178,25 @@ const Api = {
     },
     
         async getServiceOrder(id) {
-    
-            const { data, error } = await supabaseClient
-                .from("service_orders")
-                .select(
-                    *,
-                    stores (
-                        id,
-                        name
-                    )
+
+        const { data, error } = await supabaseClient
+            .from("service_orders")
+            .select(`
+                *,
+                stores (
+                    id,
+                    name
                 )
-                .eq("id", id)
-                .maybeSingle();
+            `)
+            .eq("id", id)
+            .maybeSingle();
     
-            if (error)
-                throw error;
+        if (error)
+            throw error;
     
-            return data;
+        return data;
     
-        },
+    },
     
         async createServiceOrder(order) {
     
