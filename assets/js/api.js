@@ -147,7 +147,13 @@ const Api = {
 
         let query = supabaseClient
             .from("service_orders")
-            .select("*")
+            .select(`
+                *,
+                stores (
+                    id,
+                    name
+                )
+            `)
             .eq("company_id", context.company.id);
 
         if (context.store) {
