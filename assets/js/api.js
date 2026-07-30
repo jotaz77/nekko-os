@@ -147,8 +147,13 @@ const Api = {
 
         let query = supabaseClient
             .from("service_orders")
-            .select(
+            .select(`
                 *,
+                stores (
+                    id,
+                    name
+                )
+            `)
                 stores (
                     id,
                     name
