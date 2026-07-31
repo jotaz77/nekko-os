@@ -157,6 +157,45 @@ function renderOrder() {
     );
 
     // ==================================================
+    // ENDEREÇO
+    // ==================================================
+    
+    setText(
+        "addressCep",
+        order.customer_cep
+    );
+    
+    setText(
+        "addressStreet",
+        order.customer_address
+    );
+    
+    setText(
+        "addressNumber",
+        order.customer_number
+    );
+    
+    setText(
+        "addressNeighborhood",
+        order.customer_neighborhood
+    );
+    
+    setText(
+        "addressCity",
+        order.customer_city
+    );
+    
+    setText(
+        "addressState",
+        order.customer_state
+    );
+    
+    setText(
+        "addressComplement",
+        order.customer_complement
+    );
+
+    // ==================================================
     // APARELHO
     // ==================================================
 
