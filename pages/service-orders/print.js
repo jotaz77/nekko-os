@@ -64,6 +64,47 @@ function preencherCupom() {
 
     setText("customerPhone", formatPhone(order.customer_phone));
 
+    // Endereço
+
+    const address = [
+        order.customer_address,
+        order.customer_number
+    ].filter(Boolean).join(", ");
+    
+    setText(
+        "customerAddress",
+        address || "Não informado"
+    );
+    
+    setText(
+        "customerNeighborhood",
+        order.customer_neighborhood
+    );
+    
+    const cityState = [
+        order.customer_city,
+        order.customer_state
+    ].filter(Boolean).join(" - ");
+    
+    setText(
+        "customerCityState",
+        cityState
+    );
+    
+    setText(
+        "customerCep",
+        order.customer_cep
+            ? `CEP: ${order.customer_cep}`
+            : ""
+    );
+    
+    setText(
+        "customerComplement",
+        order.customer_complement
+            ? `Complemento: ${order.customer_complement}`
+            : ""
+    );
+
     // Aparelho
 
     setText("deviceType", order.device_type);
