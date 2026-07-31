@@ -1,9 +1,3 @@
-// =========================================
-// NEKKO OS
-// create.js
-// PARTE 1/3
-// =========================================
-
 lucide.createIcons();
 
 document.addEventListener("DOMContentLoaded", async () => {
