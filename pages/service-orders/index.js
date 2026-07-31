@@ -348,6 +348,19 @@ function renderOrders(orders) {
         });
 
     document
+        .querySelectorAll(".edit-order")
+        .forEach(button => {
+    
+            button.addEventListener("click", () => {
+    
+                window.location.href =
+                    `create.html?id=${button.dataset.id}&mode=edit`;
+    
+            });
+    
+        });
+
+    document
         .querySelectorAll(".print-order")
         .forEach(button => {
     
