@@ -595,6 +595,36 @@ function buildServiceOrder() {
             .value
             .trim() || null,
 
+        customer_address: document
+            .getElementById("customerAddress")
+            .value
+            .trim() || null,
+        
+        customer_number: document
+            .getElementById("customerNumber")
+            .value
+            .trim() || null,
+        
+        customer_neighborhood: document
+            .getElementById("customerNeighborhood")
+            .value
+            .trim() || null,
+        
+        customer_city: document
+            .getElementById("customerCity")
+            .value
+            .trim() || null,
+        
+        customer_state: document
+            .getElementById("customerState")
+            .value
+            .trim() || null,
+        
+        customer_complement: document
+            .getElementById("customerComplement")
+            .value
+            .trim() || null,
+
         device_type: document
             .getElementById("deviceType")
             .value,
@@ -696,6 +726,24 @@ async function loadServiceOrder() {
     document.getElementById("customerCpf").value = order.customer_cpf ?? "";
     document.getElementById("customerCep").value = order.customer_cep ?? "";
     document.getElementById("customerPhone").value = order.customer_phone ?? "";
+
+    document.getElementById("customerAddress").value =
+        order.customer_address ?? "";
+
+    document.getElementById("customerNumber").value =
+        order.customer_number ?? "";
+    
+    document.getElementById("customerNeighborhood").value =
+        order.customer_neighborhood ?? "";
+    
+    document.getElementById("customerCity").value =
+        order.customer_city ?? "";
+    
+    document.getElementById("customerState").value =
+        order.customer_state ?? "";
+    
+    document.getElementById("customerComplement").value =
+        order.customer_complement ?? "";
 
     document.getElementById("deviceType").value = order.device_type ?? "";
     document.getElementById("brand").value = order.brand ?? "";
