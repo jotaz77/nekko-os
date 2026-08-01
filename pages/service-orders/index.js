@@ -476,6 +476,8 @@ function filterOrders() {
 
     renderOrders(filtered);
 
+}
+
     // =========================================
     // Modal
     // =========================================
@@ -495,5 +497,3 @@ function filterOrders() {
             orderToDelete = null;
     
         });
-
-}
