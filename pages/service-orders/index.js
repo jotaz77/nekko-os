@@ -5,6 +5,7 @@
 
 let serviceOrders = [];
 let appContext = null;
+let orderToDelete = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
 
@@ -389,6 +390,42 @@ function renderOrders(orders) {
     
         });
 
+    // =========================================
+    // Excluir
+    // =========================================
+    
+    document
+        .querySelectorAll(".delete-order")
+        .forEach(button => {
+    
+            button.addEventListener("click", () => {
+    
+                orderToDelete = button.dataset.id;
+    
+                const order = serviceOrders.find(
+                    os => os.id === orderToDelete
+                );
+    
+                document.getElementById("deleteText").innerHTML = `
+                    Tem certeza que deseja excluir a
+                    <br><br>
+                    <strong>OS #${formatOsNumber(order.os_number)}</strong>
+                    <br><br>
+                    Esta ação não poderá ser desfeita.
+                `;
+    
+                document
+                    .getElementById("deleteModal")
+                    .classList.remove("hidden");
+    
+                document
+                    .getElementById("deleteModal")
+                    .classList.add("flex");
+    
+            });
+    
+        });
+
 }
 
 // =========================================
@@ -438,5 +475,25 @@ function filterOrders() {
     });
 
     renderOrders(filtered);
+
+    // =========================================
+    // Modal
+    // =========================================
+    
+    document
+        .getElementById("cancelDelete")
+        ?.addEventListener("click", () => {
+    
+            document
+                .getElementById("deleteModal")
+                .classList.add("hidden");
+    
+            document
+                .getElementById("deleteModal")
+                .classList.remove("flex");
+    
+            orderToDelete = null;
+    
+        });
 
 }
