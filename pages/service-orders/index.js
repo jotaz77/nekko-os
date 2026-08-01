@@ -337,7 +337,7 @@ function renderOrders(orders) {
                                transition"
                         data-id="${order.id}">
                     
-                        🗑 Excluir
+                        Excluir
                     
                     </button>
 
