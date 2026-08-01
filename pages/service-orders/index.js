@@ -326,6 +326,20 @@ function renderOrders(orders) {
                     
                     </button>
 
+                    <button
+                        class="delete-order
+                               bg-red-600
+                               hover:bg-red-700
+                               px-5
+                               py-2
+                               rounded-xl
+                               transition"
+                        data-id="${order.id}">
+                    
+                        🗑 Excluir
+                    
+                    </button>
+
                 </div>
 
             </div>
