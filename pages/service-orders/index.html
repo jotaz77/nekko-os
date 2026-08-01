@@ -160,6 +160,81 @@
     <script src="../../assets/js/bootstrap.js"></script>
     <script src="../../assets/js/roles.js"></script>
 
+    <!-- ========================================= -->
+    <!-- MODAL EXCLUIR -->
+    <!-- ========================================= -->
+    
+    <div
+        id="deleteModal"
+        class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50">
+    
+        <div
+            class="bg-[#141A16]
+                   border
+                   border-[#29322C]
+                   rounded-3xl
+                   w-full
+                   max-w-md
+                   p-8">
+    
+            <div class="text-center">
+    
+                <div class="text-6xl mb-4">
+    
+                    ⚠️
+    
+                </div>
+    
+                <h2 class="text-2xl font-bold">
+    
+                    Excluir Ordem de Serviço
+    
+                </h2>
+    
+                <p
+                    id="deleteText"
+                    class="text-slate-400 mt-4">
+    
+                    Tem certeza?
+    
+                </p>
+    
+            </div>
+    
+            <div class="flex justify-end gap-3 mt-10">
+    
+                <button
+                    id="cancelDelete"
+                    class="px-6
+                           py-3
+                           rounded-xl
+                           bg-[#202823]
+                           hover:bg-[#29322C]
+                           transition">
+    
+                    Cancelar
+    
+                </button>
+    
+                <button
+                    id="confirmDelete"
+                    class="px-6
+                           py-3
+                           rounded-xl
+                           bg-red-600
+                           hover:bg-red-700
+                           transition">
+    
+                    🗑 Excluir
+    
+                </button>
+    
+            </div>
+    
+        </div>
+    
+    </div>
+    
     <script src="index.js"></script>
 
     <script>
