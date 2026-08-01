@@ -497,3 +497,43 @@ function filterOrders() {
             orderToDelete = null;
     
         });
+
+
+    // =========================================
+    // Confirmar exclusão
+    // =========================================
+    
+    document
+        .getElementById("confirmDelete")
+        ?.addEventListener("click", async () => {
+    
+            if (!orderToDelete)
+                return;
+    
+            try {
+    
+                await Api.deleteServiceOrder(orderToDelete);
+    
+                document
+                    .getElementById("deleteModal")
+                    .classList.add("hidden");
+    
+                document
+                    .getElementById("deleteModal")
+                    .classList.remove("flex");
+    
+                orderToDelete = null;
+    
+                await loadServiceOrders(appContext);
+    
+            }
+    
+            catch (error) {
+    
+                console.error(error);
+    
+                alert(error.message);
+    
+            }
+    
+        });
