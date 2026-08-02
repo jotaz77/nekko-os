@@ -627,10 +627,6 @@ function filterOrders() {
     
             try {
     
-                console.log("Mudando status...");
-                console.log("OS:", orderToChangeStatus);
-                console.log("Novo:", option.dataset.status);
-    
                 await Api.updateServiceOrderStatus(
     
                     orderToChangeStatus,
