@@ -256,7 +256,7 @@ function renderOrders(orders) {
 
                     </div>
 
-                    <div class="text-right">
+                    <div class="relative text-right">
 
                         <button
                             class="change-status
@@ -270,21 +270,61 @@ function renderOrders(orders) {
                                    font-medium
                                    transition
                                    ${getStatusBadge(order.status)}"
-                            data-id="${order.id}"
-                            data-status="${order.status}">
-                        
+                            data-id="${order.id}">
+                    
                             ${order.status}
-                        
+                    
                             ▼
-                        
+                    
                         </button>
-
+                    
+                        <div
+                            class="status-dropdown
+                                   hidden
+                                   absolute
+                                   right-0
+                                   mt-2
+                                   w-56
+                                   bg-[#141A16]
+                                   border
+                                   border-[#29322C]
+                                   rounded-2xl
+                                   shadow-2xl
+                                   overflow-hidden
+                                   z-20">
+                    
+                            <button class="status-option w-full text-left px-4 py-3 hover:bg-[#202823]" data-status="Aberta">
+                                🔵 Aberta
+                            </button>
+                    
+                            <button class="status-option w-full text-left px-4 py-3 hover:bg-[#202823]" data-status="Aguardando peça">
+                                🟡 Aguardando peça
+                            </button>
+                    
+                            <button class="status-option w-full text-left px-4 py-3 hover:bg-[#202823]" data-status="Em manutenção">
+                                🟠 Em manutenção
+                            </button>
+                    
+                            <button class="status-option w-full text-left px-4 py-3 hover:bg-[#202823]" data-status="Pronta">
+                                🟢 Pronta
+                            </button>
+                    
+                            <button class="status-option w-full text-left px-4 py-3 hover:bg-[#202823]" data-status="Entregue">
+                                ⚫ Entregue
+                            </button>
+                    
+                            <button class="status-option w-full text-left px-4 py-3 hover:bg-[#202823]" data-status="Cancelada">
+                                🔴 Cancelada
+                            </button>
+                    
+                        </div>
+                    
                         <p class="text-2xl font-bold mt-6 text-white">
-
+                    
                             ${formatCurrency(order.price || order.total_cost)}
-
+                    
                         </p>
-
+                    
                     </div>
 
                 </div>
