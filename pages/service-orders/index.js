@@ -290,7 +290,7 @@ function renderOrders(orders) {
                     <button
                         class="view-order
                                 w-full
-                                bg-green-500
+                                bg-gray-500
                                 hover:bg-green-600
                                 py-2
                                 rounded-xl
