@@ -304,7 +304,7 @@ function renderOrders(orders) {
                     <button
                         class="edit-order
                                 w-full
-                                bg-green-500
+                                bg-gray-500
                                 hover:bg-green-600
                                 py-2
                                 rounded-xl
@@ -318,7 +318,7 @@ function renderOrders(orders) {
                     <button
                         class="print-order
                                 w-full
-                                bg-green-500
+                                bg-gray-500
                                 hover:bg-green-600
                                 py-2
                                 rounded-xl
@@ -332,7 +332,7 @@ function renderOrders(orders) {
                     <button
                         class="delete-order
                                 w-full
-                                bg-green-500
+                                bg-gray-500
                                 hover:bg-green-600
                                 py-2
                                 rounded-xl
