@@ -608,51 +608,56 @@ function filterOrders() {
     });
 
     // =========================================
-    // Selecionar novo status
+    // Alterar Status
     // =========================================
     
     document
-        .querySelectorAll(".status-option")
-        .forEach(button => {
+        .getElementById("statusMenu")
+        .addEventListener("click", async (e) => {
     
-            button.addEventListener("click", async (e) => {
+            const option = e.target.closest(".status-option");
     
-                e.stopPropagation();
+            if (!option)
+                return;
     
-                if (!orderToChangeStatus)
-                    return;
+            e.stopPropagation();
     
-                try {
+            if (!orderToChangeStatus)
+                return;
     
-                    console.log("ID:", orderToChangeStatus);
-                    console.log("NOVO STATUS:", button.dataset.status);
-                    
-                    const result = await Api.updateServiceOrderStatus(
-                        orderToChangeStatus,
-                        button.dataset.status
-                    );
-                    
-                    console.log(result);
+            try {
     
-                    document
-                        .getElementById("statusMenu")
-                        .classList.add("hidden");
+                console.log("Mudando status...");
+                console.log("OS:", orderToChangeStatus);
+                console.log("Novo:", option.dataset.status);
     
-                    orderToChangeStatus = null;
+                await Api.updateServiceOrderStatus(
     
-                    await loadServiceOrders(appContext);
+                    orderToChangeStatus,
     
-                }
+                    option.dataset.status
     
-                catch (error) {
+                );
     
-                    console.error(error);
+                document
+                    .getElementById("statusMenu")
+                    .classList.add("hidden");
     
-                    alert(error.message);
+                orderToChangeStatus = null;
     
-                }
+                await loadServiceOrders(appContext);
     
-            });
+            }
+    
+            catch (error) {
+    
+                console.error(error);
+    
+                alert(error.message);
+    
+            }
+    
+        });
     
         });
 
