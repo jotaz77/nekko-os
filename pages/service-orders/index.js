@@ -257,18 +257,26 @@ function renderOrders(orders) {
 
                     <div class="text-right">
 
-                        <span
-                            class="inline-block
+                        <button
+                            class="change-status
+                                   inline-flex
+                                   items-center
+                                   gap-2
                                    px-4
                                    py-2
                                    rounded-full
                                    text-sm
                                    font-medium
-                                   ${getStatusBadge(order.status)}">
-
+                                   transition
+                                   ${getStatusBadge(order.status)}"
+                            data-id="${order.id}"
+                            data-status="${order.status}">
+                        
                             ${order.status}
-
-                        </span>
+                        
+                            ▼
+                        
+                        </button>
 
                         <p class="text-2xl font-bold mt-6 text-white">
 
