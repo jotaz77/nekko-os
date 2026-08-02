@@ -605,13 +605,15 @@ function filterOrders() {
     
                 try {
     
-                    await Api.updateServiceOrderStatus(
-    
+                    console.log("ID:", orderToChangeStatus);
+                    console.log("NOVO STATUS:", button.dataset.status);
+                    
+                    const result = await Api.updateServiceOrderStatus(
                         orderToChangeStatus,
-    
                         button.dataset.status
-    
                     );
+                    
+                    console.log(result);
     
                     document
                         .getElementById("statusMenu")
