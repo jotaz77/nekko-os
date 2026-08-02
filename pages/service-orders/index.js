@@ -453,14 +453,52 @@ function renderOrders(orders) {
     
                 const menu =
                     document.getElementById("statusMenu");
-    
-                menu.style.left =
-                    `${e.pageX}px`;
-    
-                menu.style.top =
-                    `${e.pageY + 10}px`;
-    
+                
+                // Primeiro mostra o menu para conseguir medir sua altura
                 menu.classList.remove("hidden");
+                
+                // Posição do botão clicado
+                const rect = button.getBoundingClientRect();
+                
+                // Tamanho do menu
+                const menuWidth = menu.offsetWidth;
+                const menuHeight = menu.offsetHeight;
+                
+                // Largura da janela
+                const windowWidth = window.innerWidth;
+                
+                // Centraliza o menu no botão
+                let left =
+                    rect.left +
+                    (rect.width / 2) -
+                    (menuWidth / 2);
+                
+                // Evita sair da tela
+                left = Math.max(
+                    12,
+                    Math.min(
+                        left,
+                        windowWidth - menuWidth - 12
+                    )
+                );
+                
+                // Por padrão abre acima do botão
+                let top =
+                    rect.top -
+                    menuHeight -
+                    8;
+                
+                // Se não couber acima, abre abaixo
+                if (top < 10) {
+                
+                    top =
+                        rect.bottom +
+                        8;
+                
+                }
+                
+                menu.style.left = `${left}px`;
+                menu.style.top = `${top}px`;
     
             });
     
