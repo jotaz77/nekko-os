@@ -658,7 +658,5 @@ function filterOrders() {
             }
     
         });
-    
-        });
 
 
