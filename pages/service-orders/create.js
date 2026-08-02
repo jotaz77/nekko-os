@@ -891,13 +891,13 @@ form.addEventListener("submit", async (e) => {
         // =====================================
         // VERIFICA CONTEXTO
         // =====================================
-
-        if (!context?.company?.id || !context?.store?.id) {
-
+        
+        if (!context?.company?.id) {
+        
             throw new Error(
-                "Empresa ou loja não encontrada. Faça login novamente."
+                "Empresa não encontrada. Faça login novamente."
             );
-
+        
         }
 
         // =====================================
