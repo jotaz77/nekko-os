@@ -6,6 +6,7 @@
 let serviceOrders = [];
 let appContext = null;
 let orderToDelete = null;
+let orderToChangeStatus = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
 
@@ -431,6 +432,35 @@ function renderOrders(orders) {
                 document
                     .getElementById("deleteModal")
                     .classList.add("flex");
+    
+            });
+    
+        });
+
+    // =========================================
+    // Alterar Status
+    // =========================================
+    
+    document
+        .querySelectorAll(".change-status")
+        .forEach(button => {
+    
+            button.addEventListener("click", (e) => {
+    
+                e.stopPropagation();
+    
+                orderToChangeStatus = button.dataset.id;
+    
+                const menu =
+                    document.getElementById("statusMenu");
+    
+                menu.style.left =
+                    `${e.pageX}px`;
+    
+                menu.style.top =
+                    `${e.pageY + 10}px`;
+    
+                menu.classList.remove("hidden");
     
             });
     
