@@ -288,13 +288,14 @@ function renderOrders(orders) {
                         mt-8">
 
                     <button
-                        class="view-order
-                               bg-green-500
-                               hover:bg-green-600
-                               px-5
-                               py-2
-                               rounded-xl
-                               transition"
+                        class="
+                        view-order
+                        w-full
+                        bg-green-500
+                        hover:bg-green-600
+                        py-2
+                        rounded-xl
+                        transition"
                         data-id="${order.id}">
 
                         Ver
