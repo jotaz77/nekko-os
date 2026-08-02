@@ -61,6 +61,7 @@ const phoneInput = document.getElementById("customerPhone");
 let context = null;
 let editingId = null;
 let isEditing = false;
+let editingOrder = null;
 
 let pattern = [];
 let isDrawing = false;
@@ -571,9 +572,18 @@ function buildServiceOrder() {
 
         company_id: context.company.id,
 
-        store_id: context.store.id,
+        store_id:
 
-        user_id: context.user.id,
+            context.store?.id ||
+        
+            editingOrder?.store_id ||
+            null,
+
+        user_id:
+
+            context.user.id ||
+        
+            editingOrder?.user_id,
 
         customer_name: document
             .getElementById("customerName")
@@ -710,7 +720,9 @@ function buildServiceOrder() {
 
 async function loadServiceOrder() {
 
-    const order = await Api.getServiceOrder(editingId);
+    editingOrder = await Api.getServiceOrder(editingId);
+
+    const order = editingOrder;
 
     if (!order) {
 
