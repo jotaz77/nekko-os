@@ -489,56 +489,66 @@ function renderOrders(orders) {
     
                 e.stopPropagation();
     
-                orderToChangeStatus = button.dataset.id;
+                document
+                    .querySelectorAll(".status-dropdown")
+                    .forEach(menu => {
     
-                const menu =
-                    document.getElementById("statusMenu");
-                
-                // Primeiro mostra o menu para conseguir medir sua altura
-                menu.classList.remove("hidden");
-                
-                // Posição do botão clicado
-                const rect = button.getBoundingClientRect();
-                
-                // Tamanho do menu
-                const menuWidth = menu.offsetWidth;
-                const menuHeight = menu.offsetHeight;
-                
-                // Largura da janela
-                const windowWidth = window.innerWidth;
-                
-                // Centraliza o menu no botão
-                let left =
-                    rect.left +
-                    (rect.width / 2) -
-                    (menuWidth / 2);
-                
-                // Evita sair da tela
-                left = Math.max(
-                    12,
-                    Math.min(
-                        left,
-                        windowWidth - menuWidth - 12
-                    )
-                );
-                
-                // Por padrão abre acima do botão
-                let top =
-                    rect.top -
-                    menuHeight -
-                    8;
-                
-                // Se não couber acima, abre abaixo
-                if (top < 10) {
-                
-                    top =
-                        rect.bottom +
-                        8;
-                
+                        if (menu !== button.nextElementSibling) {
+    
+                            menu.classList.add("hidden");
+    
+                        }
+    
+                    });
+    
+                const dropdown =
+                    button.nextElementSibling;
+    
+                if (dropdown) {
+    
+                    dropdown.classList.toggle("hidden");
+    
                 }
-                
-                menu.style.left = `${left}px`;
-                menu.style.top = `${top}px`;
+    
+            });
+    
+        });
+    
+    document
+        .querySelectorAll(".status-option")
+        .forEach(option => {
+    
+            option.addEventListener("click", async (e) => {
+    
+                e.stopPropagation();
+    
+                const dropdown =
+                    option.closest(".status-dropdown");
+    
+                const button =
+                    dropdown.previousElementSibling;
+    
+                try {
+    
+                    await Api.updateServiceOrderStatus(
+    
+                        button.dataset.id,
+    
+                        option.dataset.status
+    
+                    );
+    
+                    await loadServiceOrders(appContext);
+    
+                }
+    
+                catch (error) {
+    
+                    console.error(error);
+    
+                    alert(error.message);
+    
+                }
     
             });
     
@@ -655,3 +665,19 @@ function filterOrders() {
             }
     
         });
+
+    // =========================================
+    // Fechar dropdown ao clicar fora
+    // =========================================
+    
+    document.addEventListener("click", () => {
+    
+        document
+            .querySelectorAll(".status-dropdown")
+            .forEach(menu => {
+    
+                menu.classList.add("hidden");
+    
+            });
+    
+    });
