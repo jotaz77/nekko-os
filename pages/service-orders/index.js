@@ -587,3 +587,50 @@ function filterOrders() {
             .classList.add("hidden");
     
     });
+
+    // =========================================
+    // Selecionar novo status
+    // =========================================
+    
+    document
+        .querySelectorAll(".status-option")
+        .forEach(button => {
+    
+            button.addEventListener("click", async (e) => {
+    
+                e.stopPropagation();
+    
+                if (!orderToChangeStatus)
+                    return;
+    
+                try {
+    
+                    await Api.updateServiceOrderStatus(
+    
+                        orderToChangeStatus,
+    
+                        button.dataset.status
+    
+                    );
+    
+                    document
+                        .getElementById("statusMenu")
+                        .classList.add("hidden");
+    
+                    orderToChangeStatus = null;
+    
+                    await loadServiceOrders(appContext);
+    
+                }
+    
+                catch (error) {
+    
+                    console.error(error);
+    
+                    alert(error.message);
+    
+                }
+    
+            });
+    
+        });
