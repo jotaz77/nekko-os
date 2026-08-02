@@ -340,8 +340,8 @@ function renderOrders(orders) {
                     <button
                         class="delete-order
                                 w-full
-                                bg-red-800
-                                hover:bg-green-600
+                                bg-green-800
+                                hover:bg-red-800
                                 py-2
                                 rounded-xl
                                 transition"
