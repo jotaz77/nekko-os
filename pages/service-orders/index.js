@@ -289,12 +289,12 @@ function renderOrders(orders) {
 
                     <button
                         class="view-order
-                               bg-green-500
-                               hover:bg-green-600
-                               px-5
-                               py-2
-                               rounded-xl
-                               transition"
+                                w-full
+                                bg-green-500
+                                hover:bg-green-600
+                                py-2
+                                rounded-xl
+                                transition"
                         data-id="${order.id}">
 
                         Ver
@@ -303,14 +303,12 @@ function renderOrders(orders) {
 
                     <button
                         class="edit-order
-                               bg-[#202823]
-                               hover:bg-[#29322C]
-                               border
-                               border-[#3B4A41]
-                               px-5
-                               py-2
-                               rounded-xl
-                               transition"
+                                w-full
+                                bg-green-500
+                                hover:bg-green-600
+                                py-2
+                                rounded-xl
+                                transition"
                         data-id="${order.id}">
 
                         Editar
@@ -319,12 +317,12 @@ function renderOrders(orders) {
 
                     <button
                         class="print-order
-                               bg-blue-600
-                               hover:bg-blue-700
-                               px-5
-                               py-2
-                               rounded-xl
-                               transition"
+                                w-full
+                                bg-green-500
+                                hover:bg-green-600
+                                py-2
+                                rounded-xl
+                                transition"
                         data-id="${order.id}">
                     
                         Imprimir
@@ -333,12 +331,12 @@ function renderOrders(orders) {
 
                     <button
                         class="delete-order
-                               bg-red-600
-                               hover:bg-red-700
-                               px-5
-                               py-2
-                               rounded-xl
-                               transition"
+                                w-full
+                                bg-green-500
+                                hover:bg-green-600
+                                py-2
+                                rounded-xl
+                                transition"
                         data-id="${order.id}">
                     
                         Excluir
