@@ -231,16 +231,18 @@ const Api = {
 
     async updateServiceOrderStatus(id, status) {
 
+        console.log("Atualizando:", id, status);
+    
         const { data, error } = await supabaseClient
             .from("service_orders")
             .update({
-    
-                status
-    
+                status: status
             })
             .eq("id", id)
-            .select()
-            .single();
+            .select();
+    
+        console.log("DATA:", data);
+        console.log("ERROR:", error);
     
         if (error)
             throw error;
