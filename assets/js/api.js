@@ -229,6 +229,26 @@ const Api = {
 
     },
 
+    async updateServiceOrderStatus(id, status) {
+
+        const { data, error } = await supabaseClient
+            .from("service_orders")
+            .update({
+    
+                status
+    
+            })
+            .eq("id", id)
+            .select()
+            .single();
+    
+        if (error)
+            throw error;
+    
+        return data;
+    
+    },
+
     async deleteServiceOrder(id) {
 
         const { error } = await supabaseClient
