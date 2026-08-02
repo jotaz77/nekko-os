@@ -577,3 +577,13 @@ function filterOrders() {
             }
     
         });
+
+    // Fecha o menu ao clicar fora
+    
+    document.addEventListener("click", () => {
+    
+        document
+            .getElementById("statusMenu")
+            .classList.add("hidden");
+    
+    });
