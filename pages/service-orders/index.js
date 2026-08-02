@@ -573,6 +573,13 @@ function filterOrders() {
             .getElementById("statusFilter")
             .value;
 
+    console.log("Filtro:", status);
+
+    console.log(
+        "Status da primeira OS:",
+        serviceOrders[0]?.status
+    );
+
     const filtered = serviceOrders.filter(order => {
 
         const matchesSearch =
