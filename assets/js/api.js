@@ -239,8 +239,6 @@ const Api = {
             .eq("id", id)
             .select();
     
-        console.log("ERROR:", error);
-    
         if (error)
             throw error;
     
