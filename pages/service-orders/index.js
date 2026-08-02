@@ -580,11 +580,30 @@ function filterOrders() {
 
     // Fecha o menu ao clicar fora
     
-    document.addEventListener("click", () => {
+    document.addEventListener("click", (event) => {
+
+        const menu =
+            document.getElementById("statusMenu");
     
-        document
-            .getElementById("statusMenu")
-            .classList.add("hidden");
+        if (
+    
+            menu.classList.contains("hidden")
+    
+        ) return;
+    
+        if (
+    
+            menu.contains(event.target)
+    
+        ) return;
+    
+        if (
+    
+            event.target.closest(".change-status")
+    
+        ) return;
+    
+        menu.classList.add("hidden");
     
     });
 
