@@ -1,1 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
 
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Novo Técnico • NEKKO OS</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+<body class="bg-[#0B0F0C] text-white min-h-screen">
+
+<div class="max-w-5xl mx-auto px-8 py-10">
+
+    <!-- HEADER -->
+
+    <div class="mb-10">
+
+        <a
+            href="./index.html"
+            class="inline-flex items-center gap-2 text-slate-400 hover:text-green-400 transition mb-5">
+
+            <i data-lucide="arrow-left"></i>
+
+            Voltar
+
+        </a>
+
+        <h1 class="text-4xl font-bold">
+
+            Cadastrar Técnico
+
+        </h1>
+
+        <p class="text-slate-500 mt-2">
+
+            Cadastre um novo técnico da empresa.
+
+        </p>
+
+    </div>
+
+    <form
+        id="technicianForm"
+        class="space-y-8">
+
+        <section
+            class="bg-[#141A16]
+                   border
+                   border-[#29322C]
+                   rounded-3xl
+                   p-8">
+
+            <h2 class="text-xl font-semibold mb-6">
+
+                👨‍🔧 Dados do Técnico
+
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-5">
+
+                <input
+                    id="name"
+                    type="text"
+                    placeholder="Nome completo"
+                    class="bg-[#0F1411] border border-[#29322C] rounded-xl p-3">
+
+                <input
+                    id="phone"
+                    type="text"
+                    placeholder="Telefone"
+                    class="bg-[#0F1411] border border-[#29322C] rounded-xl p-3">
+
+                <input
+                    id="email"
+                    type="email"
+                    placeholder="E-mail (Opcional)"
+                    class="bg-[#0F1411] border border-[#29322C] rounded-xl p-3">
+
+                <select
+                    id="store"
+                    class="bg-[#0F1411] border border-[#29322C] rounded-xl p-3">
+
+                    <option value="">
+
+                        Todas as lojas
+
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="mt-8">
+
+                <label class="block mb-3 font-medium">
+
+                    Status
+
+                </label>
+
+                <div class="flex gap-6">
+
+                    <label class="flex items-center gap-2">
+
+                        <input
+                            type="radio"
+                            name="active"
+                            value="true"
+                            checked>
+
+                        Ativo
+
+                    </label>
+
+                    <label class="flex items-center gap-2">
+
+                        <input
+                            type="radio"
+                            name="active"
+                            value="false">
+
+                        Inativo
+
+                    </label>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <div class="flex justify-end gap-4">
+
+            <a
+                href="./index.html"
+                class="px-6 py-3 rounded-xl border border-[#29322C] hover:border-slate-500 transition">
+
+                Cancelar
+
+            </a>
+
+            <button
+                type="submit"
+                class="px-8 py-3 rounded-xl bg-green-600 hover:bg-green-500 transition font-semibold">
+
+                Salvar Técnico
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+<script>
+
+    lucide.createIcons();
+
+</script>
+
+<!-- Config -->
+
+<script src="../../assets/js/config.js"></script>
+
+<!-- Core -->
+
+<script src="../../assets/js/supabase.js"></script>
+<script src="../../assets/js/storage.js"></script>
+<script src="../../assets/js/auth.js"></script>
+<script src="../../assets/js/api.js"></script>
+<script src="../../assets/js/bootstrap.js"></script>
+
+<!-- Página -->
+
+<script src="./create.js"></script>
+
+</body>
+
+</html>
