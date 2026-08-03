@@ -159,19 +159,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             },
 
             {
-                title: "Trocar Loja",
-                description: "Entrar em outra unidade",
-                icon: "repeat",
-                href: "#",
-                action: "change-store",
-                roles: [
-                    Roles.MANAGER,
-                    Roles.EMPLOYEE,
-                    Roles.TECHNICIAN
-                ]
-            },
-
-            {
                 title: "Importar OS",
                 description: "Migrar ordens de serviço de outro sistema",
                 icon: "file-up",
