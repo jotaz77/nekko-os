@@ -41,26 +41,25 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 async function loadTechnicians() {
 
-    const { data, error } = const technicians = await Api.getTechnicians(
-    context.company.id
-);
+    try {
 
-        .select(`
-            *,
-            stores(name)
-        `)
+        const technicians = await Api.getTechnicians(
+            context.company.id
+        );
 
-        .eq("company_id", context.company.id)
+        renderTechnicians(technicians);
 
-        .order("name");
+    }
 
-    if (error)
-        throw error;
+    catch (error) {
 
-    renderTechnicians(data);
+        console.error(error);
+
+        alert(error.message);
+
+    }
 
 }
-
 
 // =========================================
 // Renderizar
