@@ -67,6 +67,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         const modeBadge = document.getElementById("modeBadge");
         const storeBadge = document.getElementById("storeBadge");
 
+        const currentStore =
+            document.getElementById("currentStore");
+        
+        if (currentStore) {
+        
+            currentStore.textContent =
+                context.store?.name ||
+        
+                "Todas as Lojas";
+        
+        }
+
         modeBadge.classList.remove("hidden");
         modeBadge.textContent = role;
 
