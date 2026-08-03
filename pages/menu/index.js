@@ -120,6 +120,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             },
 
             {
+                title: "Técnicos",
+                description: "Cadastrar e acompanhar produtividade",
+                icon: "wrench",
+                href: "../technicians/index.html",
+                roles: [
+                    Roles.CEO,
+                    Roles.MANAGER
+                ]
+            },
+
+            {
                 title: "Clientes",
                 description: "Gerenciar clientes",
                 icon: "users",
