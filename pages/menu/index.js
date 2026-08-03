@@ -126,7 +126,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 href: "../technicians/index.html",
                 roles: [
                     Roles.CEO,
-                    Roles.MANAGER
                 ]
             },
 
