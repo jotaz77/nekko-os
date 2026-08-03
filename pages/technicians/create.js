@@ -44,7 +44,7 @@ async function loadStores() {
     if (!context.company?.id)
         return;
 
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
 
         .from("stores")
 
@@ -129,7 +129,7 @@ document
 
             };
 
-            const { error } = await supabase
+            const { error } = await supabaseClient
 
                 .from("technicians")
 
