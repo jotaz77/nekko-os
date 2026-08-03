@@ -763,7 +763,12 @@ async function loadServiceOrder() {
     document.getElementById("imei").value = order.imei ?? "";
 
     document.getElementById("service").value = order.service ?? "";
-    document.getElementById("price").value = maskMoney(String(order.price ?? 0).replace(".", ""));
+    document.getElementById("price").value =
+        Number(order.price ?? 0).toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    
     document.getElementById("problem").value = order.problem ?? "";
     document.getElementById("notes").value = order.notes ?? "";
 
