@@ -285,4 +285,64 @@ Api.createTechnician = async (technician) => {
 
 };
 
+Api.getTechnicians = async (companyId) => {
+
+    const { data, error } = await supabaseClient
+
+        .from("technicians")
+
+        .select(`
+            *,
+            stores(name)
+        `)
+
+        .eq("company_id", companyId)
+
+        .order("name");
+
+    if (error)
+        throw error;
+
+    return data;
+
+};
+
+Api.updateTechnician = async (id, technician) => {
+
+    const { data, error } = await supabaseClient
+
+        .from("technicians")
+
+        .update(technician)
+
+        .eq("id", id)
+
+        .select()
+
+        .single();
+
+    if (error)
+        throw error;
+
+    return data;
+
+};
+
+Api.deleteTechnician = async (id) => {
+
+    const { error } = await supabaseClient
+
+        .from("technicians")
+
+        .delete()
+
+        .eq("id", id);
+
+    if (error)
+        throw error;
+
+};
+
+
+
 window.Api = Api;
