@@ -1,3 +1,10 @@
+// =========================================
+// NEKKO OS
+// Técnicos
+// =========================================
+
+let context = null;
+
 document.addEventListener("DOMContentLoaded", async () => {
 
     try {
@@ -11,7 +18,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         }
 
-        console.log("✅ Tela de Técnicos carregada.");
+        context = result.context;
+
+        await loadTechnicians();
 
     }
 
@@ -24,3 +33,138 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
 });
+
+
+// =========================================
+// Carregar Técnicos
+// =========================================
+
+async function loadTechnicians() {
+
+    const { data, error } = await supabase
+
+        .from("technicians")
+
+        .select(`
+            *,
+            stores(name)
+        `)
+
+        .eq("company_id", context.company.id)
+
+        .order("name");
+
+    if (error)
+        throw error;
+
+    renderTechnicians(data);
+
+}
+
+
+// =========================================
+// Renderizar
+// =========================================
+
+function renderTechnicians(technicians) {
+
+    const list =
+        document.getElementById("techniciansList");
+
+    const empty =
+        document.getElementById("emptyState");
+
+    list.innerHTML = "";
+
+    if (!technicians.length) {
+
+        empty.classList.remove("hidden");
+
+        return;
+
+    }
+
+    empty.classList.add("hidden");
+
+    technicians.forEach(technician => {
+
+        list.innerHTML += `
+
+        <div
+            class="bg-[#141A16]
+                   border
+                   border-[#29322C]
+                   rounded-3xl
+                   p-6
+                   hover:border-green-500
+                   transition
+                   cursor-pointer">
+
+            <div class="flex items-center justify-between">
+
+                <h2 class="text-xl font-semibold">
+
+                    ${technician.name}
+
+                </h2>
+
+                <span class="${
+                    technician.active
+
+                        ? "text-green-400"
+
+                        : "text-red-400"
+
+                } text-sm font-semibold">
+
+                    ${
+                        technician.active
+
+                            ? "Ativo"
+
+                            : "Inativo"
+                    }
+
+                </span>
+
+            </div>
+
+            <p class="text-slate-500 mt-3">
+
+                📍 ${
+                    technician.stores?.name ||
+
+                    "Todas as lojas"
+                }
+
+            </p>
+
+            <div
+                class="border-t border-[#29322C] my-5">
+            </div>
+
+            <div class="space-y-2">
+
+                <p>
+
+                    🔧 Serviços:
+                    <strong>0</strong>
+
+                </p>
+
+                <p>
+
+                    💰 Faturamento:
+                    <strong>R$ 0,00</strong>
+
+                </p>
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+}
