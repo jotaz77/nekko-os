@@ -63,30 +63,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         // ---------------------------------
         // Badges
         // ---------------------------------
-
-        const modeBadge = document.getElementById("modeBadge");
-        const storeBadge = document.getElementById("storeBadge");
-
-        const currentStore =
-            document.getElementById("currentStore");
         
+        const modeBadge = document.getElementById("modeBadge");
+        const currentStore = document.getElementById("currentStore");
+        
+        // Badge do modo (CEO, MANAGER, etc.)
+        modeBadge.classList.remove("hidden");
+        modeBadge.textContent = role;
+        
+        // Nome da loja no centro da tela
         if (currentStore) {
         
             currentStore.textContent =
-                context.store?.name ||
+                store?.name || "Todas as Lojas";
         
-                "Todas as Lojas";
-        
-        }
-
-        modeBadge.classList.remove("hidden");
-        modeBadge.textContent = role;
-
-        if (store) {
-
-            storeBadge.classList.remove("hidden");
-            storeBadge.textContent = store.name;
-
         }
 
         // ---------------------------------
