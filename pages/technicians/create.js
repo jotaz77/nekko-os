@@ -129,11 +129,7 @@ document
 
             };
 
-            const { error } = await supabaseClient
-
-                .from("technicians")
-
-                .insert(technician);
+            const { error } = await Api.createTechnician(technician);
 
             if (error)
                 throw error;
