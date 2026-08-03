@@ -1,1 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
 
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Técnicos • NEKKO OS</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+<body class="bg-[#0B0F0C] text-white min-h-screen">
+
+<div class="max-w-7xl mx-auto px-8 py-10">
+
+    <!-- HEADER -->
+
+    <div class="flex items-center justify-between mb-10">
+
+        <div>
+
+            <a
+                href="../menu/index.html"
+                class="inline-flex items-center gap-2 text-slate-400 hover:text-green-400 transition mb-5">
+
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+
+                Voltar
+
+            </a>
+
+            <h1 class="text-4xl font-bold">
+
+                Técnicos
+
+            </h1>
+
+            <p class="text-slate-500 mt-2">
+
+                Cadastre e acompanhe sua equipe.
+
+            </p>
+
+        </div>
+
+        <a
+            href="./create.html"
+            id="btnCreateTechnician"
+            class="px-6 py-3 rounded-xl bg-green-600 hover:bg-green-500 transition font-semibold">
+
+            + Cadastrar Técnico
+
+        </a>
+
+    </div>
+
+    <!-- LISTA -->
+
+    <div
+        id="techniciansList"
+        class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+    </div>
+
+    <!-- ESTADO VAZIO -->
+
+    <div
+        id="emptyState"
+        class="bg-[#141A16] border border-[#29322C] rounded-3xl p-16 text-center">
+
+        <div class="flex justify-center mb-6">
+
+            <i
+                data-lucide="wrench"
+                class="w-14 h-14 text-slate-500">
+            </i>
+
+        </div>
+
+        <h2 class="text-2xl font-semibold mb-3">
+
+            Nenhum técnico cadastrado
+
+        </h2>
+
+        <p class="text-slate-500 mb-8">
+
+            Cadastre seu primeiro técnico para começar.
+
+        </p>
+
+        <a
+            href="./create.html"
+            class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-green-600 hover:bg-green-500 transition font-semibold">
+
+            <i data-lucide="plus"></i>
+
+            Cadastrar Técnico
+
+        </a>
+
+    </div>
+
+</div>
+
+<script>
+    lucide.createIcons();
+</script>
+
+<!-- Config -->
+<script src="../../assets/js/config.js"></script>
+
+<!-- Core -->
+<script src="../../assets/js/supabase.js"></script>
+<script src="../../assets/js/storage.js"></script>
+<script src="../../assets/js/auth.js"></script>
+<script src="../../assets/js/api.js"></script>
+<script src="../../assets/js/bootstrap.js"></script>
+
+<!-- Página -->
+<script src="./index.js"></script>
+
+</body>
+
+</html>
