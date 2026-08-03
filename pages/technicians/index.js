@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 async function loadTechnicians() {
 
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
 
         .from("technicians")
 
