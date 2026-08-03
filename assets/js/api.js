@@ -262,4 +262,27 @@ const Api = {
 
 };
 
+// =====================================
+// TÉCNICOS
+// =====================================
+
+Api.createTechnician = async (technician) => {
+
+    const { data, error } = await supabaseClient
+
+        .from("technicians")
+
+        .insert(technician)
+
+        .select()
+
+        .single();
+
+    if (error)
+        throw error;
+
+    return data;
+
+};
+
 window.Api = Api;
