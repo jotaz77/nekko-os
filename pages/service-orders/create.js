@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     context = result.context;
+    await loadTechnicians();
 
     editingId = new URLSearchParams(window.location.search).get("id");
 
@@ -439,6 +440,60 @@ function getCenter(id) {
         y: rect.top - wrapper.top + (rect.height / 2)
 
     };
+
+}
+
+// =========================================
+// CARREGAR TÉCNICOS
+// =========================================
+
+async function loadTechnicians() {
+
+    try {
+
+        const technicians =
+            await Api.getTechniciansByStore(
+
+                context.company.id,
+
+                context.store?.id
+
+            );
+
+        const select =
+            document.getElementById("technician");
+
+        select.innerHTML = `
+
+            <option value="">
+
+                Selecionar técnico
+
+            </option>
+
+        `;
+
+        technicians.forEach(tech => {
+
+            select.innerHTML += `
+
+                <option value="${tech.name}">
+
+                    ${tech.name}
+
+                </option>
+
+            `;
+
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+    }
 
 }
 
