@@ -340,6 +340,61 @@ Api.getTechniciansByStore = async (companyId, storeId) => {
 
 };
 
+Api.getTechnicianStats = async (companyId) => {
+
+    const { data, error } = await supabaseClient
+
+        .from("service_orders")
+
+        .select(`
+            technician,
+            status,
+            price
+        `)
+
+        .eq("company_id", companyId);
+
+    if (error)
+        throw error;
+
+    const stats = {};
+
+    data.forEach(order => {
+
+        if (!order.technician)
+            return;
+
+        if (!stats[order.technician]) {
+
+            stats[order.technician] = {
+
+                services: 0,
+
+                revenue: 0
+
+            };
+
+        }
+
+        // Conta todos os serviços
+
+        stats[order.technician].services++;
+
+        // Soma apenas OS entregues
+
+        if (order.status === "Entregue") {
+
+            stats[order.technician].revenue +=
+                Number(order.price || 0);
+
+        }
+
+    });
+
+    return stats;
+
+};
+
 Api.updateTechnician = async (id, technician) => {
 
     const { data, error } = await supabaseClient
