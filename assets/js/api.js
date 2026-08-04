@@ -307,6 +307,39 @@ Api.getTechnicians = async (companyId) => {
 
 };
 
+Api.getTechniciansByStore = async (companyId, storeId) => {
+
+    let query = supabaseClient
+
+        .from("technicians")
+
+        .select("*")
+
+        .eq("company_id", companyId)
+
+        .eq("active", true);
+
+    // Se estiver acessando uma loja específica,
+    // mostra apenas os técnicos daquela loja
+    // ou os que trabalham em todas (store_id = null)
+
+    if (storeId) {
+
+        query = query.or(
+            `store_id.eq.${storeId},store_id.is.null`
+        );
+
+    }
+
+    const { data, error } = await query.order("name");
+
+    if (error)
+        throw error;
+
+    return data;
+
+};
+
 Api.updateTechnician = async (id, technician) => {
 
     const { data, error } = await supabaseClient
