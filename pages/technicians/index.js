@@ -74,8 +74,11 @@ async function loadTechnicians() {
 // Renderizar
 // =========================================
 
-function renderTechnicians(technicians) {
-
+function renderTechnicians(
+    technicians,
+    stats
+) {
+    
     const list =
         document.getElementById("techniciansList");
 
@@ -95,6 +98,14 @@ function renderTechnicians(technicians) {
     empty.classList.add("hidden");
 
     technicians.forEach(technician => {
+
+        const info = stats[technician.name] || {
+
+            services: 0,
+        
+            revenue: 0
+        
+        };
 
         list.innerHTML += `
 
@@ -156,15 +167,22 @@ function renderTechnicians(technicians) {
                 <p>
 
                     🔧 Serviços:
-                    <strong>0</strong>
+                    <strong>${info.services}</strong>
 
                 </p>
 
                 <p>
 
                     💰 Faturamento:
-                    <strong>R$ 0,00</strong>
+                    <strong>
 
+    R$ ${info.revenue.toLocaleString("pt-BR", {
+
+                minimumFractionDigits: 2
+        
+            })}
+        
+        </strong>
                 </p>
 
             </div>
