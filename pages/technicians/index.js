@@ -43,11 +43,20 @@ async function loadTechnicians() {
 
     try {
 
-        const technicians = await Api.getTechnicians(
-            context.company.id
+        const technicians =
+            await Api.getTechnicians(
+                context.company.id
+            );
+        
+        const stats =
+            await Api.getTechnicianStats(
+                context.company.id
+            );
+        
+        renderTechnicians(
+            technicians,
+            stats
         );
-
-        renderTechnicians(technicians);
 
     }
 
