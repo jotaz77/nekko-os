@@ -832,6 +832,8 @@ async function loadServiceOrder() {
     document.getElementById("notes").value = order.notes ?? "";
 
     document.getElementById("technician").value = order.technician ?? "";
+    document.getElementById("orderType").value =
+    order.order_type ?? "customer";
     document.getElementById("status").value = order.status ?? "Aberta";
 
     // Segurança
