@@ -765,6 +765,10 @@ function buildServiceOrder() {
             .getElementById("technician")
             .value,
 
+        order_type: document
+            .getElementById("orderType")
+            .value,
+
         status: document
             .getElementById("status")
             .value
