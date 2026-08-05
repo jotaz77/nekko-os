@@ -130,19 +130,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             },
 
             {
-                title: "Clientes",
-                description: "Gerenciar clientes",
-                icon: "users",
-                href: "../customers/index.html",
-                roles: [
-                    Roles.CEO,
-                    Roles.MANAGER,
-                    Roles.EMPLOYEE,
-                    Roles.TECHNICIAN
-                ]
-            },
-
-            {
                 title: "Estoque",
                 description: "Peças e produtos",
                 icon: "package",
