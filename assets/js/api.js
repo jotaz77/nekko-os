@@ -180,6 +180,45 @@ const Api = {
         return data;
     
     },
+
+    async getDealerServiceOrders(context) {
+    
+        let query = supabaseClient
+            .from("service_orders")
+            .select(`
+                *,
+                stores (
+                    id,
+                    name
+                )
+            `)
+           .eq("company_id", context.company.id);
+
+        query = query.eq(
+            "order_type",
+            "dealer"
+);
+        
+        if (context.store) {
+    
+            query = query.eq(
+                "store_id",
+                context.store.id
+            );
+    
+        }
+    
+        const { data, error } = await query
+            .order("created_at", {
+                ascending: false
+            });
+    
+        if (error)
+            throw error;
+    
+        return data;
+    
+    },
     
         async getServiceOrder(id) {
 
