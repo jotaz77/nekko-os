@@ -341,7 +341,7 @@ function renderOrders(orders) {
                                 w-full
                                 bg-green-800
                                 hover:bg-green-600
-                                py-2
+                                py-1.5
                                 rounded-xl
                                 transition"
                         data-id="${order.id}">
@@ -355,7 +355,7 @@ function renderOrders(orders) {
                                 w-full
                                 bg-green-800
                                 hover:bg-green-600
-                                py-2
+                                py-1.5
                                 rounded-xl
                                 transition"
                         data-id="${order.id}">
@@ -369,7 +369,7 @@ function renderOrders(orders) {
                                 w-full
                                 bg-green-800
                                 hover:bg-green-600
-                                py-2
+                                py-1.5
                                 rounded-xl
                                 transition"
                         data-id="${order.id}">
@@ -383,7 +383,7 @@ function renderOrders(orders) {
                                 w-full
                                 bg-green-800
                                 hover:bg-red-800
-                                py-2
+                                py-1.5
                                 rounded-xl
                                 transition"
                         data-id="${order.id}">
