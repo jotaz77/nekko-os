@@ -72,7 +72,7 @@ async function loadServiceOrders(context) {
 
     try {
 
-        serviceOrders = await Api.getServiceOrders(context);
+        serviceOrders = await Api.getDealerServiceOrders(context);
 
         renderOrders(serviceOrders);
 
