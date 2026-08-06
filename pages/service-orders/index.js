@@ -342,6 +342,7 @@ function renderOrders(orders) {
                                 bg-green-800
                                 hover:bg-green-600
                                 py-1.5
+                                text-sm
                                 rounded-xl
                                 transition"
                         data-id="${order.id}">
@@ -356,7 +357,8 @@ function renderOrders(orders) {
                                 bg-green-800
                                 hover:bg-green-600
                                 py-1.5
-                                rounded-xl
+                                text-sm
+                                rounded-lg
                                 transition"
                         data-id="${order.id}">
 
@@ -370,7 +372,8 @@ function renderOrders(orders) {
                                 bg-green-800
                                 hover:bg-green-600
                                 py-1.5
-                                rounded-xl
+                                text-sm
+                                rounded-lg
                                 transition"
                         data-id="${order.id}">
                     
@@ -384,7 +387,8 @@ function renderOrders(orders) {
                                 bg-green-800
                                 hover:bg-red-800
                                 py-1.5
-                                rounded-xl
+                                text-sm
+                                rounded-lg
                                 transition"
                         data-id="${order.id}">
                     
