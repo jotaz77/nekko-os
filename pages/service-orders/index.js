@@ -210,45 +210,45 @@ function renderOrders(orders) {
 
                     <div>
 
-                        <h2 class="text-2xl font-bold text-white">
+                        <h2 class="text-xl font-bold text-white">
 
                             OS #${formatOsNumber(order.os_number)}
 
                         </h2>
 
-                        <p class="text-slate-300 mt-4">
+                        <p class="text-sm text-slate-300 mt-3">
 
                             👤 ${order.customer_name || "--"}
 
                         </p>
 
-                        <p class="text-slate-400 mt-2">
+                        <p class="text-sm text-slate-400 mt-1.5">
 
                             📱 ${order.brand || "--"} ${order.model || ""}
 
                         </p>
 
-                        <p class="text-slate-400 mt-2">
+                        <p class="text-sm text-slate-400 mt-1.5">
 
                             🔧 ${order.service || "--"}
 
                         </p>
 
-                        <p class="text-slate-400 mt-2">
+                        <p class="text-sm text-slate-400 mt-1.5">
 
                             👨‍🔧 ${order.technician || "--"}
                             
                         </p>
 
                         ${isCEO ? `
-                            <p class="text-slate-400 mt-2">
+                            <p class="text-sm text-slate-400 mt-1.5">
                         
                                 🏪 ${order.stores?.name || "--"}
                         
                             </p>
                         ` : ""}
 
-                        <p class="text-slate-500 mt-2">
+                        <p class="text-sm text-slate-500 mt-1.5">
 
                             📅 ${formatDate(order.created_at)}
 
