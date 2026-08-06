@@ -120,6 +120,19 @@ document.addEventListener("DOMContentLoaded", async () => {
             },
 
             {
+                title: "OS Lojistas",
+                description: "Ordens de serviço para lojistas",
+                icon: "store",
+                href: "../dealer-service-orders/index.html",
+                roles: [
+                    Roles.CEO,
+                    Roles.MANAGER,
+                    Roles.EMPLOYEE,
+                    Roles.TECHNICIAN
+                ]
+            },
+
+            {
                 title: "Técnicos",
                 description: "Cadastrar e acompanhar produtividade",
                 icon: "wrench",
