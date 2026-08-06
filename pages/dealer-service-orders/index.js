@@ -1,6 +1,6 @@
 // =========================================
 // NEKKO OS
-// Lista de Ordens de Serviço
+// Lista de Ordens de Serviço • Lojistas
 // =========================================
 
 let serviceOrders = [];
