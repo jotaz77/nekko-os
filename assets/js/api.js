@@ -154,11 +154,11 @@ const Api = {
                     name
                 )
             `)
-           // .eq("company_id", context.company.id);
-       // query = query.eq(
-            //"order_type",
-            //orderType
-        //);
+            .eq("company_id", context.company.id);
+        query = query.eq(
+            "order_type",
+            "customer"
+        );
             
         if (context.store) {
     
