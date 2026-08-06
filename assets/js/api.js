@@ -143,7 +143,10 @@ const Api = {
     // SERVICE ORDERS
     // =====================================
 
-    async getServiceOrders(context) {
+    async getServiceOrders(
+    context,
+    orderType = "customer"
+    ) {
     
         let query = supabaseClient
             .from("service_orders")
@@ -154,6 +157,7 @@ const Api = {
                     name
                 )
             `)
+            .eq("company_id", context.company.id);
             .eq("company_id", context.company.id);
     
         if (context.store) {
