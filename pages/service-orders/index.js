@@ -331,11 +331,10 @@ function renderOrders(orders) {
 
                 <div
                     class="
-                        flex
-                        flex-wrap
-                        justify-end
-                        gap-2
-                        mt-5">
+                        grid
+                        grid-cols-2
+                        gap-3
+                        mt-6">
 
                     <button
                         class="view-order
