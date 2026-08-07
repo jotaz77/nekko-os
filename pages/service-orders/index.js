@@ -406,17 +406,18 @@ function renderOrders(orders) {
     });
 
     document
-        .querySelectorAll(".view-order")
-        .forEach(button => {
+    .querySelectorAll(".view-order")
+    .forEach(button => {
 
-            button.addEventListener("click", () => {
+        button.addEventListener("click", () => {
 
-                window.location.href =
-                    `details.html?id=/details.html?id=
-            });
+            window.location.href =
+                `details.html?id=${button.dataset.id}`;
 
         });
 
+    });
+    
     document
         .querySelectorAll(".edit-order")
         .forEach(button => {
