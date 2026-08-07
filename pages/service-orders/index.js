@@ -412,8 +412,7 @@ function renderOrders(orders) {
             button.addEventListener("click", () => {
 
                 window.location.href =
-                    `details.html?id=${button.dataset.id}`;
-
+                    ../dealer-service-orders/details.html?id=
             });
 
         });
