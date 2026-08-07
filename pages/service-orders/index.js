@@ -424,7 +424,7 @@ function renderOrders(orders) {
             button.addEventListener("click", () => {
     
                 window.location.href =
-                    `create.html?id=${button.dataset.id}&mode=edit`;
+                    `create.html?id=`;
     
             });
     
