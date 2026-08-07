@@ -1,1 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
 
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Impressão OS</title>
+
+    <link rel="stylesheet" href="print.css">
+
+</head>
+
+<body>
+
+<div class="receipt">
+
+    <header>
+
+        <h1 id="companyName">EMPRESA</h1>
+
+        <p id="storeName">Loja</p>
+
+        <p id="storePhone">WhatsApp</p>
+
+    </header>
+
+    <hr>
+
+    <section>
+
+        <h2>ORDEM DE SERVIÇO</h2>
+
+        <div class="row">
+            <span>OS</span>
+            <span id="osNumber"></span>
+        </div>
+
+        <div class="row">
+            <span>Data</span>
+            <span id="createdAt"></span>
+        </div>
+
+    </section>
+
+    <hr>
+
+    <section>
+
+        <h2>CLIENTE</h2>
+
+        <p id="customerName"></p>
+        <p id="customerPhone"></p>
+
+    </section>
+
+    <hr>
+
+    <section>
+    
+        <h2>ENDEREÇO</h2>
+    
+        <p id="customerAddress"></p>
+    
+        <p id="customerNeighborhood"></p>
+    
+        <p id="customerCityState"></p>
+
+        <p>
+            <span id="customerCep"></span>
+        </p>
+            
+        <p id="customerComplement"></p>
+    
+    </section>
+
+    <section>
+
+    <h2>APARELHO</h2>
+
+        <p id="deviceType"></p>
+    
+        <p id="deviceBrand"></p>
+    
+        <p id="deviceModel"></p>
+    
+        <div id="deviceLockContainer"></div>
+    
+    </section>
+
+    <hr>
+
+    <section>
+
+        <h2>DEFEITO</h2>
+
+        <p id="reportedProblem"></p>
+
+    </section>
+
+    <hr>
+
+    <section>
+
+        <h2>OBSERVAÇÕES</h2>
+
+        <p id="observations"></p>
+
+    </section>
+
+    <hr>
+
+    <section>
+
+        <h2>SERVIÇO</h2>
+
+        <p id="serviceName"></p>
+
+        <p class="total">
+            <strong>Valor:</strong>
+            <span id="servicePrice"></span>
+        </p>
+
+    </section>
+
+    <hr>
+
+    <section>
+
+    <p>
+
+        A Loja não se responsabiliza pelo CHIP e CARTÃO DE MEMÓRIA do cliente.
+        <br><br>
+        A garantia é dada mediante a inviolabilidade do lacre do aparelho. O uso inadequado do aparelho implicará na perda desta garantia.
+        <br><br>
+        Prazo de até 90 dias de garantia na peça ou serviço realizado a partir da data de finalização da OS.
+        <br><br>
+        Não garantimos problemas causados POR MAU USO DO CLIENTE(ÁGUA, LCD MANCHADO, TELA TRINCADA E ETC), apenas aqueles relacionados à manutenção executada.
+        <br><br>
+        Os aparelhos que não forem retirados no prazo de até 90 dias serão reciclados pela loja.
+        <br><br>
+
+        A garantia é válida somente com a assinatura de aprovação do conserto e dos termos citados acima.
+        <br><br>
+
+        <strong>
+            NÃO ACEITAMOS TROCAS REFERENTES À GARANTIA AOS SÁBADOS.
+        </strong>
+
+    </p>
+
+    <br><br>
+
+    <div class="signature">
+
+        _______________________________
+
+        <br>
+
+        Assinatura do Cliente
+
+    </div>
+
+</section>
+
+    <hr>
+
+    <footer>
+
+        <p>
+
+            Impresso em
+
+        </p>
+
+        <p id="printedAt"></p>
+
+        <strong>NEKKO OS</strong>
+
+    </footer>
+
+</div>
+
+<!-- Scripts -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="../../assets/js/config.js"></script>
+<script>
+console.log("CONFIG:", typeof SUPABASE_URL);
+</script>
+
+<script src="../../assets/js/supabase.js"></script>
+<script>
+console.log("SUPABASE:", typeof Supabase);
+</script>
+
+<script src="../../assets/js/storage.js"></script>
+<script>
+console.log("STORAGE:", typeof Storage);
+</script>
+
+<script src="../../assets/js/auth.js"></script>
+<script>
+console.log("AUTH:", typeof Auth);
+</script>
+
+<script src="../../assets/js/api.js"></script>
+<script>
+console.log("API:", typeof Api);
+</script>
+
+<script src="../../assets/js/bootstrap.js"></script>
+<script>
+console.log("BOOTSTRAP:", typeof Bootstrap);
+</script>
+
+<script src="../../assets/js/roles.js"></script>
+
+<script src="print.js"></script>
+
+</body>
+</html>
