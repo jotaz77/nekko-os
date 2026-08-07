@@ -1,1 +1,600 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
 
+<head>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Detalhes da Ordem de Serviço</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+<body class="bg-black text-white">
+
+<div class="min-h-screen">
+
+    <!-- HEADER -->
+
+    <header class="sticky top-0 z-50 bg-[#111315] border-b border-zinc-800 backdrop-blur">
+
+        <div class="max-w-7xl mx-auto px-8 py-4 flex items-center justify-between">
+
+            <button
+                id="backButton"
+                class="flex items-center gap-2 text-zinc-400 hover:text-emerald-400 transition">
+
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+
+                Ordens de Serviço
+
+            </button>
+
+            <div class="flex items-center gap-3">
+
+
+                <button
+                    id="whatsappButton"
+                    class="w-36 h-11 rounded-xl bg-green-600 hover:bg-green-500 transition flex items-center justify-center gap-2">
+
+                    <i data-lucide="message-circle" class="w-4 h-4"></i>
+
+                    WhatsApp
+
+                </button>
+
+                <button
+                    id="printButton"
+                    class="w-36 h-11 rounded-xl bg-zinc-800 hover:bg-zinc-700 transition flex items-center justify-center gap-2">
+
+                    <i data-lucide="printer" class="w-4 h-4"></i>
+
+                    Imprimir
+
+                </button>
+
+                <button
+                    id="editButton"
+                    class="w-36 h-11 rounded-xl bg-emerald-600 hover:bg-emerald-500 transition flex items-center justify-center gap-2">
+
+                    <i data-lucide="pencil" class="w-4 h-4"></i>
+
+                    Editar
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+    <!-- CONTEÚDO -->
+
+    <main class="max-w-7xl mx-auto px-8 py-8 space-y-6">
+
+        <!-- RESUMO -->
+
+        <section class="bg-[#101214] border border-zinc-800 rounded-2xl p-10">
+
+            <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
+
+                <div>
+
+                    <h1
+                        id="osNumber"
+                        class="text-4xl font-black tracking-wide">
+
+                        OS #000001
+
+                    </h1>
+
+                    <p
+                        id="deviceName"
+                        class="mt-3 text-xl text-zinc-300">
+
+                        Samsung Galaxy A54
+
+                    </p>
+
+                    <div class="flex flex-wrap gap-6 mt-5 text-sm text-zinc-400">
+
+                        <div class="flex items-center gap-2">
+
+                            <i data-lucide="user" class="w-4 h-4"></i>
+
+                            <span id="customerName">
+                                João Silva
+                            </span>
+
+                        </div>
+
+                        <div class="flex items-center gap-2">
+
+                            <i data-lucide="phone" class="w-4 h-4"></i>
+
+                            <span id="customerPhoneHeader">
+                                (00) 00000-0000
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <span
+                    id="statusBadge"
+                    class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-yellow-500/15 text-yellow-400 font-semibold">
+
+                    <div class="w-2 h-2 rounded-full bg-yellow-400"></div>
+
+                    Aguardando peça
+
+                </span>
+
+            </div>
+
+        </section>
+
+        <!-- GRID -->
+
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+
+            <!-- CLIENTE -->
+
+            <section class="bg-[#101214] border border-zinc-800 rounded-2xl p-7">
+
+                <div class="flex items-center gap-3 mb-6">
+
+                    <i data-lucide="user-round" class="text-emerald-400"></i>
+
+                    <h2 class="text-lg font-semibold text-emerald-400">
+
+                        Cliente
+
+                    </h2>
+
+                </div>
+
+                <div class="space-y-5">
+
+                    <div>
+
+                        <p class="uppercase tracking-widest text-xs text-zinc-500">
+
+                            Nome
+
+                        </p>
+
+                        <p id="clientFullName" class="mt-1">
+
+                            Não informado
+
+                        </p>
+
+                    </div>
+
+                    <div>
+
+                        <p class="uppercase tracking-widest text-xs text-zinc-500">
+
+                            Telefone
+
+                        </p>
+
+                        <p id="clientPhone">
+
+                            Não informado
+
+                        </p>
+
+                    </div>
+
+                    <div>
+
+                        <p class="uppercase tracking-widest text-xs text-zinc-500">
+
+                            CPF
+
+                        </p>
+
+                        <p id="clientCpf">
+
+                            Não informado
+
+                        </p>
+
+                    </div>
+
+                    <div>
+
+                        <p class="uppercase tracking-widest text-xs text-zinc-500">
+
+                            CEP
+
+                        </p>
+
+                        <p id="clientCep">
+
+                            Não informado
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- APARELHO -->
+
+            <section class="bg-[#101214] border border-zinc-800 rounded-2xl p-7">
+
+                <div class="flex items-center gap-3 mb-6">
+
+                    <i data-lucide="smartphone" class="text-emerald-400"></i>
+
+                    <h2 class="text-lg font-semibold text-emerald-400">
+
+                        Aparelho
+
+                    </h2>
+
+                </div>
+
+                <div class="space-y-5">
+
+                    <div>
+
+                        <p class="uppercase tracking-widest text-xs text-zinc-500">
+
+                            Marca
+
+                        </p>
+
+                        <p id="deviceBrand">
+
+                            Não informado
+
+                        </p>
+
+                    </div>
+
+                    <div>
+
+                        <p class="uppercase tracking-widest text-xs text-zinc-500">
+
+                            Modelo
+
+                        </p>
+
+                        <p id="deviceModel">
+
+                            Não informado
+
+                        </p>
+
+                    </div>
+
+                    <div>
+
+                        <p class="uppercase tracking-widest text-xs text-zinc-500">
+
+                            IMEI
+
+                        </p>
+
+                        <p id="deviceImei">
+
+                            Não informado
+
+                        </p>
+
+                    </div>
+
+                    <div>
+
+                        <p class="uppercase tracking-widest text-xs text-zinc-500">
+
+                            Tipo
+
+                        </p>
+
+                        <p id="deviceType">
+
+                            Não informado
+
+                        </p>
+
+                    </div>
+
+                    <!-- NOVO -->
+
+                    <div>
+
+                        <p class="uppercase tracking-widest text-xs text-zinc-500">
+
+                            Tipo de Bloqueio
+
+                        </p>
+
+                        <p id="deviceLockType">
+
+                            Não informado
+
+                        </p>
+
+                    </div>
+
+                    <div>
+
+                        <p class="uppercase tracking-widest text-xs text-zinc-500">
+
+                            Credencial
+
+                        </p>
+
+                        <p id="deviceLockValue">
+
+                            Não informado
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- SERVIÇO -->
+
+            <section class="bg-[#101214] border border-zinc-800 rounded-2xl p-7">
+
+                <div class="flex items-center gap-3 mb-6">
+
+                    <i data-lucide="wrench" class="text-emerald-400"></i>
+
+                    <h2 class="text-lg font-semibold text-emerald-400">
+
+                        Serviço
+
+                    </h2>
+
+                </div>
+
+                <div class="space-y-5">
+
+                    <div>
+
+                        <p class="uppercase tracking-widest text-xs text-zinc-500">
+
+                            Problema
+
+                        </p>
+
+                        <p id="reportedProblem">
+
+                            Não informado
+
+                        </p>
+
+                    </div>
+
+                    <div>
+
+                        <p class="uppercase tracking-widest text-xs text-zinc-500">
+
+                            Serviço
+
+                        </p>
+
+                        <p id="serviceName">
+
+                            Não informado
+
+                        </p>
+
+                    </div>
+
+                    <div>
+
+                        <p class="uppercase tracking-widest text-xs text-zinc-500">
+
+                            Técnico
+
+                        </p>
+
+                        <p id="technicianName">
+
+                            Não informado
+
+                        </p>
+
+                    </div>
+
+                    <div>
+
+                        <p class="uppercase tracking-widest text-xs text-zinc-500">
+
+                            Valor
+
+                        </p>
+
+                        <p id="servicePrice">
+
+                            Não informado
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- OBSERVAÇÕES -->
+
+            <section class="bg-[#101214] border border-zinc-800 rounded-2xl p-7">
+
+                <div class="flex items-center gap-3 mb-6">
+
+                    <i data-lucide="file-text" class="text-emerald-400"></i>
+
+                    <h2 class="text-lg font-semibold text-emerald-400">
+
+                        Observações
+
+                    </h2>
+
+                </div>
+
+                <div class="bg-black border border-zinc-800 rounded-xl p-5 min-h-[220px]">
+
+                    <p
+                        id="observations"
+                        class="leading-7 text-zinc-300">
+
+                        Nenhuma observação cadastrada.
+
+                    </p>
+
+                </div>
+
+            </section>
+
+            <section class="bg-[#101214] border border-zinc-800 rounded-2xl p-7 xl:col-span-2">
+
+                <div class="flex items-center gap-3 mb-6">
+            
+                    <i data-lucide="map-pin" class="text-emerald-400"></i>
+            
+                    <h2 class="text-lg font-semibold text-emerald-400">
+            
+                        Endereço
+            
+                    </h2>
+            
+                </div>
+            
+                <div class="grid md:grid-cols-2 gap-5">
+            
+                    <div>
+            
+                        <p class="uppercase tracking-widest text-xs text-zinc-500">
+                            CEP
+                        </p>
+            
+                        <p id="addressCep">
+                            Não informado
+                        </p>
+            
+                    </div>
+            
+                    <div>
+            
+                        <p class="uppercase tracking-widest text-xs text-zinc-500">
+                            Endereço
+                        </p>
+            
+                        <p id="addressStreet">
+                            Não informado
+                        </p>
+            
+                    </div>
+            
+                    <div>
+            
+                        <p class="uppercase tracking-widest text-xs text-zinc-500">
+                            Número
+                        </p>
+            
+                        <p id="addressNumber">
+                            Não informado
+                        </p>
+            
+                    </div>
+            
+                    <div>
+            
+                        <p class="uppercase tracking-widest text-xs text-zinc-500">
+                            Bairro
+                        </p>
+            
+                        <p id="addressNeighborhood">
+                            Não informado
+                        </p>
+            
+                    </div>
+            
+                    <div>
+            
+                        <p class="uppercase tracking-widest text-xs text-zinc-500">
+                            Cidade
+                        </p>
+            
+                        <p id="addressCity">
+                            Não informado
+                        </p>
+            
+                    </div>
+            
+                    <div>
+            
+                        <p class="uppercase tracking-widest text-xs text-zinc-500">
+                            Estado
+                        </p>
+            
+                        <p id="addressState">
+                            Não informado
+                        </p>
+            
+                    </div>
+            
+                    <div class="md:col-span-2">
+            
+                        <p class="uppercase tracking-widest text-xs text-zinc-500">
+                            Complemento
+                        </p>
+            
+                        <p id="addressComplement">
+                            Não informado
+                        </p>
+            
+                    </div>
+            
+                </div>
+            
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<!-- Scripts -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="../../assets/js/config.js"></script>
+<script src="../../assets/js/supabase.js"></script>
+<script src="../../assets/js/storage.js"></script>
+<script src="../../assets/js/auth.js"></script>
+<script src="../../assets/js/api.js"></script>
+<script src="../../assets/js/bootstrap.js"></script>
+<script src="../../assets/js/roles.js"></script>
+
+<script src="details.js"></script>
+
+<script>
+    lucide.createIcons();
+</script>
+
+</body>
+
+</html>
