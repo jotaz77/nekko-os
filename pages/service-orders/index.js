@@ -340,8 +340,8 @@ function renderOrders(orders) {
                     <button
                         class="view-order
                                 w-24
-                                bg-red-800
-                                hover:bg-red-600
+                                bg-green-800
+                                hover:bg-green-600
                                 py-1.5
                                 text-sm
                                 rounded-xl
