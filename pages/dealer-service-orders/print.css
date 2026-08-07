@@ -1,1 +1,198 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
+html,
+body{
+
+    width:72mm;
+    background:#fff;
+    color:#000;
+
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:8px;
+    line-height:1.15;
+
+}
+
+.receipt{
+
+    width:72mm;
+
+    padding:2mm;
+
+}
+
+header,
+section,
+footer{
+
+    margin-bottom:2mm;
+
+}
+
+h1{
+
+    font-size:11px;
+    text-align:center;
+
+}
+
+h2{
+
+    font-size:8px;
+
+    margin-bottom:1mm;
+
+}
+
+p{
+
+    margin:0.5mm 0;
+
+    word-break:break-word;
+
+}
+
+.row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:5px;
+
+}
+
+hr{
+
+    border:none;
+
+    border-top:1px dashed #000;
+
+    margin:2mm 0;
+
+}
+
+.signature{
+
+    text-align:center;
+
+    margin-top:8mm;
+
+}
+
+.total{
+
+    font-weight:bold;
+
+    font-size:9px;
+
+}
+
+/* =========================================
+   BLOQUEIO DO APARELHO
+========================================= */
+
+#deviceLockContainer{
+
+    margin-top:2mm;
+
+}
+
+.lock-title{
+
+    font-weight:bold;
+
+    margin-bottom:1.5mm;
+
+    font-size:8px;
+
+}
+
+.lock-value{
+
+    font-size:10px;
+
+    font-weight:bold;
+
+    letter-spacing:1px;
+
+}
+
+.no-lock{
+
+    font-size:10px;
+
+    font-weight:bold;
+
+    text-align:center;
+
+    padding:4mm 0;
+
+}
+
+.pattern{
+
+    width:42mm;
+
+    height:42mm;
+
+    margin:2mm auto;
+
+    display:block;
+
+}
+
+.pattern circle{
+
+    fill:#fff;
+
+    stroke:#000;
+
+    stroke-width:2;
+
+}
+
+.pattern circle.active{
+
+    fill:#000;
+
+}
+
+.pattern line{
+
+    stroke:#000;
+
+    stroke-width:3;
+
+    stroke-linecap:round;
+
+}
+
+@page{
+
+    size:72mm auto;
+
+    margin:2mm;
+
+}
+
+@media print{
+
+    html,
+    body{
+
+        width:72mm;
+
+    }
+
+    .receipt{
+
+        width:68mm;
+
+    }
+
+}
