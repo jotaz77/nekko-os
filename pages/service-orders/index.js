@@ -424,7 +424,7 @@ function renderOrders(orders) {
             button.addEventListener("click", () => {
     
                 window.location.href =
-                    `create.html?id=${button.dataset.id}&mode=edit`;
+                    `../service-orders/create.html?id=${button.dataset.id}&mode=edit`;
     
             });
     
@@ -437,7 +437,7 @@ function renderOrders(orders) {
             button.addEventListener("click", () => {
     
                 window.open(
-                    `print.html?id=${button.dataset.id}`,
+                    ../dealer-service-orders/print.html?id=${button.dataset.id}`,
                     "_blank"
                 );
     
