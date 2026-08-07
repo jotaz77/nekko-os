@@ -204,7 +204,9 @@ function renderOrders(orders) {
                        rounded-3xl
                        p-6
                        hover:border-green-500/40
-                       transition">
+                       transition
+                       w-full
+                       xl:max-w-[580px]">
 
                 <div class="flex justify-between items-start gap-6">
 
