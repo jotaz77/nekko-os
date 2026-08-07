@@ -333,7 +333,7 @@ function renderOrders(orders) {
                     class="
                         grid
                         grid-cols-2
-                        gap-1
+                        gap-3
                         mt-6">
 
                     <button
