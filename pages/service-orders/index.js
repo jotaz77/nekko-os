@@ -412,7 +412,7 @@ function renderOrders(orders) {
             button.addEventListener("click", () => {
 
                 window.location.href =
-                    ../dealer-service-orders/details.html?id=
+                    details.html?id=/details.html?id=
             });
 
         });
@@ -424,7 +424,7 @@ function renderOrders(orders) {
             button.addEventListener("click", () => {
     
                 window.location.href =
-                    `../service-orders/create.html?id=${button.dataset.id}&mode=edit`;
+                    `create.html?id=${button.dataset.id}&mode=edit`;
     
             });
     
@@ -437,7 +437,7 @@ function renderOrders(orders) {
             button.addEventListener("click", () => {
     
                 window.open(
-                    ../dealer-service-orders/print.html?id=${button.dataset.id}`,
+                    print.html?id=${button.dataset.id}`,
                     "_blank"
                 );
     
