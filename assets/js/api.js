@@ -644,4 +644,41 @@ Api.getDashboardData = async (context) => {
 
 };
 
+// =========================================
+// REGISTRAR VENDA
+// =========================================
+
+Api.createSale = async (sale) => {
+
+    const { data, error } = await supabaseClient
+
+        .from("sales")
+
+        .insert({
+
+            company_id: sale.company_id,
+
+            store_id: sale.store_id,
+
+            product_name: sale.product_name,
+
+            sale_price: sale.sale_price,
+
+            created_by: sale.created_by
+
+        })
+
+        .select()
+
+        .single();
+
+
+    if (error)
+        throw error;
+
+
+    return data;
+
+};
+
 window.Api = Api;
