@@ -107,8 +107,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             },
 
             {
-                title: "Lista de OS",
-                description: "Consultar ordens de serviço",
+                title: "OS Clientes",
+                description: "Consultar ordens de serviço de clientes",
                 icon: "clipboard-list",
                 href: "../service-orders/index.html",
                 roles: [
