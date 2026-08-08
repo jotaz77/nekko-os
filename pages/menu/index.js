@@ -94,6 +94,14 @@ document.addEventListener("DOMContentLoaded", async () => {
             },
 
             {
+                title: "Registrar Venda",
+                description: "Registrar uma nova venda",
+                icon: "shopping-cart",
+                href: "../sales/create.html",
+                roles: [Roles.CEO, Roles.MANAGER]
+            },
+
+            {
                 title: "Nova OS",
                 description: "Criar uma ordem de serviço",
                 icon: "clipboard-plus",
