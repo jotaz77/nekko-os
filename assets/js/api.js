@@ -475,5 +475,173 @@ Api.deleteTechnician = async (id) => {
 };
 
 
+// =====================================
+// DASHBOARD
+// =====================================
+
+Api.getDashboardData = async (context) => {
+
+    const { data, error } = await supabaseClient
+
+        .from("service_orders")
+
+        .select(`
+            technician,
+            status,
+            price
+        `)
+
+        .eq("company_id", context.company.id);
+
+
+    if (error)
+        throw error;
+
+
+    // =================================
+    // Valores gerais
+    // =================================
+
+    let osRevenue = 0;
+
+    let deliveredOrders = 0;
+
+
+    // =================================
+    // Técnicos
+    // =================================
+
+    const technicians = {};
+
+
+    data.forEach(order => {
+
+
+        // ---------------------------------
+        // OS entregues
+        // ---------------------------------
+
+        if (order.status === "Entregue") {
+
+            osRevenue += Number(
+                order.price || 0
+            );
+
+            deliveredOrders++;
+
+        }
+
+
+        // ---------------------------------
+        // Técnico
+        // ---------------------------------
+
+        if (!order.technician)
+            return;
+
+
+        if (!technicians[order.technician]) {
+
+            technicians[order.technician] = {
+
+                name: order.technician,
+
+                services: 0,
+
+                revenue: 0
+
+            };
+
+        }
+
+
+        // Conta o serviço
+
+        technicians[
+            order.technician
+        ].services++;
+
+
+        // Soma produção bruta
+        // somente de OS entregues
+
+        if (order.status === "Entregue") {
+
+            technicians[
+                order.technician
+            ].revenue += Number(
+                order.price || 0
+            );
+
+        }
+
+    });
+
+
+    // =================================
+    // Transformar técnicos em array
+    // =================================
+
+    const techniciansList =
+        Object.values(technicians);
+
+
+    // =================================
+    // Totais dos técnicos
+    // =================================
+
+    const techniciansRevenue =
+        techniciansList.reduce(
+            (total, technician) => {
+
+                return total +
+                    technician.revenue;
+
+            },
+            0
+        );
+
+
+    const techniciansServices =
+        techniciansList.reduce(
+            (total, technician) => {
+
+                return total +
+                    technician.services;
+
+            },
+            0
+        );
+
+
+    // =================================
+    // Ordenar técnicos
+    // =================================
+
+    techniciansList.sort(
+        (a, b) =>
+            b.revenue - a.revenue
+    );
+
+
+    // =================================
+    // Retorno
+    // =================================
+
+    return {
+
+        osRevenue,
+
+        deliveredOrders,
+
+        techniciansRevenue,
+
+        techniciansServices,
+
+        technicians: techniciansList
+
+    };
+
+};
 
 window.Api = Api;
