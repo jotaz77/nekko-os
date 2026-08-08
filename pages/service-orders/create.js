@@ -130,11 +130,77 @@ cpfInput?.addEventListener("input", (e) => {
 
 });
 
-cepInput?.addEventListener("input", (e) => {
+cepInput?.addEventListener("input", async (e) => {
 
     e.target.value = maskCEP(e.target.value);
 
+    const cep = onlyNumbers(e.target.value);
+
+    if (cep.length !== 8) {
+        return;
+    }
+
+    await searchCEP(cep);
+
 });
+
+// =========================================
+// BUSCAR CEP
+// =========================================
+
+async function searchCEP(cep) {
+
+    try {
+
+        const response = await fetch(
+            `https://viacep.com.br/ws/${cep}/json/`
+        );
+
+        if (!response.ok) {
+            throw new Error("Erro ao consultar o CEP.");
+        }
+
+        const data = await response.json();
+
+        if (data.erro) {
+
+            showMessage(
+                "CEP não encontrado.",
+                "error"
+            );
+
+            return;
+        }
+
+        document.getElementById("customerAddress").value =
+            data.logradouro || "";
+
+        document.getElementById("customerNeighborhood").value =
+            data.bairro || "";
+
+        document.getElementById("customerCity").value =
+            data.localidade || "";
+
+        document.getElementById("customerState").value =
+            data.uf || "";
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Erro ao buscar CEP:",
+            error
+        );
+
+        showMessage(
+            "Não foi possível consultar o CEP.",
+            "error"
+        );
+
+    }
+
+}
 
 phoneInput?.addEventListener("input", (e) => {
 
