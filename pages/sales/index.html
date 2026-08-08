@@ -1,1 +1,330 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
 
+<head>
+
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Registrar Venda • NEKKO OS</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+<body class="bg-[#0B0F0C] text-white min-h-screen">
+
+    <main class="max-w-3xl mx-auto px-6 py-10">
+
+        <!-- VOLTAR -->
+
+        <a
+            href="../menu/index.html"
+            class="
+                inline-flex
+                items-center
+                gap-2
+                text-slate-400
+                hover:text-green-400
+                transition
+                mb-8
+            ">
+
+            <i
+                data-lucide="arrow-left"
+                class="w-4 h-4">
+            </i>
+
+            Voltar
+
+        </a>
+
+
+        <!-- CABEÇALHO -->
+
+        <header class="mb-8">
+
+            <div
+                class="
+                    flex
+                    items-center
+                    gap-4
+                    mb-3
+                ">
+
+                <div
+                    class="
+                        w-12
+                        h-12
+                        rounded-2xl
+                        bg-green-500/10
+                        flex
+                        items-center
+                        justify-center
+                    ">
+
+                    <i
+                        data-lucide="shopping-cart"
+                        class="
+                            w-6
+                            h-6
+                            text-green-400
+                        ">
+                    </i>
+
+                </div>
+
+                <h1 class="text-3xl font-bold">
+
+                    Registrar Venda
+
+                </h1>
+
+            </div>
+
+            <p class="text-slate-500">
+
+                Registre uma venda realizada pela loja.
+
+            </p>
+
+        </header>
+
+
+        <!-- FORMULÁRIO -->
+
+        <section
+            class="
+                bg-[#141A16]
+                border
+                border-[#29322C]
+                rounded-3xl
+                p-6
+                md:p-8
+            ">
+
+            <form id="saleForm">
+
+                <!-- PRODUTO -->
+
+                <div class="mb-6">
+
+                    <label
+                        for="productName"
+                        class="
+                            block
+                            text-sm
+                            font-medium
+                            text-slate-300
+                            mb-2
+                        ">
+
+                        Produto
+
+                    </label>
+
+                    <input
+                        id="productName"
+                        type="text"
+                        required
+                        autocomplete="off"
+                        placeholder="Ex: Película 3D"
+                        class="
+                            w-full
+                            bg-[#0F1411]
+                            border
+                            border-[#29322C]
+                            rounded-xl
+                            px-4
+                            py-3
+                            outline-none
+                            focus:border-green-500
+                            transition
+                        ">
+
+                </div>
+
+
+                <!-- VALOR -->
+
+                <div class="mb-6">
+
+                    <label
+                        for="salePrice"
+                        class="
+                            block
+                            text-sm
+                            font-medium
+                            text-slate-300
+                            mb-2
+                        ">
+
+                        Valor da venda
+
+                    </label>
+
+                    <div class="relative">
+
+                        <span
+                            class="
+                                absolute
+                                left-4
+                                top-1/2
+                                -translate-y-1/2
+                                text-slate-500
+                            ">
+
+                            R$
+
+                        </span>
+
+                        <input
+                            id="salePrice"
+                            type="text"
+                            inputmode="decimal"
+                            required
+                            autocomplete="off"
+                            placeholder="0,00"
+                            class="
+                                w-full
+                                bg-[#0F1411]
+                                border
+                                border-[#29322C]
+                                rounded-xl
+                                pl-12
+                                pr-4
+                                py-3
+                                outline-none
+                                focus:border-green-500
+                                transition
+                            ">
+
+                    </div>
+
+                </div>
+
+
+                <!-- LOJA -->
+
+                <div class="mb-8">
+
+                    <label
+                        for="store"
+                        class="
+                            block
+                            text-sm
+                            font-medium
+                            text-slate-300
+                            mb-2
+                        ">
+
+                        Loja
+
+                    </label>
+
+                    <select
+                        id="store"
+                        class="
+                            w-full
+                            bg-[#0F1411]
+                            border
+                            border-[#29322C]
+                            rounded-xl
+                            px-4
+                            py-3
+                            outline-none
+                            focus:border-green-500
+                            transition
+                        ">
+
+                    </select>
+
+                    <p
+                        id="storeHelp"
+                        class="
+                            text-xs
+                            text-slate-500
+                            mt-2
+                        ">
+
+                    </p>
+
+                </div>
+
+
+                <!-- BOTÃO -->
+
+                <button
+                    type="submit"
+                    id="submitSale"
+                    class="
+                        w-full
+                        bg-green-500
+                        hover:bg-green-600
+                        text-black
+                        font-semibold
+                        rounded-xl
+                        py-3
+                        transition
+                        flex
+                        items-center
+                        justify-center
+                        gap-2
+                    ">
+
+                    <i
+                        data-lucide="check"
+                        class="w-5 h-5">
+                    </i>
+
+                    Registrar Venda
+
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- MENSAGEM -->
+
+        <div
+            id="message"
+            class="
+                hidden
+                mt-5
+                rounded-xl
+                px-4
+                py-3
+                text-sm
+            ">
+        </div>
+
+    </main>
+
+
+    <!-- SUPABASE -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- CORE -->
+
+    <script src="../../assets/js/config.js"></script>
+    <script src="../../assets/js/supabase.js"></script>
+    <script src="../../assets/js/storage.js"></script>
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/api.js"></script>
+    <script src="../../assets/js/bootstrap.js"></script>
+    <script src="../../assets/js/roles.js"></script>
+
+    <!-- PÁGINA -->
+
+    <script src="./create.js"></script>
+
+</body>
+
+</html>
