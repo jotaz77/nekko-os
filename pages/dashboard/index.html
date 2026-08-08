@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard • NEKKO OS</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+<body class="bg-[#0B0F0C] text-white min-h-screen">
+
+<div class="max-w-7xl mx-auto px-8 py-10">
+
+    <!-- HEADER -->
+
+    <header class="mb-10">
+
+        <a
+            href="../menu/index.html"
+            class="inline-flex items-center gap-2 text-slate-400 hover:text-green-400 transition mb-6">
+
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+
+            Voltar
+
+        </a>
+
+        <h1 class="text-4xl font-bold">
+            Dashboard
+        </h1>
+
+        <p class="text-slate-500 mt-2">
+            Visão geral da sua operação.
+        </p>
+
+    </header>
+
+
+    <!-- CARDS PRINCIPAIS -->
+
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+
+
+        <!-- LUCRO BRUTO DE OS -->
+
+        <div class="
+            bg-[#141A16]
+            border
+            border-[#29322C]
+            rounded-3xl
+            p-6
+        ">
+
+            <div class="flex items-center justify-between mb-5">
+
+                <div>
+
+                    <p class="text-sm text-slate-500">
+                        Lucro bruto de OS
+                    </p>
+
+                    <h2
+                        id="osRevenue"
+                        class="text-3xl font-bold mt-2">
+
+                        R$ 0,00
+
+                    </h2>
+
+                </div>
+
+                <div class="
+                    w-12
+                    h-12
+                    rounded-2xl
+                    bg-green-500/10
+                    flex
+                    items-center
+                    justify-center
+                ">
+
+                    <i
+                        data-lucide="circle-dollar-sign"
+                        class="w-6 h-6 text-green-400">
+                    </i>
+
+                </div>
+
+            </div>
+
+            <p
+                id="deliveredOrders"
+                class="text-sm text-slate-500">
+
+                0 OS entregues
+
+            </p>
+
+        </div>
+
+
+        <!-- FATURAMENTO TÉCNICO -->
+
+        <div class="
+            bg-[#141A16]
+            border
+            border-[#29322C]
+            rounded-3xl
+            p-6
+        ">
+
+            <div class="flex items-center justify-between mb-5">
+
+                <div>
+
+                    <p class="text-sm text-slate-500">
+                        Faturamento dos técnicos
+                    </p>
+
+                    <h2
+                        id="techniciansRevenue"
+                        class="text-3xl font-bold mt-2">
+
+                        R$ 0,00
+
+                    </h2>
+
+                </div>
+
+                <div class="
+                    w-12
+                    h-12
+                    rounded-2xl
+                    bg-blue-500/10
+                    flex
+                    items-center
+                    justify-center
+                ">
+
+                    <i
+                        data-lucide="wrench"
+                        class="w-6 h-6 text-blue-400">
+                    </i>
+
+                </div>
+
+            </div>
+
+            <p
+                id="techniciansServices"
+                class="text-sm text-slate-500">
+
+                0 serviços realizados
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- TÉCNICOS -->
+
+    <section class="
+        bg-[#141A16]
+        border
+        border-[#29322C]
+        rounded-3xl
+        p-6
+    ">
+
+        <div class="flex items-center justify-between mb-6">
+
+            <div>
+
+                <h2 class="text-xl font-semibold">
+                    Desempenho dos técnicos
+                </h2>
+
+                <p class="text-sm text-slate-500 mt-1">
+                    Produção bruta por técnico.
+                </p>
+
+            </div>
+
+            <i
+                data-lucide="users"
+                class="w-6 h-6 text-slate-500">
+            </i>
+
+        </div>
+
+
+        <div
+            id="techniciansTable"
+            class="space-y-3">
+
+            <!-- JS -->
+
+        </div>
+
+    </section>
+
+
+    <!-- LOADING -->
+
+    <div
+        id="dashboardLoading"
+        class="text-center text-slate-500 mt-8">
+
+        Carregando dashboard...
+
+    </div>
+
+
+</div>
+
+
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- CONFIG -->
+
+<script src="../../assets/js/config.js"></script>
+
+<!-- CORE -->
+
+<script src="../../assets/js/supabase.js"></script>
+<script src="../../assets/js/storage.js"></script>
+<script src="../../assets/js/auth.js"></script>
+<script src="../../assets/js/api.js"></script>
+<script src="../../assets/js/bootstrap.js"></script>
+<script src="../../assets/js/roles.js"></script>
+
+<!-- PÁGINA -->
+
+<script src="./index.js"></script>
+
+</body>
+
+</html>
