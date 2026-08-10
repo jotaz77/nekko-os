@@ -820,4 +820,40 @@ Api.createSale = async (sale) => {
 
 };
 
+// =========================================
+// BUSCAR VENDA
+// =========================================
+
+Api.getSale = async (id) => {
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+
+        .from("sales")
+
+        .select(`
+            id,
+            company_id,
+            store_id,
+            product_name,
+            sale_price,
+            created_by,
+            created_at
+        `)
+
+        .eq("id", id)
+
+        .single();
+
+
+    if (error)
+        throw error;
+
+
+    return data;
+
+};
+
 window.Api = Api;
