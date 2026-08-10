@@ -303,7 +303,8 @@ form.addEventListener(
             // Criar venda
             // -----------------------------
 
-            await Api.createSale({
+            const createdSale =
+                await Api.createSale({
 
                 company_id:
                     context.company.id,
