@@ -1,1 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
 
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Nota de Venda</title>
+
+    <link
+        rel="stylesheet"
+        href="print.css">
+
+</head>
+
+<body>
+
+<div class="receipt">
+
+    <!-- CABEÇALHO -->
+
+    <header>
+
+        <h1 id="companyName">
+            EMPRESA
+        </h1>
+
+        <p id="storeName">
+            Loja
+        </p>
+
+        <p id="storePhone">
+            WhatsApp
+        </p>
+
+    </header>
+
+
+    <hr>
+
+
+    <!-- VENDA -->
+
+    <section>
+
+        <h2>
+            NOTA DE VENDA
+        </h2>
+
+        <div class="row">
+
+            <span>
+                Venda
+            </span>
+
+            <span id="saleId">
+                -
+            </span>
+
+        </div>
+
+
+        <div class="row">
+
+            <span>
+                Data
+            </span>
+
+            <span id="saleDate">
+                -
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <hr>
+
+
+    <!-- PRODUTO -->
+
+    <section>
+
+        <h2>
+            PRODUTO
+        </h2>
+
+        <p id="productName">
+            -
+        </p>
+
+    </section>
+
+
+    <hr>
+
+
+    <!-- TOTAL -->
+
+    <section>
+
+        <div class="row total">
+
+            <span>
+                TOTAL
+            </span>
+
+            <span id="salePrice">
+                R$ 0,00
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <hr>
+
+
+    <!-- RODAPÉ -->
+
+    <footer>
+
+        <p>
+            Obrigado pela preferência!
+        </p>
+
+        <p>
+            Impresso em
+        </p>
+
+        <p id="printedAt">
+            -
+        </p>
+
+        <strong>
+            NEKKO OS
+        </strong>
+
+    </footer>
+
+</div>
+
+
+<!-- SCRIPTS -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="../../assets/js/config.js"></script>
+
+<script src="../../assets/js/supabase.js"></script>
+
+<script src="../../assets/js/storage.js"></script>
+
+<script src="../../assets/js/auth.js"></script>
+
+<script src="../../assets/js/api.js"></script>
+
+<script src="../../assets/js/bootstrap.js"></script>
+
+<script src="../../assets/js/roles.js"></script>
+
+<script src="print.js"></script>
+
+</body>
+
+</html>
