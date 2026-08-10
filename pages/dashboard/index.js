@@ -108,7 +108,11 @@ async function loadDashboard() {
 
     try {
 
-        const data = await Api.getDashboardData(context);
+        const data =
+            await Api.getDashboardData(
+                context,
+                salesPeriod
+            );
 
         renderDashboard(data);
 
@@ -116,7 +120,10 @@ async function loadDashboard() {
 
     catch (error) {
 
-        console.error("Erro ao carregar dashboard:", error);
+        console.error(
+            "Erro ao carregar dashboard:",
+            error
+        );
 
         alert(error.message);
 
@@ -287,6 +294,32 @@ document.addEventListener(
                 loading.remove();
 
             }
+
+            document
+                .getElementById("salesToday")
+                .addEventListener(
+                    "click",
+                    () => setSalesPeriod("today")
+                );
+            
+            
+            document
+                .getElementById("salesWeek")
+                .addEventListener(
+                    "click",
+                    () => setSalesPeriod("week")
+                );
+            
+            
+            document
+                .getElementById("salesMonth")
+                .addEventListener(
+                    "click",
+                    () => setSalesPeriod("month")
+                );
+            
+            
+            updateSalesFilterButtons();
 
 
             lucide.createIcons();
