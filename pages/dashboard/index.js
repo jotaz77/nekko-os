@@ -4,6 +4,7 @@
 // =========================================
 
 let context = null;
+let salesPeriod = "today";
 
 
 // =========================================
@@ -19,6 +20,85 @@ function formatCurrency(value) {
 
 }
 
+// =========================================
+// Filtro de vendas
+// =========================================
+
+function setSalesPeriod(period) {
+
+    salesPeriod = period;
+
+    updateSalesFilterButtons();
+
+    loadDashboard();
+
+}
+
+
+// =========================================
+// Atualizar botões do filtro
+// =========================================
+
+function updateSalesFilterButtons() {
+
+    const buttons = {
+
+        today:
+            document.getElementById("salesToday"),
+
+        week:
+            document.getElementById("salesWeek"),
+
+        month:
+            document.getElementById("salesMonth")
+
+    };
+
+
+    Object.entries(buttons).forEach(
+        ([key, button]) => {
+
+            if (!button)
+                return;
+
+
+            if (key === salesPeriod) {
+
+                button.className = `
+                    px-4
+                    py-2
+                    rounded-xl
+                    text-sm
+                    font-medium
+                    bg-green-500
+                    text-black
+                    transition
+                `;
+
+            }
+
+            else {
+
+                button.className = `
+                    px-4
+                    py-2
+                    rounded-xl
+                    text-sm
+                    font-medium
+                    bg-[#0F1411]
+                    text-slate-400
+                    border
+                    border-[#29322C]
+                    transition
+                    hover:text-white
+                `;
+
+            }
+
+        }
+    );
+
+}
 
 // =========================================
 // Carregar Dashboard
