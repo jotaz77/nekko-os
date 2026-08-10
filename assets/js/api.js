@@ -479,27 +479,38 @@ Api.deleteTechnician = async (id) => {
 // DASHBOARD
 // =====================================
 
-Api.getDashboardData = async (context) => {
+Api.getDashboardData = async (
+    context,
+    salesPeriod = "today"
+) => {
 
-    const { data, error } = await supabaseClient
+    // =================================
+    // Buscar OS
+    // =================================
 
-        .from("service_orders")
+    const { data: serviceOrders, error: ordersError } =
+        await supabaseClient
 
-        .select(`
-            technician,
-            status,
-            price
-        `)
+            .from("service_orders")
 
-        .eq("company_id", context.company.id);
+            .select(`
+                technician,
+                status,
+                price
+            `)
+
+            .eq(
+                "company_id",
+                context.company.id
+            );
 
 
-    if (error)
-        throw error;
+    if (ordersError)
+        throw ordersError;
 
 
     // =================================
-    // Valores gerais
+    // Valores das OS
     // =================================
 
     let osRevenue = 0;
@@ -514,12 +525,11 @@ Api.getDashboardData = async (context) => {
     const technicians = {};
 
 
-    data.forEach(order => {
+    serviceOrders.forEach(order => {
 
-
-        // ---------------------------------
+        // -----------------------------
         // OS entregues
-        // ---------------------------------
+        // -----------------------------
 
         if (order.status === "Entregue") {
 
@@ -532,9 +542,9 @@ Api.getDashboardData = async (context) => {
         }
 
 
-        // ---------------------------------
+        // -----------------------------
         // Técnico
-        // ---------------------------------
+        // -----------------------------
 
         if (!order.technician)
             return;
@@ -544,7 +554,8 @@ Api.getDashboardData = async (context) => {
 
             technicians[order.technician] = {
 
-                name: order.technician,
+                name:
+                    order.technician,
 
                 services: 0,
 
@@ -555,17 +566,14 @@ Api.getDashboardData = async (context) => {
         }
 
 
-        // Conta o serviço
-
         technicians[
             order.technician
         ].services++;
 
 
-        // Soma produção bruta
-        // somente de OS entregues
-
-        if (order.status === "Entregue") {
+        if (
+            order.status === "Entregue"
+        ) {
 
             technicians[
                 order.technician
@@ -579,7 +587,7 @@ Api.getDashboardData = async (context) => {
 
 
     // =================================
-    // Transformar técnicos em array
+    // Lista de técnicos
     // =================================
 
     const techniciansList =
@@ -614,14 +622,139 @@ Api.getDashboardData = async (context) => {
         );
 
 
-    // =================================
-    // Ordenar técnicos
-    // =================================
-
     techniciansList.sort(
         (a, b) =>
             b.revenue - a.revenue
     );
+
+
+    // =================================
+    // FILTRO DE VENDAS
+    // =================================
+
+    const now = new Date();
+
+    let startDate;
+
+
+    // =================================
+    // Hoje
+    // =================================
+
+    if (salesPeriod === "today") {
+
+        startDate =
+            new Date(
+                now.getFullYear(),
+                now.getMonth(),
+                now.getDate()
+            );
+
+    }
+
+
+    // =================================
+    // Esta semana
+    // =================================
+
+    else if (salesPeriod === "week") {
+
+        const day =
+            now.getDay();
+
+        const diff =
+            day === 0
+                ? 6
+                : day - 1;
+
+
+        startDate =
+            new Date(
+                now.getFullYear(),
+                now.getMonth(),
+                now.getDate() - diff
+            );
+
+    }
+
+
+    // =================================
+    // Este mês
+    // =================================
+
+    else if (salesPeriod === "month") {
+
+        startDate =
+            new Date(
+                now.getFullYear(),
+                now.getMonth(),
+                1
+            );
+
+    }
+
+
+    // =================================
+    // Buscar vendas
+    // =================================
+
+    const {
+        data: sales,
+        error: salesError
+    } = await supabaseClient
+
+        .from("sales")
+
+        .select(`
+            id,
+            product_name,
+            sale_price,
+            store_id,
+            created_at
+        `)
+
+        .eq(
+            "company_id",
+            context.company.id
+        )
+
+        .gte(
+            "created_at",
+            startDate.toISOString()
+        )
+
+        .order(
+            "created_at",
+            {
+                ascending: false
+            }
+        );
+
+
+    if (salesError)
+        throw salesError;
+
+
+    // =================================
+    // Total de vendas
+    // =================================
+
+    const salesRevenue =
+        sales.reduce(
+            (total, sale) => {
+
+                return total +
+                    Number(
+                        sale.sale_price || 0
+                    );
+
+            },
+            0
+        );
+
+
+    const salesCount =
+        sales.length;
 
 
     // =================================
@@ -638,7 +771,13 @@ Api.getDashboardData = async (context) => {
 
         techniciansServices,
 
-        technicians: techniciansList
+        technicians: techniciansList,
+
+        salesRevenue,
+
+        salesCount,
+
+        sales
 
     };
 
