@@ -331,12 +331,34 @@ form.addEventListener(
                 "Venda registrada com sucesso!",
                 "success"
             );
-
-
+            
+            
+            // Perguntar se deseja imprimir
+            
+            const shouldPrint =
+                confirm(
+                    "Venda registrada com sucesso!\n\n" +
+                    "Deseja imprimir a nota?"
+                );
+            
+            
+            if (shouldPrint) {
+            
+                window.open(
+                    `print.html?id=${createdSale.id}`,
+                    "_blank"
+                );
+            
+            }
+            
+            
+            // Limpar formulário
+            
             form.reset();
-
-
+            
+            
             // Recarregar loja atual
+            
             loadStores();
 
 
