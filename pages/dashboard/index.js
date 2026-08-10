@@ -161,6 +161,107 @@ function renderDashboard(data) {
     document.getElementById("techniciansServices").textContent =
         `${data.techniciansServices} serviços realizados`;
 
+    // -----------------------------
+    // Vendas
+    // -----------------------------
+
+    document.getElementById("salesRevenue").textContent =
+        formatCurrency(data.salesRevenue);
+
+
+    document.getElementById("salesCount").textContent =
+        `${data.salesCount} vendas registradas`;
+
+
+    // -----------------------------
+    // Lista de vendas
+    // -----------------------------
+
+    const salesContainer =
+        document.getElementById("salesTable");
+
+
+    salesContainer.innerHTML = "";
+
+
+    if (!data.sales.length) {
+
+        salesContainer.innerHTML = `
+            <div class="
+                text-center
+                text-slate-500
+                py-8
+            ">
+                Nenhuma venda encontrada neste período.
+            </div>
+        `;
+
+    }
+
+    else {
+
+        data.sales.forEach(sale => {
+
+            salesContainer.innerHTML += `
+
+                <div class="
+                    flex
+                    items-center
+                    justify-between
+                    gap-4
+                    bg-[#0F1411]
+                    border
+                    border-[#29322C]
+                    rounded-2xl
+                    px-5
+                    py-4
+                ">
+
+                    <div>
+
+                        <p class="
+                            font-semibold
+                            text-white
+                        ">
+                            ${sale.product_name}
+                        </p>
+
+                        <p class="
+                            text-xs
+                            text-slate-500
+                            mt-1
+                        ">
+                            ${new Date(
+                                sale.created_at
+                            ).toLocaleString(
+                                "pt-BR"
+                            )}
+                        </p>
+
+                    </div>
+
+
+                    <div class="text-right">
+
+                        <p class="
+                            font-semibold
+                            text-purple-400
+                        ">
+                            ${formatCurrency(
+                                sale.sale_price
+                            )}
+                        </p>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        });
+
+    }
+
 
     // -----------------------------
     // Tabela de técnicos
