@@ -18,6 +18,15 @@ const productNameInput =
 const salePriceInput =
     document.getElementById("salePrice");
 
+const customerNameInput =
+    document.getElementById("customerName");
+
+const customerDocumentInput =
+    document.getElementById("customerDocument");
+
+const customerZipCodeInput =
+    document.getElementById("customerZipCode");
+
 const storeSelect =
     document.getElementById("store");
 
@@ -238,6 +247,16 @@ form.addEventListener(
                     salePriceInput.value
                 );
 
+            const customerName =
+                customerNameInput.value.trim();
+            
+            const customerDocument =
+                customerDocumentInput.value.trim();
+            
+            const customerZipCode =
+                customerZipCodeInput.value.trim();
+
+
 
             // -----------------------------
             // Validações
@@ -305,23 +324,32 @@ form.addEventListener(
 
             const createdSale =
                 await Api.createSale({
-
-                company_id:
-                    context.company.id,
-
-                store_id:
-                    storeId,
-
-                product_name:
-                    productName,
-
-                sale_price:
-                    salePrice,
-
-                created_by:
-                    context.user.id
-
-            });
+            
+                    company_id:
+                        context.company.id,
+            
+                    store_id:
+                        storeId,
+            
+                    product_name:
+                        productName,
+            
+                    sale_price:
+                        salePrice,
+            
+                    created_by:
+                        context.user.id,
+            
+                    customer_name:
+                        customerName || null,
+            
+                    customer_document:
+                        customerDocument || null,
+            
+                    customer_zip_code:
+                        customerZipCode || null
+            
+                });
 
 
             // -----------------------------
