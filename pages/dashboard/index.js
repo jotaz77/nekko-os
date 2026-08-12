@@ -4,7 +4,9 @@
 // =========================================
 
 let context = null;
+
 let salesPeriod = "today";
+let osPeriod = "today";
 
 
 // =========================================
@@ -101,6 +103,86 @@ function updateSalesFilterButtons() {
 }
 
 // =========================================
+// FILTRO DE OS
+// =========================================
+
+function setOsPeriod(period) {
+
+    osPeriod = period;
+
+    updateOsFilterButtons();
+
+    loadDashboard();
+
+}
+
+
+// =========================================
+// ATUALIZAR BOTÕES DO FILTRO DE OS
+// =========================================
+
+function updateOsFilterButtons() {
+
+    const buttons = {
+
+        today:
+            document.getElementById("osToday"),
+
+        week:
+            document.getElementById("osWeek"),
+
+        month:
+            document.getElementById("osMonth")
+
+    };
+
+
+    Object.entries(buttons).forEach(
+        ([key, button]) => {
+
+            if (!button)
+                return;
+
+
+            if (key === osPeriod) {
+
+                button.className = `
+                    px-4
+                    py-2
+                    rounded-xl
+                    text-sm
+                    font-medium
+                    bg-green-500
+                    text-black
+                    transition
+                `;
+
+            }
+
+            else {
+
+                button.className = `
+                    px-4
+                    py-2
+                    rounded-xl
+                    text-sm
+                    font-medium
+                    bg-[#0F1411]
+                    text-slate-400
+                    border
+                    border-[#29322C]
+                    transition
+                    hover:text-white
+                `;
+
+            }
+
+        }
+    );
+
+}
+
+// =========================================
 // Carregar Dashboard
 // =========================================
 
@@ -111,7 +193,8 @@ async function loadDashboard() {
         const data =
             await Api.getDashboardData(
                 context,
-                salesPeriod
+                salesPeriod,
+                osPeriod
             );
 
         renderDashboard(data);
@@ -421,6 +504,36 @@ document.addEventListener(
             
             
             updateSalesFilterButtons();
+
+            // =========================================
+            // FILTROS DE OS
+            // =========================================
+            
+            document
+                .getElementById("osToday")
+                .addEventListener(
+                    "click",
+                    () => setOsPeriod("today")
+                );
+            
+            
+            document
+                .getElementById("osWeek")
+                .addEventListener(
+                    "click",
+                    () => setOsPeriod("week")
+                );
+            
+            
+            document
+                .getElementById("osMonth")
+                .addEventListener(
+                    "click",
+                    () => setOsPeriod("month")
+                );
+            
+            
+            updateOsFilterButtons();
 
 
             lucide.createIcons();
