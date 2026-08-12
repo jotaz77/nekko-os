@@ -522,6 +522,29 @@ function renderDashboard(data) {
 
 }
 
+// =========================================
+// IMPRIMIR VENDA
+// =========================================
+
+function printSale(id) {
+
+    if (!id) {
+
+        alert(
+            "Venda não encontrada."
+        );
+
+        return;
+
+    }
+
+
+    window.open(
+        `../sales/print.html?id=${encodeURIComponent(id)}`,
+        "_blank"
+    );
+
+}
 
 // =========================================
 // Inicialização
