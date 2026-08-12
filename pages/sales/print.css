@@ -100,15 +100,26 @@ h2 {
 
 .row {
 
-    display: flex;
+    display: block;
 
-    justify-content: space-between;
+    width: 100%;
 
-    align-items: flex-start;
+    margin: 2mm 0;
 
-    gap: 4mm;
+}
 
-    margin: 1mm 0;
+
+.row span {
+
+    display: block;
+
+    width: 100%;
+
+    text-align: left;
+
+    word-break: break-word;
+
+    overflow-wrap: anywhere;
 
 }
 
