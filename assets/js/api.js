@@ -821,7 +821,7 @@ Api.createSale = async (sale) => {
 };
 
 // =========================================
-// BUSCAR VENDA
+// BUSCAR VENDA PARA IMPRESSÃO
 // =========================================
 
 Api.getSale = async (id) => {
@@ -840,7 +840,26 @@ Api.getSale = async (id) => {
             product_name,
             sale_price,
             created_by,
-            created_at
+            created_at,
+
+            companies (
+                id,
+                name,
+                document
+            ),
+
+            stores (
+                id,
+                name,
+                phone,
+                zip_code,
+                state,
+                city,
+                neighborhood,
+                street,
+                number,
+                complement
+            )
         `)
 
         .eq("id", id)
