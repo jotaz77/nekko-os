@@ -511,18 +511,18 @@ Api.getDashboardData = async (
     // Filtro de período das OS
     // =================================
     
-    const now = new Date();
+    const osNow = new Date();
     
     let osStartDate;
     
     
     if (osPeriod === "today") {
-    
+
         osStartDate =
             new Date(
-                now.getFullYear(),
-                now.getMonth(),
-                now.getDate()
+                osNow.getFullYear(),
+                osNow.getMonth(),
+                osNow.getDate()
             );
     
     }
@@ -531,7 +531,7 @@ Api.getDashboardData = async (
     else if (osPeriod === "week") {
     
         const day =
-            now.getDay();
+            osNow.getDay();
     
         const diff =
             day === 0
@@ -541,9 +541,9 @@ Api.getDashboardData = async (
     
         osStartDate =
             new Date(
-                now.getFullYear(),
-                now.getMonth(),
-                now.getDate() - diff
+                osNow.getFullYear(),
+                osNow.getMonth(),
+                osNow.getDate() - diff
             );
     
     }
@@ -553,8 +553,8 @@ Api.getDashboardData = async (
     
         osStartDate =
             new Date(
-                now.getFullYear(),
-                now.getMonth(),
+                osNow.getFullYear(),
+                osNow.getMonth(),
                 1
             );
     
