@@ -481,32 +481,109 @@ Api.deleteTechnician = async (id) => {
 
 Api.getDashboardData = async (
     context,
-    salesPeriod = "today"
+    salesPeriod = "today",
+    osPeriod = "today"
 ) => {
 
     // =================================
     // Buscar OS
     // =================================
-
-    const { data: serviceOrders, error: ordersError } =
-        await supabaseClient
-
+    
+    let serviceOrdersQuery =
+        supabaseClient
+    
             .from("service_orders")
-
+    
             .select(`
                 technician,
                 status,
-                price
+                price,
+                created_at
             `)
-
+    
             .eq(
                 "company_id",
                 context.company.id
             );
-
-
-    if (ordersError)
-        throw ordersError;
+    
+    
+    // =================================
+    // Filtro de período das OS
+    // =================================
+    
+    const now = new Date();
+    
+    let osStartDate;
+    
+    
+    if (osPeriod === "today") {
+    
+        osStartDate =
+            new Date(
+                now.getFullYear(),
+                now.getMonth(),
+                now.getDate()
+            );
+    
+    }
+    
+    
+    else if (osPeriod === "week") {
+    
+        const day =
+            now.getDay();
+    
+        const diff =
+            day === 0
+                ? 6
+                : day - 1;
+    
+    
+        osStartDate =
+            new Date(
+                now.getFullYear(),
+                now.getMonth(),
+                now.getDate() - diff
+            );
+    
+    }
+    
+    
+    else if (osPeriod === "month") {
+    
+        osStartDate =
+            new Date(
+                now.getFullYear(),
+                now.getMonth(),
+                1
+            );
+    
+    }
+    
+    
+    // =================================
+    // Aplicar filtro
+    // =================================
+    
+    serviceOrdersQuery =
+        serviceOrdersQuery.gte(
+            "created_at",
+            osStartDate.toISOString()
+        );
+    
+    
+    // =================================
+    // Executar consulta
+    // =================================
+    
+    const {
+        data: serviceOrders,
+        error: ordersError
+    } = await serviceOrdersQuery;
+    
+    
+        if (ordersError)
+            throw ordersError;
 
 
     // =================================
