@@ -124,22 +124,6 @@ h2 {
 }
 
 
-.row span:first-child {
-
-    flex: 1;
-
-}
-
-
-.row span:last-child {
-
-    text-align: right;
-
-    flex-shrink: 0;
-
-}
-
-
 /* =========================================
    PRODUTO
    ========================================= */
