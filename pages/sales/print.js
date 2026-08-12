@@ -245,6 +245,10 @@ function preencherNota() {
         addressParts.join(" • ")
     );
 
+    setText(
+        "storeAddressFooter",
+        addressParts.join(" • ")
+    );
 
     // =====================================
     // TELEFONE
