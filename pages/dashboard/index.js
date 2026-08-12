@@ -285,61 +285,146 @@ function renderDashboard(data) {
 
         data.sales.forEach(sale => {
 
-            salesContainer.innerHTML += `
+               salesContainer.innerHTML += `
 
-                <div class="
-                    flex
-                    items-center
-                    justify-between
-                    gap-4
-                    bg-[#0F1411]
-                    border
-                    border-[#29322C]
-                    rounded-2xl
-                    px-5
-                    py-4
-                ">
-
-                    <div>
-
-                        <p class="
-                            font-semibold
-                            text-white
+                    <div class="
+                        flex
+                        items-center
+                        justify-between
+                        gap-4
+                        bg-[#0F1411]
+                        border
+                        border-[#29322C]
+                        rounded-2xl
+                        px-5
+                        py-4
+                    ">
+                
+                        <!-- INFORMAÇÕES DA VENDA -->
+                
+                        <div class="min-w-0">
+                
+                            <p class="
+                                font-semibold
+                                text-white
+                                truncate
+                            ">
+                
+                                ${sale.product_name}
+                
+                            </p>
+                
+                
+                            <p class="
+                                text-xs
+                                text-slate-500
+                                mt-1
+                            ">
+                
+                                ${new Date(
+                                    sale.created_at
+                                ).toLocaleString(
+                                    "pt-BR"
+                                )}
+                
+                            </p>
+                
+                        </div>
+                
+                
+                        <!-- AÇÕES -->
+                
+                        <div class="
+                            flex
+                            items-center
+                            gap-2
+                            shrink-0
                         ">
-                            ${sale.product_name}
-                        </p>
-
-                        <p class="
-                            text-xs
-                            text-slate-500
-                            mt-1
-                        ">
-                            ${new Date(
-                                sale.created_at
-                            ).toLocaleString(
-                                "pt-BR"
-                            )}
-                        </p>
-
+                
+                            <!-- IMPRIMIR -->
+                
+                            <button
+                                type="button"
+                                onclick="printSale('${sale.id}')"
+                                class="
+                                    inline-flex
+                                    items-center
+                                    justify-center
+                                    w-9
+                                    h-9
+                                    rounded-xl
+                                    border
+                                    border-[#29322C]
+                                    bg-[#141A16]
+                                    text-slate-400
+                                    hover:text-white
+                                    hover:border-slate-500
+                                    transition
+                                "
+                                title="Imprimir venda"
+                            >
+                
+                                <i
+                                    data-lucide="printer"
+                                    class="w-4 h-4"
+                                ></i>
+                
+                            </button>
+                
+                
+                            <!-- EXCLUIR -->
+                
+                            <button
+                                type="button"
+                                onclick="deleteSale('${sale.id}')"
+                                class="
+                                    inline-flex
+                                    items-center
+                                    justify-center
+                                    w-9
+                                    h-9
+                                    rounded-xl
+                                    border
+                                    border-[#29322C]
+                                    bg-[#141A16]
+                                    text-slate-400
+                                    hover:text-red-400
+                                    hover:border-red-400/40
+                                    transition
+                                "
+                                title="Excluir venda"
+                            >
+                
+                                <i
+                                    data-lucide="trash-2"
+                                    class="w-4 h-4"
+                                ></i>
+                
+                            </button>
+                
+                        </div>
+                
+                
+                        <!-- VALOR -->
+                
+                        <div class="text-right shrink-0">
+                
+                            <p class="
+                                font-semibold
+                                text-purple-400
+                            ">
+                
+                                ${formatCurrency(
+                                    sale.sale_price
+                                )}
+                
+                            </p>
+                
+                        </div>
+                
                     </div>
-
-
-                    <div class="text-right">
-
-                        <p class="
-                            font-semibold
-                            text-purple-400
-                        ">
-                            ${formatCurrency(
-                                sale.sale_price
-                            )}
-                        </p>
-
-                    </div>
-
-                </div>
-
-            `;
+                
+                `;
 
         });
 
