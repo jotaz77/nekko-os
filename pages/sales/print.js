@@ -279,6 +279,61 @@ function preencherNota() {
         )
     );
 
+    // =====================================
+    // DADOS DO CLIENTE
+    // =====================================
+    
+    const customerInfo =
+        document.getElementById(
+            "customerInfo"
+        );
+    
+    
+    if (customerInfo) {
+    
+        const customerParts = [];
+    
+    
+        if (sale.customer_name) {
+    
+            customerParts.push(
+                `<p>
+                    <strong>Cliente:</strong>
+                    ${sale.customer_name}
+                </p>`
+            );
+    
+        }
+    
+    
+        if (sale.customer_document) {
+    
+            customerParts.push(
+                `<p>
+                    <strong>CPF/CNPJ:</strong>
+                    ${sale.customer_document}
+                </p>`
+            );
+    
+        }
+    
+    
+        if (sale.customer_zip_code) {
+    
+            customerParts.push(
+                `<p>
+                    <strong>CEP:</strong>
+                    ${sale.customer_zip_code}
+                </p>`
+            );
+    
+        }
+    
+    
+        customerInfo.innerHTML =
+            customerParts.join("");
+    
+    }
 
     // =====================================
     // PRODUTO
