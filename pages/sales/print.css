@@ -21,7 +21,7 @@ body {
 
     font-size: 8px;
 
-    line-height: 1.15;
+    line-height: 1.25;
 
 }
 
@@ -35,34 +35,33 @@ body {
 }
 
 
-header,
-section,
-footer {
+/* =========================================
+   CABEÇALHO
+   ========================================= */
+
+header {
+
+    text-align: center;
 
     margin-bottom: 2mm;
 
 }
 
 
-h1 {
+header h1 {
 
-    font-size: 11px;
+    font-size: 12px;
 
-    text-align: center;
-
-}
-
-
-h2 {
-
-    font-size: 8px;
+    font-weight: bold;
 
     margin-bottom: 1mm;
 
 }
 
 
-p {
+header p {
+
+    font-size: 8px;
 
     margin: 0.5mm 0;
 
@@ -71,16 +70,155 @@ p {
 }
 
 
+/* =========================================
+   SEÇÕES
+   ========================================= */
+
+section {
+
+    margin-bottom: 1.5mm;
+
+}
+
+
+h2 {
+
+    text-align: center;
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    margin-bottom: 2mm;
+
+}
+
+
+/* =========================================
+   LINHAS
+   ========================================= */
+
 .row {
 
     display: flex;
 
     justify-content: space-between;
 
-    gap: 5px;
+    align-items: flex-start;
+
+    gap: 4mm;
+
+    margin: 1mm 0;
 
 }
 
+
+.row span:first-child {
+
+    flex: 1;
+
+}
+
+
+.row span:last-child {
+
+    text-align: right;
+
+    flex-shrink: 0;
+
+}
+
+
+/* =========================================
+   PRODUTO
+   ========================================= */
+
+#productName {
+
+    font-weight: bold;
+
+    font-size: 9px;
+
+    word-break: break-word;
+
+    overflow-wrap: anywhere;
+
+    margin-bottom: 2mm;
+
+}
+
+
+/* =========================================
+   TOTAL
+   ========================================= */
+
+.total {
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+    margin-top: 2mm;
+
+}
+
+
+/* =========================================
+   INFORMAÇÕES DA EMPRESA
+   ========================================= */
+
+.company-info {
+
+    font-size: 7.5px;
+
+}
+
+
+.company-info p {
+
+    margin: 0.8mm 0;
+
+    word-break: break-word;
+
+    overflow-wrap: anywhere;
+
+}
+
+
+/* =========================================
+   RODAPÉ
+   ========================================= */
+
+footer {
+
+    text-align: center;
+
+    margin-top: 3mm;
+
+}
+
+
+footer p {
+
+    margin: 1mm 0;
+
+}
+
+
+footer strong {
+
+    display: block;
+
+    font-size: 9px;
+
+    margin-top: 2mm;
+
+}
+
+
+/* =========================================
+   SEPARADORES
+   ========================================= */
 
 hr {
 
@@ -93,38 +231,15 @@ hr {
 }
 
 
-.total {
-
-    font-weight: bold;
-
-    font-size: 10px;
-
-}
-
-
-footer {
-
-    text-align: center;
-
-    margin-top: 4mm;
-
-}
-
-
-footer strong {
-
-    display: block;
-
-    margin-top: 2mm;
-
-}
-
+/* =========================================
+   IMPRESSÃO
+   ========================================= */
 
 @page {
 
     size: 72mm auto;
 
-    margin: 2mm;
+    margin: 0;
 
 }
 
@@ -136,12 +251,18 @@ footer strong {
 
         width: 72mm;
 
+        margin: 0;
+
+        padding: 0;
+
     }
 
 
     .receipt {
 
-        width: 68mm;
+        width: 72mm;
+
+        padding: 2mm;
 
     }
 
