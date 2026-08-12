@@ -872,18 +872,32 @@ Api.createSale = async (sale) => {
 
         .insert({
 
-            company_id: sale.company_id,
-
-            store_id: sale.store_id,
-
-            product_name: sale.product_name,
-
-            sale_price: sale.sale_price,
-
-            created_by: sale.created_by
-
+            company_id:
+                sale.company_id,
+        
+            store_id:
+                sale.store_id,
+        
+            product_name:
+                sale.product_name,
+        
+            sale_price:
+                sale.sale_price,
+        
+            created_by:
+                sale.created_by,
+        
+            customer_name:
+                sale.customer_name || null,
+        
+            customer_document:
+                sale.customer_document || null,
+        
+            customer_zip_code:
+                sale.customer_zip_code || null
+        
         })
-
+        
         .select()
 
         .single();
