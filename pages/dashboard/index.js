@@ -547,6 +547,63 @@ function printSale(id) {
 }
 
 // =========================================
+// EXCLUIR VENDA
+// =========================================
+
+async function deleteSale(id) {
+
+    if (!id) {
+
+        alert(
+            "Venda não encontrada."
+        );
+
+        return;
+
+    }
+
+
+    const confirmed =
+        confirm(
+            "Tem certeza que deseja excluir esta venda?"
+        );
+
+
+    if (!confirmed)
+        return;
+
+
+    try {
+
+        await Api.deleteSale(id);
+
+
+        alert(
+            "Venda excluída com sucesso."
+        );
+
+
+        await loadDashboard();
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Erro ao excluir venda:",
+            error
+        );
+
+
+        alert(
+            "Erro ao excluir a venda."
+        );
+
+    }
+
+}
+
+// =========================================
 // Inicialização
 // =========================================
 
