@@ -932,6 +932,9 @@ Api.getSale = async (id) => {
             sale_price,
             created_by,
             created_at,
+            customer_name,
+            customer_document,
+            customer_zip_code,
 
             companies (
                 id,
