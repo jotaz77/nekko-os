@@ -93,37 +93,174 @@ async function init() {
 
 function preencherNota() {
 
-    // -----------------------------
-    // Empresa
-    // -----------------------------
+    // =====================================
+    // DADOS DA EMPRESA
+    // =====================================
+
+    const company =
+        sale.companies || {};
+
+    const companyName =
+        company.name || "-";
+
+    const companyDocument =
+        company.document || "-";
+
 
     setText(
         "companyName",
-        context.company?.name
+        companyName
     );
 
 
-    // -----------------------------
-    // Loja
-    // -----------------------------
+    setText(
+        "companyDocument",
+        companyDocument
+    );
+
+
+    setText(
+        "companyNameFooter",
+        companyName
+    );
+
+
+    setText(
+        "companyDocumentFooter",
+        companyDocument
+    );
+
+
+    // =====================================
+    // DADOS DA LOJA
+    // =====================================
+
+    const store =
+        sale.stores || {};
+
+
+    const storeName =
+        store.name || "-";
+
 
     setText(
         "storeName",
-        context.store?.name
+        storeName
     );
 
 
     setText(
-        "storePhone",
-        context.store?.phone
-            ? `WhatsApp: ${context.store.phone}`
-            : "-"
+        "storeNameFooter",
+        storeName
     );
 
 
-    // -----------------------------
-    // Venda
-    // -----------------------------
+    // =====================================
+    // ENDEREÇO DA LOJA
+    // =====================================
+
+    const addressParts = [];
+
+
+    if (store.street) {
+
+        let street =
+            store.street;
+
+
+        if (store.number) {
+
+            street +=
+                `, ${store.number}`;
+
+        }
+
+
+        addressParts.push(
+            street
+        );
+
+    }
+
+
+    if (store.neighborhood) {
+
+        addressParts.push(
+            store.neighborhood
+        );
+
+    }
+
+
+    let cityState = "";
+
+
+    if (store.city) {
+
+        cityState =
+            store.city;
+
+    }
+
+
+    if (store.state) {
+
+        cityState +=
+            cityState
+                ? `/${store.state}`
+                : store.state;
+
+    }
+
+
+    if (cityState) {
+
+        addressParts.push(
+            cityState
+        );
+
+    }
+
+
+    if (store.zip_code) {
+
+        addressParts.push(
+            `CEP: ${store.zip_code}`
+        );
+
+    }
+
+
+    if (store.complement) {
+
+        addressParts.push(
+            `Compl.: ${store.complement}`
+        );
+
+    }
+
+
+    setText(
+        "storeAddress",
+        addressParts.join(" • ")
+    );
+
+
+    // =====================================
+    // TELEFONE
+    // =====================================
+
+    setText(
+        "storePhone",
+        store.phone
+            ? `Telefone: ${store.phone}`
+            : ""
+    );
+
+
+    // =====================================
+    // DADOS DA VENDA
+    // =====================================
 
     setText(
         "saleId",
@@ -139,9 +276,9 @@ function preencherNota() {
     );
 
 
-    // -----------------------------
-    // Produto
-    // -----------------------------
+    // =====================================
+    // PRODUTO
+    // =====================================
 
     setText(
         "productName",
@@ -149,21 +286,31 @@ function preencherNota() {
     );
 
 
-    // -----------------------------
-    // Valor
-    // -----------------------------
+    // =====================================
+    // VALOR
+    // =====================================
+
+    const saleValue =
+        formatMoney(
+            sale.sale_price
+        );
+
 
     setText(
         "salePrice",
-        formatMoney(
-            sale.sale_price
-        )
+        saleValue
     );
 
 
-    // -----------------------------
-    // Impressão
-    // -----------------------------
+    setText(
+        "saleTotal",
+        saleValue
+    );
+
+
+    // =====================================
+    // DATA DA IMPRESSÃO
+    // =====================================
 
     setText(
         "printedAt",
@@ -173,7 +320,6 @@ function preencherNota() {
     );
 
 }
-
 
 // =========================================
 // Texto
