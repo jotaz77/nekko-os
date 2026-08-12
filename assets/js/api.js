@@ -952,4 +952,32 @@ Api.getSale = async (id) => {
 
 };
 
+// =========================================
+// EXCLUIR VENDA
+// =========================================
+
+Api.deleteSale = async (id) => {
+
+    const {
+        error
+    } = await supabaseClient
+
+        .from("sales")
+
+        .delete()
+
+        .eq(
+            "id",
+            id
+        );
+
+
+    if (error)
+        throw error;
+
+
+    return true;
+
+};
+
 window.Api = Api;
