@@ -269,6 +269,258 @@ async function loadInventoryProducts() {
 }
 
 // =========================================
+// BUSCAR PRODUTOS
+// =========================================
+
+function searchInventoryProducts() {
+
+    const search =
+        productNameInput.value
+            .trim()
+            .toLowerCase();
+
+
+    if (!search) {
+
+        hideProductSuggestions();
+
+        return;
+
+    }
+
+
+    const results =
+        inventoryProducts.filter(
+            product =>
+                String(
+                    product.name || ""
+                )
+                .toLowerCase()
+                .includes(search)
+        );
+
+
+    renderProductSuggestions(
+        results
+    );
+
+}
+
+// =========================================
+// RENDERIZAR SUGESTÕES
+// =========================================
+
+function renderProductSuggestions(
+    products
+) {
+
+    productSuggestions.innerHTML = "";
+
+
+    if (
+        products.length === 0
+    ) {
+
+        productSuggestions.innerHTML = `
+
+            <div
+                class="
+                    px-4
+                    py-4
+                    text-sm
+                    text-slate-500
+                "
+            >
+
+                Nenhum produto encontrado no estoque.
+
+            </div>
+
+        `;
+
+
+        productSuggestions.classList.remove(
+            "hidden"
+        );
+
+
+        return;
+
+    }
+
+
+    products
+        .slice(0, 8)
+        .forEach(
+            product => {
+
+                const quantity =
+                    Number(
+                        product.quantity || 0
+                    );
+
+
+                const minSale =
+                    Number(
+                        product.min_sale_price || 0
+                    );
+
+
+                const item =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                item.type =
+                    "button";
+
+
+                item.className = `
+                    w-full
+                    text-left
+                    px-4
+                    py-3
+                    hover:bg-white/5
+                    transition
+                    border-b
+                    border-[#29322C]
+                    last:border-b-0
+                `;
+
+
+                item.innerHTML = `
+
+                    <div
+                        class="
+                            flex
+                            items-center
+                            justify-between
+                            gap-4
+                        "
+                    >
+
+                        <div>
+
+                            <p
+                                class="
+                                    text-sm
+                                    font-medium
+                                    text-white
+                                "
+                            >
+
+                                ${escapeProductHtml(
+                                    product.name
+                                )}
+
+                            </p>
+
+
+                            <p
+                                class="
+                                    text-xs
+                                    text-slate-500
+                                    mt-1
+                                "
+                            >
+
+                                ${quantity}
+                                ${
+                                    quantity === 1
+                                        ? "unidade"
+                                        : "unidades"
+                                }
+                                disponíveis
+
+                            </p>
+
+                        </div>
+
+
+                        <div
+                            class="
+                                text-right
+                                whitespace-nowrap
+                            "
+                        >
+
+                            <p
+                                class="
+                                    text-sm
+                                    font-semibold
+                                    text-green-400
+                                "
+                            >
+
+                                ${formatSaleCurrency(
+                                    minSale
+                                )}
+
+                            </p>
+
+
+                            <p
+                                class="
+                                    text-[11px]
+                                    text-slate-600
+                                "
+                            >
+
+                                venda mínima
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+
+                item.addEventListener(
+                    "click",
+                    () => {
+
+                        selectInventoryProduct(
+                            product
+                        );
+
+                    }
+                );
+
+
+                productSuggestions.appendChild(
+                    item
+                );
+
+            }
+        );
+
+
+    productSuggestions.classList.remove(
+        "hidden"
+    );
+
+}
+
+// =========================================
+// SELECIONAR PRODUTO
+// =========================================
+
+function selectInventoryProduct(
+    product
+) {
+
+    productNameInput.value =
+        product.name;
+
+
+    hideProductSuggestions();
+
+}
+
+// =========================================
 // Registrar venda
 // =========================================
 
