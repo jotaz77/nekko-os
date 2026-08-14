@@ -818,6 +818,21 @@ function setupProductModal() {
         }
     );
 
+    // ---------------------------------
+    // Salvar produto
+    // ---------------------------------
+    
+    productForm.addEventListener(
+        "submit",
+        async event => {
+    
+            event.preventDefault();
+    
+            await saveProduct();
+    
+        }
+    );
+
 
     // ---------------------------------
     // Fechar clicando fora
