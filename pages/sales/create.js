@@ -513,10 +513,17 @@ function selectInventoryProduct(
     product
 ) {
 
+    // Guarda o produto selecionado
+    selectedInventoryProduct =
+        product;
+
+
+    // Preenche o campo
     productNameInput.value =
         product.name;
 
 
+    // Esconde as sugestões
     hideProductSuggestions();
 
 }
