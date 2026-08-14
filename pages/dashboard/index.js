@@ -379,17 +379,17 @@ function renderDashboard(data) {
                         </div>
                 
                 
-                        <!-- AÇÕES -->
-                
+                        <!-- AÇÕES + VALOR -->
+
                         <div class="
                             flex
                             items-center
                             gap-2
                             shrink-0
                         ">
-                
+                        
                             <!-- IMPRIMIR -->
-                
+                        
                             <button
                                 type="button"
                                 onclick="printSale('${sale.id}')"
@@ -410,17 +410,17 @@ function renderDashboard(data) {
                                 "
                                 title="Imprimir venda"
                             >
-                
+                        
                                 <i
                                     data-lucide="printer"
                                     class="w-4 h-4"
                                 ></i>
-                
+                        
                             </button>
-                
-                
+                        
+                        
                             <!-- EXCLUIR -->
-                
+                        
                             <button
                                 type="button"
                                 onclick="deleteSale('${sale.id}')"
@@ -441,32 +441,30 @@ function renderDashboard(data) {
                                 "
                                 title="Excluir venda"
                             >
-                
+                        
                                 <i
                                     data-lucide="trash-2"
                                     class="w-4 h-4"
                                 ></i>
-                
+                        
                             </button>
-                
-                        </div>
-                
-                
-                        <!-- VALOR -->
-                
-                        <div class="text-right shrink-0">
-                
+                        
+                        
+                            <!-- VALOR -->
+                        
                             <p class="
                                 font-semibold
                                 text-purple-400
+                                ml-2
+                                whitespace-nowrap
                             ">
-                
+                        
                                 ${formatCurrency(
                                     sale.sale_price
                                 )}
-                
+                        
                             </p>
-                
+                        
                         </div>
                 
                     </div>
