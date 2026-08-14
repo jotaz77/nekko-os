@@ -521,6 +521,109 @@ function selectInventoryProduct(
 }
 
 // =========================================
+// ESCONDER SUGESTÕES
+// =========================================
+
+function hideProductSuggestions() {
+
+    productSuggestions.classList.add(
+        "hidden"
+    );
+
+    productSuggestions.innerHTML = "";
+
+}
+
+// =========================================
+// FORMATAR MOEDA
+// =========================================
+
+function formatSaleCurrency(
+    value
+) {
+
+    return Number(
+        value || 0
+    ).toLocaleString(
+        "pt-BR",
+        {
+            style: "currency",
+            currency: "BRL"
+        }
+    );
+
+}
+
+
+// =========================================
+// SEGURANÇA HTML
+// =========================================
+
+function escapeProductHtml(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+// =========================================
+// DIGITAÇÃO DO PRODUTO
+// =========================================
+
+productNameInput.addEventListener(
+    "input",
+    () => {
+
+        searchInventoryProducts();
+
+    }
+);
+
+// =========================================
+// MUDANÇA DE LOJA
+// =========================================
+
+storeSelect.addEventListener(
+    "change",
+    async () => {
+
+        inventoryProducts = [];
+
+        productNameInput.value = "";
+
+        hideProductSuggestions();
+
+        await loadInventoryProducts();
+
+    }
+);
+
+
+
+// =========================================
 // Registrar venda
 // =========================================
 
@@ -783,6 +886,8 @@ document.addEventListener(
 
 
             loadStores();
+            
+            await loadInventoryProducts();
 
 
             lucide.createIcons();
