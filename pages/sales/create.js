@@ -6,6 +6,7 @@
 let context = null;
 
 let inventoryProducts = [];
+let selectedInventoryProduct = null;
 
 
 // =========================================
