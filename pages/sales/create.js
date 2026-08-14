@@ -774,7 +774,7 @@ form.addEventListener(
             // -----------------------------
             // Criar venda
             // -----------------------------
-
+            
             const createdSale =
                 await Api.createSale({
             
@@ -803,6 +803,155 @@ form.addEventListener(
                         customerZipCode || null
             
                 });
+            
+            
+            // -----------------------------
+            // Nova quantidade do estoque
+            // -----------------------------
+            
+            const newQuantity =
+                currentQuantity - 1;
+            
+            
+            // -----------------------------
+            // Baixar estoque
+            // -----------------------------
+            
+            try {
+            
+                await Api.updateInventoryProduct(
+                    selectedInventoryProduct.id,
+                    {
+                        quantity:
+                            newQuantity,
+            
+                        updated_at:
+                            new Date().toISOString()
+                    }
+                );
+            
+            }
+            
+            catch (stockError) {
+            
+                // Se não conseguiu baixar o estoque,
+                // desfazemos a venda criada.
+            
+                try {
+            
+                    await Api.deleteSale(
+                        createdSale.id
+                    );
+            
+                }
+            
+                catch (rollbackError) {
+            
+                    console.error(
+                        "Erro ao desfazer venda após falha no estoque:",
+                        rollbackError
+                    );
+            
+                }
+            
+                throw stockError;
+            
+            }
+            
+            
+            // -----------------------------
+            // Registrar movimentação
+            // -----------------------------
+            
+            try {
+            
+                await Api.createInventoryMovement({
+            
+                    company_id:
+                        context.company.id,
+            
+                    store_id:
+                        storeId,
+            
+                    product_id:
+                        selectedInventoryProduct.id,
+            
+                    movement_type:
+                        "sale",
+            
+                    quantity:
+                        1,
+            
+                    unit_cost:
+                        Number(
+                            selectedInventoryProduct.cost_price || 0
+                        ),
+            
+                    sale_price:
+                        salePrice,
+            
+                    sale_id:
+                        createdSale.id,
+            
+                    created_by:
+                        context.user?.id || null
+            
+                });
+            
+            }
+            
+            catch (movementError) {
+            
+                // Se a movimentação não foi registrada,
+                // devolvemos a unidade ao estoque.
+            
+                try {
+            
+                    await Api.updateInventoryProduct(
+                        selectedInventoryProduct.id,
+                        {
+                            quantity:
+                                currentQuantity,
+            
+                            updated_at:
+                                new Date().toISOString()
+                        }
+                    );
+            
+                }
+            
+                catch (rollbackStockError) {
+            
+                    console.error(
+                        "Erro ao restaurar estoque:",
+                        rollbackStockError
+                    );
+            
+                }
+            
+            
+                // E desfazemos a venda.
+            
+                try {
+            
+                    await Api.deleteSale(
+                        createdSale.id
+                    );
+            
+                }
+            
+                catch (rollbackSaleError) {
+            
+                    console.error(
+                        "Erro ao desfazer venda após falha no estoque:",
+                        rollbackSaleError
+                    );
+            
+                }
+            
+                throw movementError;
+            
+            }
 
 
             // -----------------------------
