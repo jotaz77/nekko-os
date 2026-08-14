@@ -745,3 +745,286 @@ function escapeHtml(
         );
 
 }
+
+// =========================================
+// MODAL DE PRODUTO
+// =========================================
+
+function setupProductModal() {
+
+    const modal =
+        document.getElementById(
+            "productModal"
+        );
+
+
+    const openButton =
+        document.getElementById(
+            "newProductButton"
+        );
+
+
+    const closeButton =
+        document.getElementById(
+            "closeProductModal"
+        );
+
+
+    const cancelButton =
+        document.getElementById(
+            "cancelProductButton"
+        );
+
+
+    // ---------------------------------
+    // Abrir
+    // ---------------------------------
+
+    openButton.addEventListener(
+        "click",
+        async () => {
+
+            await openProductModal();
+
+        }
+    );
+
+
+    // ---------------------------------
+    // Fechar
+    // ---------------------------------
+
+    closeButton.addEventListener(
+        "click",
+        () => {
+
+            closeProductModal();
+
+        }
+    );
+
+
+    cancelButton.addEventListener(
+        "click",
+        () => {
+
+            closeProductModal();
+
+        }
+    );
+
+
+    // ---------------------------------
+    // Fechar clicando fora
+    // ---------------------------------
+
+    modal.addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target === modal
+            ) {
+
+                closeProductModal();
+
+            }
+
+        }
+    );
+
+}
+
+
+// =========================================
+// ABRIR MODAL
+// =========================================
+
+async function openProductModal() {
+
+    const modal =
+        document.getElementById(
+            "productModal"
+        );
+
+
+    const storeSelect =
+        document.getElementById(
+            "productStore"
+        );
+
+
+    const message =
+        document.getElementById(
+            "productFormMessage"
+        );
+
+
+    // ---------------------------------
+    // Limpar formulário
+    // ---------------------------------
+
+    document
+        .getElementById(
+            "productForm"
+        )
+        .reset();
+
+
+    message.classList.add(
+        "hidden"
+    );
+
+
+    message.textContent = "";
+
+
+    // ---------------------------------
+    // Abrir visualmente
+    // ---------------------------------
+
+    modal.classList.remove(
+        "hidden"
+    );
+
+    modal.classList.add(
+        "flex"
+    );
+
+
+    // ---------------------------------
+    // Carregar lojas
+    // ---------------------------------
+
+    await loadProductStores();
+
+
+    // ---------------------------------
+    // Selecionar loja atual
+    // ---------------------------------
+
+    if (
+        context.store?.id
+    ) {
+
+        storeSelect.value =
+            context.store.id;
+
+    }
+
+}
+
+
+// =========================================
+// FECHAR MODAL
+// =========================================
+
+function closeProductModal() {
+
+    const modal =
+        document.getElementById(
+            "productModal"
+        );
+
+
+    modal.classList.add(
+        "hidden"
+    );
+
+    modal.classList.remove(
+        "flex"
+    );
+
+}
+
+
+// =========================================
+// CARREGAR LOJAS
+// =========================================
+
+async function loadProductStores() {
+
+    const storeSelect =
+        document.getElementById(
+            "productStore"
+        );
+
+
+    try {
+
+        const stores =
+            await Api.getStores(
+                context.company.id
+            );
+
+
+        storeSelect.innerHTML = "";
+
+
+        // ---------------------------------
+        // Nenhuma loja
+        // ---------------------------------
+
+        if (
+            !stores ||
+            stores.length === 0
+        ) {
+
+            storeSelect.innerHTML = `
+                <option value="">
+                    Nenhuma loja cadastrada
+                </option>
+            `;
+
+            return;
+
+        }
+
+
+        // ---------------------------------
+        // Opções
+        // ---------------------------------
+
+        stores.forEach(
+            store => {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    store.id;
+
+
+                option.textContent =
+                    store.name;
+
+
+                storeSelect.appendChild(
+                    option
+                );
+
+            }
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Erro ao carregar lojas:",
+            error
+        );
+
+
+        storeSelect.innerHTML = `
+            <option value="">
+                Erro ao carregar lojas
+            </option>
+        `;
+
+    }
+
+}
