@@ -978,7 +978,7 @@ async function loadProductStores() {
             );
 
 
-        storeSelect.innerHTML = "";
+        }
 
         // =========================================
         // SALVAR / RECEBER PRODUTO
