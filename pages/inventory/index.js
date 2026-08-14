@@ -77,23 +77,10 @@ document.addEventListener(
 
 
             // ---------------------------------
-            // Botão novo produto
+            // Modal de produto
             // ---------------------------------
-
-            document
-                .getElementById(
-                    "newProductButton"
-                )
-                .addEventListener(
-                    "click",
-                    () => {
-
-                        alert(
-                            "Cadastro de produto será implementado no próximo passo."
-                        );
-
-                    }
-                );
+            
+            setupProductModal();
 
 
             // ---------------------------------
