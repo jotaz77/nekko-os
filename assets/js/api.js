@@ -1359,4 +1359,38 @@ Api.getInventoryMovements = async (
 
 };
 
+// =========================================
+// REGISTRAR MOVIMENTAÇÃO DE ESTOQUE
+// =========================================
+
+Api.createInventoryMovement = async (
+    movement
+) => {
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+
+        .from(
+            "inventory_movements"
+        )
+
+        .insert(
+            movement
+        )
+
+        .select()
+        
+        .single();
+
+
+    if (error)
+        throw error;
+
+
+    return data;
+
+};
+
 window.Api = Api;
