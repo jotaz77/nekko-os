@@ -482,7 +482,8 @@ Api.deleteTechnician = async (id) => {
 Api.getDashboardData = async (
     context,
     salesPeriod = "today",
-    osPeriod = "today"
+    osPeriod = "today",
+    storeId = "all"
 ) => {
 
     // =================================
@@ -498,7 +499,8 @@ Api.getDashboardData = async (
                 technician,
                 status,
                 price,
-                created_at
+                created_at,
+                store_id
             `)
     
             .eq(
@@ -570,7 +572,20 @@ Api.getDashboardData = async (
             "created_at",
             osStartDate.toISOString()
         );
+
+    // =================================
+    // Filtro de loja das OS
+    // =================================
     
+    if (storeId !== "all") {
+    
+        serviceOrdersQuery =
+            serviceOrdersQuery.eq(
+                "store_id",
+                storeId
+            );
+    
+    }
     
     // =================================
     // Executar consulta
