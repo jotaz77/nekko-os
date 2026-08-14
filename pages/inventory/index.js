@@ -73,13 +73,20 @@ document.addEventListener(
             // Carregar estoque
             // ---------------------------------
 
+            await setupInventoryStoreFilter();
+
+
+            // ---------------------------------
+            // Carregar estoque
+            // ---------------------------------
+            
             await loadInventory();
-
-
+            
+            
             // ---------------------------------
             // Modal
             // ---------------------------------
-
+            
             setupProductModal();
 
 
@@ -154,12 +161,19 @@ async function loadInventory() {
 
         const companyId =
             context.company.id;
-
-
+        
+        
+        const filter =
+            document.getElementById(
+                "inventoryStoreFilter"
+            );
+        
+        
         const storeId =
-            context.store?.id || null;
-
-
+            filter?.value ||
+            null;
+        
+        
         inventoryProducts =
             await Api.getInventoryProducts(
                 companyId,
@@ -730,6 +744,102 @@ function escapeHtml(
 
 }
 
+// =========================================
+// FILTRO DE LOJAS
+// =========================================
+
+async function setupInventoryStoreFilter() {
+
+    const filter =
+        document.getElementById(
+            "inventoryStoreFilter"
+        );
+
+
+    if (!filter) {
+        return;
+    }
+
+
+    try {
+
+        const stores =
+            await Api.getStores(
+                context.company.id
+            );
+
+
+        filter.innerHTML = `
+            <option value="">
+                Todas as lojas
+            </option>
+        `;
+
+
+        stores.forEach(
+            store => {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    store.id;
+
+
+                option.textContent =
+                    store.name;
+
+
+                filter.appendChild(
+                    option
+                );
+
+            }
+        );
+
+
+        // ---------------------------------
+        // Loja atual
+        // ---------------------------------
+
+        if (
+            context.store?.id
+        ) {
+
+            filter.value =
+                context.store.id;
+
+        }
+
+
+        // ---------------------------------
+        // Alteração do filtro
+        // ---------------------------------
+
+        filter.addEventListener(
+            "change",
+            async () => {
+
+                await loadInventory();
+
+            }
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Erro ao carregar filtro de lojas:",
+            error
+        );
+
+    }
+
+}
 
 // =========================================
 // MODAL DE PRODUTO
