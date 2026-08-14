@@ -980,6 +980,347 @@ async function loadProductStores() {
 
         storeSelect.innerHTML = "";
 
+        // =========================================
+        // SALVAR / RECEBER PRODUTO
+        // =========================================
+        
+        async function saveProduct() {
+        
+            const nameInput =
+                document.getElementById(
+                    "productName"
+                );
+        
+        
+            const storeInput =
+                document.getElementById(
+                    "productStore"
+                );
+        
+        
+            const quantityInput =
+                document.getElementById(
+                    "productQuantity"
+                );
+        
+        
+            const costInput =
+                document.getElementById(
+                    "productCost"
+                );
+        
+        
+            const minSaleInput =
+                document.getElementById(
+                    "productMinSale"
+                );
+        
+        
+            const message =
+                document.getElementById(
+                    "productFormMessage"
+                );
+        
+        
+            const saveButton =
+                document.getElementById(
+                    "saveProductButton"
+                );
+        
+        
+            // ---------------------------------
+            // Dados
+            // ---------------------------------
+        
+            const name =
+                nameInput.value.trim();
+        
+        
+            const storeId =
+                storeInput.value;
+        
+        
+            const quantity =
+                Number(
+                    quantityInput.value
+                );
+        
+        
+            const costPrice =
+                Number(
+                    costInput.value
+                );
+        
+        
+            const minSalePrice =
+                Number(
+                    minSaleInput.value
+                );
+        
+        
+            // ---------------------------------
+            // Validação
+            // ---------------------------------
+        
+            if (!name) {
+        
+                showProductMessage(
+                    "Informe o nome do produto.",
+                    "error"
+                );
+        
+                return;
+        
+            }
+        
+        
+            if (!storeId) {
+        
+                showProductMessage(
+                    "Selecione uma loja.",
+                    "error"
+                );
+        
+                return;
+        
+            }
+        
+        
+            if (
+                !Number.isInteger(quantity) ||
+                quantity <= 0
+            ) {
+        
+                showProductMessage(
+                    "A quantidade deve ser maior que zero.",
+                    "error"
+                );
+        
+                return;
+        
+            }
+        
+        
+            if (
+                !Number.isFinite(costPrice) ||
+                costPrice < 0
+            ) {
+        
+                showProductMessage(
+                    "Informe um valor de entrada válido.",
+                    "error"
+                );
+        
+                return;
+        
+            }
+        
+        
+            if (
+                !Number.isFinite(minSalePrice) ||
+                minSalePrice < 0
+            ) {
+        
+                showProductMessage(
+                    "Informe uma venda mínima válida.",
+                    "error"
+                );
+        
+                return;
+        
+            }
+        
+        
+            // ---------------------------------
+            // Estado do botão
+            // ---------------------------------
+        
+            const originalText =
+                saveButton.textContent;
+        
+        
+            saveButton.disabled = true;
+        
+            saveButton.textContent =
+                "Salvando...";
+        
+        
+            try {
+        
+                // ---------------------------------
+                // Procurar produto existente
+                // ---------------------------------
+        
+                const existingProducts =
+                    await Api.getInventoryProducts(
+                        context.company.id,
+                        storeId
+                    );
+        
+        
+                const normalizedName =
+                    name.toLowerCase().trim();
+        
+        
+                const existingProduct =
+                    existingProducts.find(
+                        product =>
+                            String(
+                                product.name
+                            )
+                            .toLowerCase()
+                            .trim()
+                            === normalizedName
+                    );
+        
+        
+                let product;
+        
+        
+                // =================================
+                // PRODUTO EXISTENTE
+                // =================================
+        
+                if (existingProduct) {
+        
+                    const newQuantity =
+                        Number(
+                            existingProduct.quantity || 0
+                        ) + quantity;
+        
+        
+                    product =
+                        await Api.updateInventoryProduct(
+                            existingProduct.id,
+                            {
+                                quantity:
+                                    newQuantity,
+        
+                                cost_price:
+                                    costPrice,
+        
+                                min_sale_price:
+                                    minSalePrice,
+        
+                                updated_at:
+                                    new Date().toISOString()
+                            }
+                        );
+        
+                }
+        
+        
+                // =================================
+                // NOVO PRODUTO
+                // =================================
+        
+                else {
+        
+                    product =
+                        await Api.createInventoryProduct({
+        
+                            company_id:
+                                context.company.id,
+        
+                            store_id:
+                                storeId,
+        
+                            name:
+                                name,
+        
+                            cost_price:
+                                costPrice,
+        
+                            min_sale_price:
+                                minSalePrice,
+        
+                            quantity:
+                                quantity,
+        
+                            active:
+                                true
+        
+                        });
+        
+                }
+        
+        
+                // =================================
+                // REGISTRAR MOVIMENTAÇÃO
+                // =================================
+        
+                await Api.createInventoryMovement({
+        
+                    company_id:
+                        context.company.id,
+        
+                    store_id:
+                        storeId,
+        
+                    product_id:
+                        product.id,
+        
+                    movement_type:
+                        "entry",
+        
+                    quantity:
+                        quantity,
+        
+                    unit_cost:
+                        costPrice,
+        
+                    sale_price:
+                        null,
+        
+                    sale_id:
+                        null,
+        
+                    created_by:
+                        context.user?.id || null
+        
+                });
+        
+        
+                // =================================
+                // Sucesso
+                // =================================
+        
+                closeProductModal();
+        
+        
+                await loadInventory();
+        
+        
+            }
+        
+            catch (error) {
+        
+                console.error(
+                    "Erro ao receber produto:",
+                    error
+                );
+        
+        
+                showProductMessage(
+                    error.message ||
+                    "Não foi possível salvar o produto.",
+                    "error"
+                );
+        
+            }
+        
+        
+            finally {
+        
+                saveButton.disabled =
+                    false;
+        
+                saveButton.textContent =
+                    originalText;
+        
+            }
+        
+        }
 
         // ---------------------------------
         // Nenhuma loja
