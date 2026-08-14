@@ -775,6 +775,11 @@ function setupProductModal() {
             "cancelProductButton"
         );
 
+    const productForm =
+        document.getElementById(
+            "productForm"
+        );
+
 
     // ---------------------------------
     // Abrir
