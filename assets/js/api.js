@@ -1041,4 +1041,322 @@ Api.deleteSale = async (id) => {
 
 };
 
+// =========================================
+// NEKKO OS
+// ESTOQUE
+// =========================================
+
+
+// =========================================
+// LISTAR PRODUTOS DO ESTOQUE
+// =========================================
+
+Api.getInventoryProducts = async (
+    companyId,
+    storeId = null
+) => {
+
+    let query =
+        supabaseClient
+            .from("inventory_products")
+            .select(`
+                *,
+                stores (
+                    id,
+                    name
+                )
+            `)
+            .eq(
+                "company_id",
+                companyId
+            )
+            .eq(
+                "active",
+                true
+            );
+
+
+    // -------------------------------------
+    // Filtrar loja
+    // -------------------------------------
+
+    if (storeId) {
+
+        query =
+            query.eq(
+                "store_id",
+                storeId
+            );
+
+    }
+
+
+    const {
+        data,
+        error
+    } = await query
+        .order(
+            "name",
+            {
+                ascending: true
+            }
+        );
+
+
+    if (error)
+        throw error;
+
+
+    return data || [];
+
+};
+
+
+// =========================================
+// BUSCAR PRODUTO POR ID
+// =========================================
+
+Api.getInventoryProduct = async (
+    productId
+) => {
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+
+        .from(
+            "inventory_products"
+        )
+
+        .select(`
+            *,
+            stores (
+                id,
+                name
+            )
+        `)
+
+        .eq(
+            "id",
+            productId
+        )
+
+        .maybeSingle();
+
+
+    if (error)
+        throw error;
+
+
+    return data;
+
+};
+
+
+// =========================================
+// CRIAR PRODUTO / RECEBER ESTOQUE
+// =========================================
+
+Api.createInventoryProduct = async (
+    product
+) => {
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+
+        .from(
+            "inventory_products"
+        )
+
+        .insert(
+            product
+        )
+
+        .select(`
+            *,
+            stores (
+                id,
+                name
+            )
+        `)
+
+        .single();
+
+
+    if (error)
+        throw error;
+
+
+    return data;
+
+};
+
+
+// =========================================
+// ATUALIZAR PRODUTO
+// =========================================
+
+Api.updateInventoryProduct = async (
+    productId,
+    product
+) => {
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+
+        .from(
+            "inventory_products"
+        )
+
+        .update(
+            product
+        )
+
+        .eq(
+            "id",
+            productId
+        )
+
+        .select(`
+            *,
+            stores (
+                id,
+                name
+            )
+        `)
+
+        .single();
+
+
+    if (error)
+        throw error;
+
+
+    return data;
+
+};
+
+
+// =========================================
+// DESATIVAR PRODUTO
+// =========================================
+
+Api.deleteInventoryProduct = async (
+    productId
+) => {
+
+    const {
+        error
+    } = await supabaseClient
+
+        .from(
+            "inventory_products"
+        )
+
+        .update({
+            active: false
+        })
+
+        .eq(
+            "id",
+            productId
+        );
+
+
+    if (error)
+        throw error;
+
+
+    return true;
+
+};
+
+
+// =========================================
+// HISTÓRICO DO ESTOQUE
+// =========================================
+
+Api.getInventoryMovements = async (
+    companyId,
+    storeId = null,
+    productId = null
+) => {
+
+    let query =
+        supabaseClient
+
+            .from(
+                "inventory_movements"
+            )
+
+            .select(`
+                *,
+                inventory_products (
+                    id,
+                    name
+                )
+            `)
+
+            .eq(
+                "company_id",
+                companyId
+            );
+
+
+    // -------------------------------------
+    // Loja
+    // -------------------------------------
+
+    if (storeId) {
+
+        query =
+            query.eq(
+                "store_id",
+                storeId
+            );
+
+    }
+
+
+    // -------------------------------------
+    // Produto
+    // -------------------------------------
+
+    if (productId) {
+
+        query =
+            query.eq(
+                "product_id",
+                productId
+            );
+
+    }
+
+
+    const {
+        data,
+        error
+    } = await query
+
+        .order(
+            "created_at",
+            {
+                ascending: false
+            }
+        );
+
+
+    if (error)
+        throw error;
+
+
+    return data || [];
+
+};
+
 window.Api = Api;
