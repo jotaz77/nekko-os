@@ -7,6 +7,7 @@ let context = null;
 
 let salesPeriod = "today";
 let osPeriod = "today";
+let storeId = "all";
 
 
 // =========================================
@@ -179,6 +180,51 @@ function updateOsFilterButtons() {
 
         }
     );
+
+}
+
+// =========================================
+// CARREGAR LOJAS
+// =========================================
+
+async function loadStores() {
+
+    const select =
+        document.getElementById(
+            "storeFilter"
+        );
+
+
+    if (!select)
+        return;
+
+
+    const stores =
+        await Api.getStores(
+            context.company.id
+        );
+
+
+    select.innerHTML = `
+
+        <option value="all">
+            Todas as lojas
+        </option>
+
+    `;
+
+
+    stores.forEach(store => {
+
+        select.innerHTML += `
+
+            <option value="${store.id}">
+                ${store.name}
+            </option>
+
+        `;
+
+    });
 
 }
 
@@ -629,7 +675,8 @@ document.addEventListener(
 
             context = result.context;
 
-
+            await loadStores();
+            
             await loadDashboard();
 
 
