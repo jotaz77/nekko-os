@@ -733,7 +733,44 @@ form.addEventListener(
             submitButton.textContent =
                 "Registrando...";
 
+            // -----------------------------
+            // Validar produto do estoque
+            // -----------------------------
+            
+            if (
+                !selectedInventoryProduct
+            ) {
+            
+                showMessage(
+                    "Selecione um produto do estoque."
+                );
+            
+                productNameInput.focus();
+            
+                return;
+            
+            }
+            
+            
+            const currentQuantity =
+                Number(
+                    selectedInventoryProduct.quantity || 0
+                );
+            
+            
+            if (
+                currentQuantity <= 0
+            ) {
+            
+                showMessage(
+                    "Este produto está sem estoque."
+                );
+            
+                return;
+            
+            }
 
+            
             // -----------------------------
             // Criar venda
             // -----------------------------
