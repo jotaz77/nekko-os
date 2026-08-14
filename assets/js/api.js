@@ -790,10 +790,8 @@ Api.getDashboardData = async (
     // Buscar vendas
     // =================================
 
-    const {
-        data: sales,
-        error: salesError
-    } = await supabaseClient
+    let salesQuery =
+    supabaseClient
 
         .from("sales")
 
@@ -813,14 +811,45 @@ Api.getDashboardData = async (
         .gte(
             "created_at",
             startDate.toISOString()
-        )
-
-        .order(
-            "created_at",
-            {
-                ascending: false
-            }
         );
+
+
+// =================================
+// FILTRO DE LOJA DAS VENDAS
+// =================================
+
+if (storeId !== "all") {
+
+    salesQuery =
+        salesQuery.eq(
+            "store_id",
+            storeId
+        );
+
+}
+
+
+// =================================
+// ORDENAR VENDAS
+// =================================
+
+salesQuery =
+    salesQuery.order(
+        "created_at",
+        {
+            ascending: false
+        }
+    );
+
+
+// =================================
+// EXECUTAR CONSULTA
+// =================================
+
+const {
+    data: sales,
+    error: salesError
+} = await salesQuery;
 
 
     if (salesError)
