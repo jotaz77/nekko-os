@@ -420,6 +420,408 @@
 
 
 <!-- =====================================
+     MODAL - RECEBER PRODUTO
+====================================== -->
+
+<div
+    id="productModal"
+    class="
+        fixed
+        inset-0
+        z-50
+        hidden
+        items-center
+        justify-center
+        p-4
+        bg-black/70
+        backdrop-blur-sm
+    "
+>
+
+    <div
+        class="
+            w-full
+            max-w-lg
+            bg-[#141A16]
+            border
+            border-[#29322C]
+            rounded-3xl
+            shadow-2xl
+            overflow-hidden
+        "
+    >
+
+        <!-- HEADER -->
+
+        <div
+            class="
+                flex
+                items-center
+                justify-between
+                px-6
+                py-5
+                border-b
+                border-[#29322C]
+            "
+        >
+
+            <div>
+
+                <h2
+                    class="
+                        text-xl
+                        font-bold
+                    "
+                >
+                    Receber produto
+                </h2>
+
+                <p
+                    class="
+                        text-sm
+                        text-slate-500
+                        mt-1
+                    "
+                >
+                    Adicione produtos ao estoque.
+                </p>
+
+            </div>
+
+
+            <button
+                id="closeProductModal"
+                type="button"
+                class="
+                    w-9
+                    h-9
+                    rounded-xl
+                    flex
+                    items-center
+                    justify-center
+                    text-slate-400
+                    hover:text-white
+                    hover:bg-white/5
+                    transition
+                "
+            >
+
+                <i
+                    data-lucide="x"
+                    class="w-5 h-5"
+                ></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- FORMULÁRIO -->
+
+        <form
+            id="productForm"
+            class="p-6 space-y-5"
+        >
+
+            <!-- NOME -->
+
+            <div>
+
+                <label
+                    for="productName"
+                    class="
+                        block
+                        text-sm
+                        font-medium
+                        text-slate-300
+                        mb-2
+                    "
+                >
+                    Nome do produto
+                </label>
+
+                <input
+                    id="productName"
+                    type="text"
+                    required
+                    autocomplete="off"
+                    placeholder="Ex.: CAPA SAMSUNG A07"
+                    class="
+                        w-full
+                        px-4
+                        py-3
+                        rounded-xl
+                        bg-[#0B0F0C]
+                        border
+                        border-[#29322C]
+                        text-white
+                        placeholder:text-slate-600
+                        outline-none
+                        focus:border-green-500/60
+                        transition
+                    "
+                >
+
+            </div>
+
+
+            <!-- LOJA -->
+
+            <div>
+
+                <label
+                    for="productStore"
+                    class="
+                        block
+                        text-sm
+                        font-medium
+                        text-slate-300
+                        mb-2
+                    "
+                >
+                    Loja
+                </label>
+
+                <select
+                    id="productStore"
+                    required
+                    class="
+                        w-full
+                        px-4
+                        py-3
+                        rounded-xl
+                        bg-[#0B0F0C]
+                        border
+                        border-[#29322C]
+                        text-white
+                        outline-none
+                        focus:border-green-500/60
+                        transition
+                    "
+                >
+
+                    <option value="">
+                        Carregando lojas...
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- QUANTIDADE -->
+
+            <div>
+
+                <label
+                    for="productQuantity"
+                    class="
+                        block
+                        text-sm
+                        font-medium
+                        text-slate-300
+                        mb-2
+                    "
+                >
+                    Quantidade
+                </label>
+
+                <input
+                    id="productQuantity"
+                    type="number"
+                    min="1"
+                    step="1"
+                    required
+                    placeholder="Ex.: 10"
+                    class="
+                        w-full
+                        px-4
+                        py-3
+                        rounded-xl
+                        bg-[#0B0F0C]
+                        border
+                        border-[#29322C]
+                        text-white
+                        placeholder:text-slate-600
+                        outline-none
+                        focus:border-green-500/60
+                        transition
+                    "
+                >
+
+            </div>
+
+
+            <!-- VALORES -->
+
+            <div
+                class="
+                    grid
+                    grid-cols-1
+                    sm:grid-cols-2
+                    gap-4
+                "
+            >
+
+                <!-- CUSTO -->
+
+                <div>
+
+                    <label
+                        for="productCost"
+                        class="
+                            block
+                            text-sm
+                            font-medium
+                            text-slate-300
+                            mb-2
+                        "
+                    >
+                        Valor de entrada
+                    </label>
+
+                    <input
+                        id="productCost"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        required
+                        placeholder="5.00"
+                        class="
+                            w-full
+                            px-4
+                            py-3
+                            rounded-xl
+                            bg-[#0B0F0C]
+                            border
+                            border-[#29322C]
+                            text-white
+                            placeholder:text-slate-600
+                            outline-none
+                            focus:border-green-500/60
+                            transition
+                        "
+                    >
+
+                </div>
+
+
+                <!-- VENDA -->
+
+                <div>
+
+                    <label
+                        for="productMinSale"
+                        class="
+                            block
+                            text-sm
+                            font-medium
+                            text-slate-300
+                            mb-2
+                        "
+                    >
+                        Venda mínima
+                    </label>
+
+                    <input
+                        id="productMinSale"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        required
+                        placeholder="30.00"
+                        class="
+                            w-full
+                            px-4
+                            py-3
+                            rounded-xl
+                            bg-[#0B0F0C]
+                            border
+                            border-[#29322C]
+                            text-white
+                            placeholder:text-slate-600
+                            outline-none
+                            focus:border-green-500/60
+                            transition
+                        "
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- MENSAGEM -->
+
+            <p
+                id="productFormMessage"
+                class="
+                    hidden
+                    text-sm
+                    rounded-xl
+                    px-4
+                    py-3
+                "
+            ></p>
+
+
+            <!-- AÇÕES -->
+
+            <div
+                class="
+                    flex
+                    flex-col-reverse
+                    sm:flex-row
+                    sm:justify-end
+                    gap-3
+                    pt-2
+                "
+            >
+
+                <button
+                    id="cancelProductButton"
+                    type="button"
+                    class="
+                        px-5
+                        py-3
+                        rounded-xl
+                        border
+                        border-[#29322C]
+                        text-slate-300
+                        hover:bg-white/5
+                        transition
+                    "
+                >
+                    Cancelar
+                </button>
+
+
+                <button
+                    id="saveProductButton"
+                    type="submit"
+                    class="
+                        px-5
+                        py-3
+                        rounded-xl
+                        bg-green-500
+                        hover:bg-green-400
+                        text-black
+                        font-semibold
+                        transition
+                    "
+                >
+                    Receber produto
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- =====================================
      PÁGINA
 ====================================== -->
 
