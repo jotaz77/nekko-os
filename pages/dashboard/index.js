@@ -475,10 +475,10 @@ function renderDashboard(data) {
 
     }
 
+    // ATUALIZAR ÍCONES
+    lucide.createIcons();
 
-    // -----------------------------
     // Tabela de técnicos
-    // -----------------------------
 
     const container =
         document.getElementById("techniciansTable");
