@@ -240,7 +240,8 @@ async function loadDashboard() {
             await Api.getDashboardData(
                 context,
                 salesPeriod,
-                osPeriod
+                osPeriod,
+                storeId
             );
 
         renderDashboard(data);
@@ -743,7 +744,24 @@ document.addEventListener(
                     "click",
                     () => setOsPeriod("month")
                 );
+
+            // =========================================
+            // FILTRO DE LOJA
+            // =========================================
             
+            document
+                .getElementById("storeFilter")
+                .addEventListener(
+                    "change",
+                    (event) => {
+            
+                        storeId =
+                            event.target.value;
+            
+                        loadDashboard();
+            
+                    }
+                );
             
             updateOsFilterButtons();
 
