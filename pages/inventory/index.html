@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Estoque • NEKKO OS</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+
+<body class="bg-[#0B0F0C] text-white min-h-screen">
+
+
+<div class="max-w-7xl mx-auto px-8 py-10">
+
+
+    <!-- =====================================
+         HEADER
+    ====================================== -->
+
+    <header class="mb-10">
+
+        <a
+            href="../menu/index.html"
+            class="inline-flex items-center gap-2
+                   text-slate-400
+                   hover:text-green-400
+                   transition
+                   mb-6"
+        >
+
+            <i
+                data-lucide="arrow-left"
+                class="w-4 h-4"
+            ></i>
+
+            Voltar
+
+        </a>
+
+
+        <div
+            class="flex
+                   flex-col
+                   md:flex-row
+                   md:items-end
+                   md:justify-between
+                   gap-6"
+        >
+
+            <div>
+
+                <p
+                    class="text-sm
+                           text-green-400
+                           font-semibold
+                           uppercase
+                           tracking-wider"
+                >
+
+                    NEKKO OS
+
+                </p>
+
+
+                <h1
+                    class="text-4xl
+                           font-bold
+                           mt-2"
+                >
+
+                    Estoque
+
+                </h1>
+
+
+                <p
+                    class="text-slate-500
+                           mt-2"
+                >
+
+                    Controle de produtos, entradas e quantidade disponível.
+
+                </p>
+
+            </div>
+
+
+            <button
+                id="newProductButton"
+                class="inline-flex
+                       items-center
+                       justify-center
+                       gap-2
+                       bg-green-500
+                       hover:bg-green-400
+                       text-black
+                       font-semibold
+                       px-5
+                       py-3
+                       rounded-2xl
+                       transition"
+            >
+
+                <i
+                    data-lucide="plus"
+                    class="w-5 h-5"
+                ></i>
+
+                Receber produto
+
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================
+         CONTEXTO DA LOJA
+    ====================================== -->
+
+    <section
+        class="bg-[#141A16]
+               border
+               border-[#29322C]
+               rounded-3xl
+               p-6
+               mb-8"
+    >
+
+        <div
+            class="flex
+                   flex-col
+                   md:flex-row
+                   md:items-center
+                   md:justify-between
+                   gap-4"
+        >
+
+            <div>
+
+                <p
+                    class="text-sm
+                           text-slate-500"
+                >
+
+                    Estoque da loja
+
+                </p>
+
+
+                <h2
+                    id="storeName"
+                    class="text-2xl
+                           font-bold
+                           mt-1"
+                >
+
+                    Carregando...
+
+                </h2>
+
+            </div>
+
+
+            <div
+                id="productCount"
+                class="text-sm
+                       text-slate-400"
+            >
+
+                0 produtos
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================
+         RESUMO
+    ====================================== -->
+
+    <section
+        class="grid
+               grid-cols-1
+               md:grid-cols-3
+               gap-6
+               mb-8"
+    >
+
+
+        <!-- PRODUTOS -->
+
+        <div
+            class="bg-[#141A16]
+                   border
+                   border-[#29322C]
+                   rounded-3xl
+                   p-6"
+        >
+
+            <p
+                class="text-sm
+                       text-slate-500"
+            >
+
+                Produtos
+
+            </p>
+
+
+            <h2
+                id="totalProducts"
+                class="text-3xl
+                       font-bold
+                       mt-2"
+            >
+
+                0
+
+            </h2>
+
+        </div>
+
+
+
+        <!-- QUANTIDADE -->
+
+        <div
+            class="bg-[#141A16]
+                   border
+                   border-[#29322C]
+                   rounded-3xl
+                   p-6"
+        >
+
+            <p
+                class="text-sm
+                       text-slate-500"
+            >
+
+                Quantidade em estoque
+
+            </p>
+
+
+            <h2
+                id="totalQuantity"
+                class="text-3xl
+                       font-bold
+                       mt-2"
+            >
+
+                0
+
+            </h2>
+
+        </div>
+
+
+
+        <!-- VALOR -->
+
+        <div
+            class="bg-[#141A16]
+                   border
+                   border-[#29322C]
+                   rounded-3xl
+                   p-6"
+        >
+
+            <p
+                class="text-sm
+                       text-slate-500"
+            >
+
+                Valor do estoque
+
+            </p>
+
+
+            <h2
+                id="totalStockValue"
+                class="text-3xl
+                       font-bold
+                       mt-2"
+            >
+
+                R$ 0,00
+
+            </h2>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================
+         PRODUTOS
+    ====================================== -->
+
+    <section>
+
+        <div
+            class="flex
+                   items-center
+                   justify-between
+                   mb-6"
+        >
+
+            <div>
+
+                <h2
+                    class="text-2xl
+                           font-bold"
+                >
+
+                    Produtos
+
+                </h2>
+
+                <p
+                    class="text-slate-500
+                           text-sm
+                           mt-1"
+                >
+
+                    Produtos cadastrados nesta loja.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- LISTA -->
+
+        <div
+            id="productsContainer"
+            class="grid
+                   grid-cols-1
+                   md:grid-cols-2
+                   xl:grid-cols-3
+                   gap-6"
+        >
+
+            <div
+                class="bg-[#141A16]
+                       border
+                       border-[#29322C]
+                       rounded-3xl
+                       p-10
+                       text-center
+                       md:col-span-2
+                       xl:col-span-3"
+            >
+
+                <p
+                    class="text-slate-500"
+                >
+
+                    Carregando estoque...
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+</div>
+
+
+
+<!-- =====================================
+     SUPABASE
+====================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<!-- =====================================
+     NEKKO OS
+====================================== -->
+
+<script src="../../assets/js/config.js"></script>
+
+<script src="../../assets/js/supabase.js"></script>
+
+<script src="../../assets/js/storage.js"></script>
+
+<script src="../../assets/js/auth.js"></script>
+
+<script src="../../assets/js/api.js"></script>
+
+<script src="../../assets/js/bootstrap.js"></script>
+
+<script src="../../assets/js/roles.js"></script>
+
+
+<!-- =====================================
+     PÁGINA
+====================================== -->
+
+<script src="index.js"></script>
+
+
+<script>
+
+    lucide.createIcons();
+
+</script>
+
+
+</body>
+
+</html>
