@@ -5,6 +5,8 @@
 
 let context = null;
 
+let inventoryProducts = [];
+
 
 // =========================================
 // Elementos
@@ -14,6 +16,11 @@ const form = document.getElementById("saleForm");
 
 const productNameInput =
     document.getElementById("productName");
+
+const productSuggestions =
+    document.getElementById(
+        "productSuggestions"
+    );
 
 const salePriceInput =
     document.getElementById("salePrice");
@@ -214,6 +221,52 @@ function loadStores() {
 
 }
 
+// =========================================
+// CARREGAR PRODUTOS DO ESTOQUE
+// =========================================
+
+async function loadInventoryProducts() {
+
+    const storeId =
+        storeSelect.value;
+
+
+    if (!storeId) {
+
+        inventoryProducts = [];
+
+        hideProductSuggestions();
+
+        return;
+
+    }
+
+
+    try {
+
+        inventoryProducts =
+            await Api.getInventoryProducts(
+                context.company.id,
+                storeId
+            );
+
+
+        hideProductSuggestions();
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Erro ao carregar produtos do estoque:",
+            error
+        );
+
+        inventoryProducts = [];
+
+    }
+
+}
 
 // =========================================
 // Registrar venda
