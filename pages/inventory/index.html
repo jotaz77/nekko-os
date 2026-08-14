@@ -177,14 +177,75 @@
 
 
             <div
-                id="productCount"
-                class="text-sm
-                       text-slate-400"
-            >
+    class="
+        flex
+        flex-col
+        sm:flex-row
+        sm:items-center
+        gap-4
+    "
+>
 
-                0 produtos
+    <!-- FILTRO DE LOJA -->
 
-            </div>
+    <div>
+
+        <label
+            for="inventoryStoreFilter"
+            class="
+                block
+                text-xs
+                text-slate-500
+                mb-1
+            "
+        >
+            Filtrar loja
+        </label>
+
+
+        <select
+            id="inventoryStoreFilter"
+            class="
+                min-w-[180px]
+                px-4
+                py-2.5
+                rounded-xl
+                bg-[#0B0F0C]
+                border
+                border-[#29322C]
+                text-white
+                text-sm
+                outline-none
+                focus:border-green-500/60
+                transition
+            "
+        >
+
+            <option value="">
+                Todas as lojas
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <!-- CONTADOR -->
+
+    <div
+        id="productCount"
+        class="
+            text-sm
+            text-slate-400
+            whitespace-nowrap
+        "
+    >
+
+        0 produtos
+
+    </div>
+
+</div>
 
         </div>
 
