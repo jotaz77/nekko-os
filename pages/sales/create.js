@@ -835,8 +835,14 @@ form.addEventListener(
             
             
             // Limpar formulário
-            
+
             form.reset();
+            
+            selectedInventoryProduct = null;
+            
+            inventoryProducts = [];
+            
+            hideProductSuggestions();
             
             
             // Recarregar loja atual
