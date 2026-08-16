@@ -1846,3 +1846,79 @@ async function editProduct(
     message.textContent = "";
 
 }
+
+// =========================================
+// EXCLUIR PRODUTO
+// =========================================
+
+async function deleteProduct(
+    productId
+) {
+
+    const product =
+        inventoryProducts.find(
+            item =>
+                item.id === productId
+        );
+
+
+    if (!product) {
+
+        alert(
+            "Produto não encontrado."
+        );
+
+        return;
+
+    }
+
+
+    const confirmed =
+        confirm(
+            `Tem certeza que deseja excluir o produto "${product.name}"?`
+        );
+
+
+    if (!confirmed) {
+
+        return;
+
+    }
+
+
+    try {
+
+        await Api.deleteInventoryProduct(
+            productId
+        );
+
+
+        // Remove da lista local
+        inventoryProducts =
+            inventoryProducts.filter(
+                item =>
+                    item.id !== productId
+            );
+
+
+        // Atualiza a tela
+        await loadInventory();
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Erro ao excluir produto:",
+            error
+        );
+
+
+        alert(
+            "Não foi possível excluir o produto."
+        );
+
+    }
+
+}
