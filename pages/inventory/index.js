@@ -441,7 +441,7 @@ function renderInventory(
     // Produtos
     // ---------------------------------
 
-    products.forEach(
+    filteredProducts.forEach(
         product => {
 
             container.innerHTML +=
