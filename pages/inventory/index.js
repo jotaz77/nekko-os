@@ -1388,6 +1388,64 @@ async function saveProduct() {
 
     try {
 
+
+        // ---------------------------------
+        // MODO EDIÇÃO
+        // ---------------------------------
+        
+        if (editingProductId) {
+        
+            const updatedProduct =
+                await Api.updateInventoryProduct(
+                    editingProductId,
+                    {
+                        name:
+                            name,
+        
+                        store_id:
+                            storeId,
+        
+                        quantity:
+                            quantity,
+        
+                        cost_price:
+                            costPrice,
+        
+                        min_sale_price:
+                            minSalePrice,
+        
+                        updated_at:
+                            new Date().toISOString()
+                    }
+                );
+        
+        
+            // Atualiza o produto em memória
+            inventoryProducts =
+                inventoryProducts.map(
+                    product =>
+                        product.id === editingProductId
+                            ? updatedProduct
+                            : product
+                );
+        
+        
+            // Fecha o modal
+            closeProductModal();
+        
+        
+            // Sai do modo edição
+            editingProductId = null;
+        
+        
+            // Atualiza o estoque
+            await loadInventory();
+        
+        
+            return;
+        
+        }
+        
         // ---------------------------------
         // Procurar produto existente
         // ---------------------------------
