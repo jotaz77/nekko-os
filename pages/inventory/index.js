@@ -6,6 +6,7 @@
 let context = null;
 
 let inventoryProducts = [];
+let editingProductId = null;
 
 
 // =========================================
@@ -1058,6 +1059,8 @@ async function openProductModal() {
     // Limpar formulário
     // ---------------------------------
 
+    editingProductId = null;
+
     document
         .getElementById(
             "productForm"
@@ -1610,5 +1613,170 @@ function showProductMessage(
         );
 
     }
+
+}
+
+// =========================================
+// EDITAR PRODUTO
+// =========================================
+
+async function editProduct(
+    productId
+) {
+
+    const product =
+        inventoryProducts.find(
+            item =>
+                item.id === productId
+        );
+
+
+    if (!product) {
+
+        alert(
+            "Produto não encontrado."
+        );
+
+        return;
+
+    }
+
+
+    editingProductId =
+        product.id;
+
+
+    // ---------------------------------
+    // Abrir modal
+    // ---------------------------------
+
+    const modal =
+        document.getElementById(
+            "productModal"
+        );
+
+
+    modal.classList.remove(
+        "hidden"
+    );
+
+
+    modal.classList.add(
+        "flex"
+    );
+
+
+    // ---------------------------------
+    // Carregar lojas
+    // ---------------------------------
+
+    await loadProductStores();
+
+
+    // ---------------------------------
+    // Preencher campos
+    // ---------------------------------
+
+    document
+        .getElementById("productName")
+        .value =
+        product.name || "";
+
+
+    document
+        .getElementById("productStore")
+        .value =
+        product.store_id || "";
+
+
+    document
+        .getElementById("productQuantity")
+        .value =
+        Number(
+            product.quantity || 0
+        );
+
+
+    document
+        .getElementById("productCost")
+        .value =
+        Number(
+            product.cost_price || 0
+        );
+
+
+    document
+        .getElementById("productMinSale")
+        .value =
+        Number(
+            product.min_sale_price || 0
+        );
+
+
+    // ---------------------------------
+    // Título do modal
+    // ---------------------------------
+
+    const modalTitle =
+        document.querySelector(
+            "#productModal h2"
+        );
+
+
+    if (modalTitle) {
+
+        modalTitle.textContent =
+            "Editar produto";
+
+    }
+
+
+    // ---------------------------------
+    // Descrição
+    // ---------------------------------
+
+    const modalDescription =
+        document.querySelector(
+            "#productModal h2 + p"
+        );
+
+
+    if (modalDescription) {
+
+        modalDescription.textContent =
+            "Atualize as informações do produto.";
+
+    }
+
+
+    // ---------------------------------
+    // Botão
+    // ---------------------------------
+
+    const saveButton =
+        document.getElementById(
+            "saveProductButton"
+        );
+
+
+    saveButton.textContent =
+        "Salvar alterações";
+
+
+    // ---------------------------------
+    // Limpar mensagem
+    // ---------------------------------
+
+    const message =
+        document.getElementById(
+            "productFormMessage"
+        );
+
+
+    message.classList.add(
+        "hidden"
+    );
+
+    message.textContent = "";
 
 }
