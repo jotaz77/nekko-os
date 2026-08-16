@@ -7,6 +7,7 @@ let context = null;
 
 let inventoryProducts = [];
 let editingProductId = null;
+let productSearchTerm = "";
 
 
 // =========================================
