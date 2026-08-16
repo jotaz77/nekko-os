@@ -90,6 +90,7 @@ document.addEventListener(
             // ---------------------------------
             
             setupProductModal();
+            setupProductSearch();
 
 
             // ---------------------------------
