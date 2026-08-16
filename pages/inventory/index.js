@@ -211,6 +211,28 @@ function renderInventory(
     products
 ) {
 
+        // ---------------------------------
+        // Filtro de pesquisa
+        // ---------------------------------
+    
+        const filteredProducts =
+            products.filter(
+                product => {
+    
+                    const name =
+                        String(
+                            product.name || ""
+                        ).toLowerCase();
+    
+                    return name.includes(
+                        productSearchTerm
+                            .toLowerCase()
+                            .trim()
+                    );
+    
+                }
+            );
+
     const filteredProducts =
         products.filter(
             product => {
