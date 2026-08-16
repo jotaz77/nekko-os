@@ -445,6 +445,41 @@ function renderInventory(
 
 }
 
+// =========================================
+// PESQUISA DE PRODUTOS
+// =========================================
+
+function setupProductSearch() {
+
+    const searchInput =
+        document.getElementById(
+            "productSearch"
+        );
+
+
+    if (!searchInput) {
+
+        return;
+
+    }
+
+
+    searchInput.addEventListener(
+        "input",
+        event => {
+
+            productSearchTerm =
+                event.target.value;
+
+
+            renderInventory(
+                inventoryProducts
+            );
+
+        }
+    );
+
+}
 
 // =========================================
 // CARD DO PRODUTO
