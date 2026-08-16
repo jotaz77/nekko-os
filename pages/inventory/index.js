@@ -233,24 +233,6 @@ function renderInventory(
                 }
             );
 
-    const filteredProducts =
-        products.filter(
-            product => {
-
-                const name =
-                    String(
-                        product.name || ""
-                    ).toLowerCase();
-
-                return name.includes(
-                    productSearchTerm
-                        .toLowerCase()
-                        .trim()
-                );
-
-            }
-        );
-
     const container =
         document.getElementById(
             "productsContainer"
