@@ -379,33 +379,93 @@
 
     <section>
 
-        <div
-            class="flex
-                   items-center
-                   justify-between
-                   mb-6"
+                <div
+            class="
+                flex
+                flex-col
+                lg:flex-row
+                lg:items-end
+                lg:justify-between
+                gap-5
+                mb-6
+            "
         >
 
             <div>
 
                 <h2
-                    class="text-2xl
-                           font-bold"
+                    class="
+                        text-2xl
+                        font-bold
+                    "
                 >
 
                     Produtos
 
                 </h2>
 
+
                 <p
-                    class="text-slate-500
-                           text-sm
-                           mt-1"
+                    class="
+                        text-slate-500
+                        text-sm
+                        mt-1
+                    "
                 >
 
                     Produtos cadastrados nesta loja.
 
                 </p>
+
+            </div>
+
+
+            <!-- PESQUISA -->
+
+            <div
+                class="
+                    relative
+                    w-full
+                    lg:w-[360px]
+                "
+            >
+
+                <i
+                    data-lucide="search"
+                    class="
+                        absolute
+                        left-4
+                        top-1/2
+                        -translate-y-1/2
+                        w-4
+                        h-4
+                        text-slate-500
+                        pointer-events-none
+                    "
+                ></i>
+
+
+                <input
+                    id="productSearch"
+                    type="text"
+                    autocomplete="off"
+                    placeholder="Pesquisar produto..."
+                    class="
+                        w-full
+                        pl-11
+                        pr-4
+                        py-3
+                        rounded-xl
+                        bg-[#141A16]
+                        border
+                        border-[#29322C]
+                        text-white
+                        placeholder:text-slate-600
+                        outline-none
+                        focus:border-green-500/60
+                        transition
+                    "
+                >
 
             </div>
 
