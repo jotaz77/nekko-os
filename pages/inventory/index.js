@@ -1392,8 +1392,16 @@ async function saveProduct() {
         // ---------------------------------
         // MODO EDIÇÃO
         // ---------------------------------
+
+        console.log(
+            "MODO DO FORMULÁRIO:",
+            editingProductId !== null
+                ? "EDIÇÃO"
+                : "RECEBER PRODUTO",
+            editingProductId
+        );
         
-        if (editingProductId) {
+        if (editingProductId !== null) {
         
             const updatedProduct =
                 await Api.updateInventoryProduct(
