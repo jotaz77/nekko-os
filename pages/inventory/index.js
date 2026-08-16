@@ -682,6 +682,83 @@ function createProductCard(
 
             </div>
 
+                        <!-- AÇÕES -->
+
+            <div
+                class="
+                    flex
+                    items-center
+                    gap-3
+                    mt-5
+                    pt-5
+                    border-t
+                    border-[#29322C]
+                "
+            >
+
+                <button
+                    type="button"
+                    class="
+                        flex-1
+                        inline-flex
+                        items-center
+                        justify-center
+                        gap-2
+                        px-4
+                        py-2.5
+                        rounded-xl
+                        border
+                        border-[#29322C]
+                        text-slate-300
+                        hover:bg-white/5
+                        hover:text-white
+                        transition
+                    "
+                    onclick="editProduct('${product.id}')"
+                >
+
+                    <i
+                        data-lucide="pencil"
+                        class="w-4 h-4"
+                    ></i>
+
+                    Editar
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="
+                        flex-1
+                        inline-flex
+                        items-center
+                        justify-center
+                        gap-2
+                        px-4
+                        py-2.5
+                        rounded-xl
+                        border
+                        border-red-500/20
+                        text-red-400
+                        hover:bg-red-500/10
+                        hover:border-red-500/40
+                        transition
+                    "
+                    onclick="deleteProduct('${product.id}')"
+                >
+
+                    <i
+                        data-lucide="trash-2"
+                        class="w-4 h-4"
+                    ></i>
+
+                    Excluir
+
+                </button>
+
+            </div>
+
         </article>
 
     `;
