@@ -820,37 +820,20 @@ function renderSaleItems() {
 
 }
 
-// =========================================
-// ADICIONAR ITEM À VENDA
-// =========================================
-
-const addSaleItemButton =
-    document.getElementById(
-        "addSaleItem"
-    );
-
-
-addSaleItemButton.addEventListener(
-    "click",
-    () => {
-
-        // ---------------------------------
-        // Validar produto
-        // ---------------------------------
-
-        if (!selectedInventoryProduct) {
-
-            showMessage(
-                "Selecione um produto do estoque."
-            );
-
-            productNameInput.focus();
-
-            return;
-
-        }
-
-
+    // =========================================
+    // ADICIONAR ITEM À VENDA
+    // =========================================
+    
+    const addSaleItemButton =
+        document.getElementById(
+            "addSaleItem"
+        );
+    
+    
+    addSaleItemButton.addEventListener(
+        "click",
+        () => {
+    
         // ---------------------------------
         // Valor da venda
         // ---------------------------------
