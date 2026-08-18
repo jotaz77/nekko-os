@@ -927,6 +927,12 @@ Api.createSale = async (sale) => {
         
             sale_price:
                 sale.sale_price,
+
+            total_price:
+                sale.total_price || 0,
+            
+            payment_method:
+                sale.payment_method || null,
         
             created_by:
                 sale.created_by,
