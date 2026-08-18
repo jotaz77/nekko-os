@@ -820,6 +820,63 @@ function renderSaleItems() {
 
 }
 
+// =========================================
+// REMOVER ITEM DA VENDA
+// =========================================
+
+document
+    .getElementById("saleItemsList")
+    .addEventListener(
+        "click",
+        (event) => {
+
+            const button =
+                event.target.closest(
+                    "[data-remove-sale-item]"
+                );
+
+
+            if (!button)
+                return;
+
+
+            const index =
+                Number(
+                    button.dataset.removeSaleItem
+                );
+
+
+            if (
+                !Number.isInteger(index) ||
+                index < 0 ||
+                index >= saleItems.length
+            ) {
+
+                return;
+
+            }
+
+
+            // Remover item
+
+            saleItems.splice(
+                index,
+                1
+            );
+
+
+            // Atualizar tela
+
+            renderSaleItems();
+
+
+            // Preparar para adicionar outro
+
+            productNameInput.focus();
+
+        }
+    );
+
     // =========================================
     // ADICIONAR ITEM À VENDA
     // =========================================
