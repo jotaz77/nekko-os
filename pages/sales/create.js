@@ -1203,50 +1203,13 @@ form.addEventListener(
             submitButton.textContent =
                 "Registrando...";
 
-            // -----------------------------
-            // Validar produto do estoque
-            // -----------------------------
-            
-            if (
-                !selectedInventoryProduct
-            ) {
-            
-                showMessage(
-                    "Selecione um produto do estoque."
-                );
-            
-                productNameInput.focus();
-            
-                return;
-            
-            }
-            
-            
-            const currentQuantity =
-                Number(
-                    selectedInventoryProduct.quantity || 0
-                );
-            
-            
-            if (
-                currentQuantity <= 0
-            ) {
-            
-                showMessage(
-                    "Este produto está sem estoque."
-                );
-            
-                return;
-            
-            }
 
-            
             // -----------------------------
-            // Criar venda
+            // Criar venda cumulativa
             // -----------------------------
             
             const createdSale =
-                await Api.createSale({
+                await Api.createCompleteSale({
             
                     company_id:
                         context.company.id,
@@ -1254,11 +1217,11 @@ form.addEventListener(
                     store_id:
                         storeId,
             
-                    product_name:
-                        productName,
+                    total_price:
+                        totalPrice,
             
-                    sale_price:
-                        salePrice,
+                    payment_method:
+                        paymentMethod,
             
                     created_by:
                         context.user.id,
@@ -1270,159 +1233,302 @@ form.addEventListener(
                         customerDocument || null,
             
                     customer_zip_code:
-                        customerZipCode || null
+                        customerZipCode || null,
+            
+                    items:
+                        saleItems.map(item => ({
+            
+                            product_id:
+                                item.product_id,
+            
+                            product_name:
+                                item.product_name,
+            
+                            quantity:
+                                item.quantity,
+            
+                            unit_price:
+                                item.unit_price,
+            
+                            unit_cost:
+                                item.unit_cost,
+            
+                            subtotal:
+                                item.subtotal
+            
+                        }))
             
                 });
             
             
-            // -----------------------------
-            // Nova quantidade do estoque
-            // -----------------------------
+            // ---------------------------------
+            // ID da venda criada
+            // ---------------------------------
             
-            const newQuantity =
-                currentQuantity - 1;
+            const saleId =
+                createdSale.sale.id;
             
             
-            // -----------------------------
-            // Baixar estoque
-            // -----------------------------
+            // ---------------------------------
+            // Controle para rollback
+            // ---------------------------------
+            
+            const stockUpdates = [];
+            
+            const createdMovements = [];
+            
+            
+            // ---------------------------------
+            // Baixar estoque de cada produto
+            // ---------------------------------
             
             try {
             
-                await Api.updateInventoryProduct(
-                    selectedInventoryProduct.id,
-                    {
-                        quantity:
-                            newQuantity,
+                for (
+                    const item of saleItems
+                ) {
             
-                        updated_at:
-                            new Date().toISOString()
+                    // -----------------------------
+                    // Encontrar produto no estoque
+                    // -----------------------------
+            
+                    const inventoryProduct =
+                        inventoryProducts.find(
+                            product =>
+                                product.id ===
+                                item.product_id
+                        );
+            
+            
+                    if (!inventoryProduct) {
+            
+                        throw new Error(
+                            `Produto não encontrado no estoque: ${item.product_name}`
+                        );
+            
                     }
-                );
-            
-            }
-            
-            catch (stockError) {
-            
-                // Se não conseguiu baixar o estoque,
-                // desfazemos a venda criada.
-            
-                try {
-            
-                    await Api.deleteSale(
-                        createdSale.id
-                    );
-            
-                }
-            
-                catch (rollbackError) {
-            
-                    console.error(
-                        "Erro ao desfazer venda após falha no estoque:",
-                        rollbackError
-                    );
-            
-                }
-            
-                throw stockError;
-            
-            }
             
             
-            // -----------------------------
-            // Registrar movimentação
-            // -----------------------------
+                    // -----------------------------
+                    // Quantidade atual
+                    // -----------------------------
             
-            try {
-            
-                await Api.createInventoryMovement({
-            
-                    company_id:
-                        context.company.id,
-            
-                    store_id:
-                        storeId,
-            
-                    product_id:
-                        selectedInventoryProduct.id,
-            
-                    movement_type:
-                        "sale",
-            
-                    quantity:
-                        1,
-            
-                    unit_cost:
+                    const currentQuantity =
                         Number(
-                            selectedInventoryProduct.cost_price || 0
-                        ),
+                            inventoryProduct.quantity || 0
+                        );
             
-                    sale_price:
-                        salePrice,
             
-                    sale_id:
-                        createdSale.id,
+                    const quantityToRemove =
+                        Number(
+                            item.quantity || 1
+                        );
             
-                    created_by:
-                        context.user?.id || null
             
-                });
+                    if (
+                        currentQuantity <
+                        quantityToRemove
+                    ) {
             
-            }
+                        throw new Error(
+                            `Estoque insuficiente para ${item.product_name}.`
+                        );
             
-            catch (movementError) {
+                    }
             
-                // Se a movimentação não foi registrada,
-                // devolvemos a unidade ao estoque.
             
-                try {
+                    // -----------------------------
+                    // Nova quantidade
+                    // -----------------------------
+            
+                    const newQuantity =
+                        currentQuantity -
+                        quantityToRemove;
+            
+            
+                    // -----------------------------
+                    // Baixar estoque
+                    // -----------------------------
             
                     await Api.updateInventoryProduct(
-                        selectedInventoryProduct.id,
+                        item.product_id,
                         {
+            
                             quantity:
-                                currentQuantity,
+                                newQuantity,
             
                             updated_at:
                                 new Date().toISOString()
+            
                         }
                     );
             
-                }
             
-                catch (rollbackStockError) {
+                    // Guardar informação para rollback
             
-                    console.error(
-                        "Erro ao restaurar estoque:",
-                        rollbackStockError
+                    stockUpdates.push({
+            
+                        product_id:
+                            item.product_id,
+            
+                        previous_quantity:
+                            currentQuantity
+            
+                    });
+            
+            
+                    // Atualizar também a cópia local
+            
+                    inventoryProduct.quantity =
+                        newQuantity;
+            
+            
+                    // -----------------------------
+                    // Registrar movimentação
+                    // -----------------------------
+            
+                    const movement =
+                        await Api.createInventoryMovement({
+            
+                            company_id:
+                                context.company.id,
+            
+                            store_id:
+                                storeId,
+            
+                            product_id:
+                                item.product_id,
+            
+                            movement_type:
+                                "sale",
+            
+                            quantity:
+                                quantityToRemove,
+            
+                            unit_cost:
+                                Number(
+                                    item.unit_cost || 0
+                                ),
+            
+                            sale_price:
+                                Number(
+                                    item.unit_price || 0
+                                ),
+            
+                            sale_id:
+                                saleId,
+            
+                            created_by:
+                                context.user?.id || null
+            
+                        });
+            
+            
+                    createdMovements.push(
+                        movement
                     );
             
                 }
             
+            }
+            catch (processingError) {
             
-                // E desfazemos a venda.
+                console.error(
+                    "Erro ao processar estoque da venda:",
+                    processingError
+                );
+            
+            
+                // ---------------------------------
+                // 1. Remover movimentações criadas
+                // ---------------------------------
+            
+                for (
+                    const movement of createdMovements
+                ) {
+            
+                    try {
+            
+                        await Api.deleteInventoryMovement(
+                            movement.id
+                        );
+            
+                    }
+            
+                    catch (movementRollbackError) {
+            
+                        console.error(
+                            "Erro ao remover movimentação:",
+                            movementRollbackError
+                        );
+            
+                    }
+            
+                }
+            
+            
+                // ---------------------------------
+                // 2. Restaurar estoques
+                // ---------------------------------
+            
+                for (
+                    const update of stockUpdates
+                ) {
+            
+                    try {
+            
+                        await Api.updateInventoryProduct(
+                            update.product_id,
+                            {
+            
+                                quantity:
+                                    update.previous_quantity,
+            
+                                updated_at:
+                                    new Date().toISOString()
+            
+                            }
+                        );
+            
+                    }
+            
+                    catch (stockRollbackError) {
+            
+                        console.error(
+                            "Erro ao restaurar estoque:",
+                            stockRollbackError
+                        );
+            
+                    }
+            
+                }
+            
+            
+                // ---------------------------------
+                // 3. Apagar venda
+                // ---------------------------------
             
                 try {
             
                     await Api.deleteSale(
-                        createdSale.id
+                        saleId
                     );
             
                 }
             
-                catch (rollbackSaleError) {
+                catch (saleRollbackError) {
             
                     console.error(
-                        "Erro ao desfazer venda após falha no estoque:",
-                        rollbackSaleError
+                        "Erro ao desfazer venda:",
+                        saleRollbackError
                     );
             
                 }
             
-                throw movementError;
+            
+                throw processingError;
             
             }
-
 
             // -----------------------------
             // Sucesso
@@ -1446,7 +1552,7 @@ form.addEventListener(
             if (shouldPrint) {
             
                 window.open(
-                    `print.html?id=${createdSale.id}`,
+                    `print.html?id=${createdSale.sale.id}`,
                     "_blank"
                 );
             
@@ -1456,15 +1562,20 @@ form.addEventListener(
             // Limpar formulário
 
             form.reset();
+
+            saleItems = [];
+
+            renderSaleItems();
+
+            customerFields.classList.add(
+                "hidden"
+            );
             
             selectedInventoryProduct = null;
             
             inventoryProducts = [];
             
             hideProductSuggestions();
-            
-            
-            // Recarregar loja atual
             
             loadStores();
 
