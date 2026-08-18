@@ -1621,4 +1621,34 @@ Api.createInventoryMovement = async (
 
 };
 
+// =========================================
+// EXCLUIR MOVIMENTAÇÃO DE ESTOQUE
+// =========================================
+
+Api.deleteInventoryMovement = async (
+    movementId
+) => {
+
+    const {
+        error
+    } = await supabaseClient
+
+        .from("inventory_movements")
+
+        .delete()
+
+        .eq(
+            "id",
+            movementId
+        );
+
+
+    if (error)
+        throw error;
+
+
+    return true;
+
+};
+
 window.Api = Api;
