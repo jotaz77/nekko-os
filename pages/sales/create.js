@@ -1055,36 +1055,22 @@ form.addEventListener(
 
 
 
-            // -----------------------------
-            // Validações
-            // -----------------------------
-
-            if (!productName) {
-
-                showMessage(
-                    "Informe o nome do produto."
-                );
-
-                productNameInput.focus();
-
-                return;
-
-            }
-
-
+            // ---------------------------------
+            // Validar itens da venda
+            // ---------------------------------
+            
             if (
-                !salePrice ||
-                salePrice <= 0
+                saleItems.length === 0
             ) {
-
+            
                 showMessage(
-                    "Informe um valor de venda válido."
+                    "Adicione pelo menos um produto à venda."
                 );
-
-                salePriceInput.focus();
-
+            
+                productNameInput.focus();
+            
                 return;
-
+            
             }
 
 
