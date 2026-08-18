@@ -529,6 +529,387 @@ function selectInventoryProduct(
 }
 
 // =========================================
+// RENDERIZAR ITENS DA VENDA
+// =========================================
+
+function renderSaleItems() {
+
+    const container =
+        document.getElementById(
+            "saleItemsContainer"
+        );
+
+    const list =
+        document.getElementById(
+            "saleItemsList"
+        );
+
+    const count =
+        document.getElementById(
+            "saleItemsCount"
+        );
+
+    const total =
+        document.getElementById(
+            "saleTotal"
+        );
+
+
+    if (!container || !list)
+        return;
+
+
+    // ---------------------------------
+    // Nenhum item
+    // ---------------------------------
+
+    if (
+        saleItems.length === 0
+    ) {
+
+        container.classList.add(
+            "hidden"
+        );
+
+        list.innerHTML = "";
+
+        count.textContent =
+            "0 itens";
+
+        total.textContent =
+            "R$ 0,00";
+
+        return;
+
+    }
+
+
+    // ---------------------------------
+    // Mostrar container
+    // ---------------------------------
+
+    container.classList.remove(
+        "hidden"
+    );
+
+
+    // ---------------------------------
+    // Contador
+    // ---------------------------------
+
+    count.textContent =
+        saleItems.length === 1
+            ? "1 item"
+            : `${saleItems.length} itens`;
+
+
+    // ---------------------------------
+    // Renderizar itens
+    // ---------------------------------
+
+    list.innerHTML = "";
+
+
+    saleItems.forEach(
+        (item, index) => {
+
+            const row =
+                document.createElement(
+                    "div"
+                );
+
+
+            row.className = `
+                flex
+                items-center
+                justify-between
+                gap-4
+                p-4
+                rounded-xl
+                bg-[#0F1411]
+                border
+                border-[#29322C]
+            `;
+
+
+            row.innerHTML = `
+
+                <div class="min-w-0">
+
+                    <p
+                        class="
+                            text-sm
+                            font-medium
+                            text-white
+                            truncate
+                        "
+                    >
+                        ${escapeProductHtml(
+                            item.product_name
+                        )}
+                    </p>
+
+                    <p
+                        class="
+                            text-xs
+                            text-slate-500
+                            mt-1
+                        "
+                    >
+                        Produto da venda
+                    </p>
+
+                </div>
+
+
+                <div
+                    class="
+                        flex
+                        items-center
+                        gap-4
+                        shrink-0
+                    "
+                >
+
+                    <strong
+                        class="
+                            text-sm
+                            font-semibold
+                            text-green-400
+                        "
+                    >
+                        ${formatSaleCurrency(
+                            item.unit_price
+                        )}
+                    </strong>
+
+
+                    <button
+                        type="button"
+                        data-remove-sale-item="${index}"
+                        class="
+                            w-9
+                            h-9
+                            rounded-lg
+                            flex
+                            items-center
+                            justify-center
+                            text-slate-500
+                            hover:text-red-400
+                            hover:bg-red-500/10
+                            transition
+                        "
+                        title="Remover produto"
+                    >
+
+                        <i
+                            data-lucide="trash-2"
+                            class="w-4 h-4"
+                        ></i>
+
+                    </button>
+
+                </div>
+
+            `;
+
+
+            list.appendChild(
+                row
+            );
+
+        }
+    );
+
+
+    // ---------------------------------
+    // Total
+    // ---------------------------------
+
+    const totalValue =
+        saleItems.reduce(
+            (
+                sum,
+                item
+            ) =>
+                sum +
+                Number(
+                    item.unit_price || 0
+                ),
+            0
+        );
+
+
+    total.textContent =
+        formatSaleCurrency(
+            totalValue
+        );
+
+
+    // ---------------------------------
+    // Ícones
+    // ---------------------------------
+
+    if (
+        window.lucide
+    ) {
+
+        lucide.createIcons();
+
+    }
+
+}
+
+// =========================================
+// ADICIONAR ITEM À VENDA
+// =========================================
+
+const addSaleItemButton =
+    document.getElementById(
+        "addSaleItem"
+    );
+
+
+addSaleItemButton.addEventListener(
+    "click",
+    () => {
+
+        // ---------------------------------
+        // Validar produto
+        // ---------------------------------
+
+        if (!selectedInventoryProduct) {
+
+            showMessage(
+                "Selecione um produto do estoque."
+            );
+
+            productNameInput.focus();
+
+            return;
+
+        }
+
+
+        // ---------------------------------
+        // Valor da venda
+        // ---------------------------------
+
+        const salePrice =
+            parseSalePrice(
+                salePriceInput.value
+            );
+
+
+        if (
+            !salePrice ||
+            salePrice <= 0
+        ) {
+
+            showMessage(
+                "Informe um valor de venda válido."
+            );
+
+            salePriceInput.focus();
+
+            return;
+
+        }
+
+
+        // ---------------------------------
+        // Verificar estoque
+        // ---------------------------------
+
+        const currentQuantity =
+            Number(
+                selectedInventoryProduct.quantity || 0
+            );
+
+
+        if (
+            currentQuantity <= 0
+        ) {
+
+            showMessage(
+                "Este produto está sem estoque."
+            );
+
+            return;
+
+        }
+
+
+        // ---------------------------------
+        // Adicionar item
+        // ---------------------------------
+
+        saleItems.push({
+
+            product_id:
+                selectedInventoryProduct.id,
+
+            product_name:
+                selectedInventoryProduct.name,
+
+            quantity:
+                1,
+
+            unit_price:
+                salePrice,
+
+            unit_cost:
+                Number(
+                    selectedInventoryProduct.cost_price || 0
+                ),
+
+            subtotal:
+                salePrice
+
+        });
+
+
+        // ---------------------------------
+        // Atualizar lista
+        // ---------------------------------
+
+        renderSaleItems();
+
+
+        // ---------------------------------
+        // Limpar produto atual
+        // ---------------------------------
+
+        selectedInventoryProduct =
+            null;
+
+        productNameInput.value = "";
+
+        salePriceInput.value = "";
+
+        hideProductSuggestions();
+
+
+        // ---------------------------------
+        // Foco para próximo produto
+        // ---------------------------------
+
+        productNameInput.focus();
+
+
+        // ---------------------------------
+        // Mensagem
+        // ---------------------------------
+
+        showMessage(
+            "Produto adicionado à venda.",
+            "success"
+        );
+
+    }
+);
+
+// =========================================
 // ESCONDER SUGESTÕES
 // =========================================
 
