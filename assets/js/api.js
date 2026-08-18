@@ -956,6 +956,101 @@ Api.createSale = async (sale) => {
 };
 
 // =========================================
+// ITENS DA VENDA
+// =========================================
+
+Api.createSaleItem = async (
+    item
+) => {
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+
+        .from("sale_items")
+
+        .insert({
+
+            sale_id:
+                item.sale_id,
+
+            product_id:
+                item.product_id || null,
+
+            product_name:
+                item.product_name,
+
+            quantity:
+                item.quantity || 1,
+
+            unit_price:
+                item.unit_price || 0,
+
+            unit_cost:
+                item.unit_cost || 0,
+
+            subtotal:
+                item.subtotal || 0
+
+        })
+
+        .select()
+
+        .single();
+
+
+    if (error)
+        throw error;
+
+
+    return data;
+
+};
+
+// =========================================
+// BUSCAR ITENS DA VENDA
+// =========================================
+
+Api.getSaleItems = async (
+    saleId
+) => {
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+
+        .from("sale_items")
+
+        .select(`
+            *
+        `)
+
+        .eq(
+            "sale_id",
+            saleId
+        )
+
+        .order(
+            "created_at",
+            {
+                ascending: true
+            }
+        );
+
+
+    if (error)
+        throw error;
+
+
+    return data || [];
+
+};
+
+
+
+// =========================================
 // BUSCAR VENDA PARA IMPRESSÃO
 // =========================================
 
