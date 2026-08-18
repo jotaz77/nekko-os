@@ -45,6 +45,11 @@ const customerDocumentInput =
 const customerZipCodeInput =
     document.getElementById("customerZipCode");
 
+const paymentMethodInput =
+    document.getElementById(
+        "paymentMethod"
+    );
+
 const storeSelect =
     document.getElementById("store");
 
@@ -1131,6 +1136,21 @@ form.addEventListener(
 
             const storeId =
                 storeSelect.value;
+
+            const paymentMethod =
+                paymentMethodInput.value;
+
+            if (!paymentMethod) {
+
+                showMessage(
+                    "Selecione o método de pagamento."
+                );
+            
+                paymentMethodInput.focus();
+            
+                return;
+            
+            }
 
 
             if (!storeId) {
