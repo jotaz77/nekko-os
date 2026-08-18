@@ -7,7 +7,7 @@ let context = null;
 
 let inventoryProducts = [];
 let selectedInventoryProduct = null;
-
+let saleItems = [];
 
 // =========================================
 // Elementos
