@@ -115,6 +115,56 @@
 
             <form id="saleForm">
 
+                <!-- LOJA -->
+
+                <div class="mb-6">
+                
+                    <label
+                        for="store"
+                        class="
+                            block
+                            text-sm
+                            font-medium
+                            text-slate-300
+                            mb-2
+                        "
+                    >
+                
+                        Loja
+                
+                    </label>
+                
+                
+                    <select
+                        id="store"
+                        class="
+                            w-full
+                            bg-[#0F1411]
+                            border
+                            border-[#29322C]
+                            rounded-xl
+                            px-4
+                            py-3
+                            outline-none
+                            focus:border-green-500
+                            transition
+                        "
+                    >
+                
+                    </select>
+                
+                
+                    <p
+                        id="storeHelp"
+                        class="
+                            text-xs
+                            text-slate-500
+                            mt-2
+                        "
+                    ></p>
+                
+                </div>
+    
                 <!-- PRODUTO -->
 
                 <div class="mb-6">
@@ -241,6 +291,153 @@
 
                 </div>
 
+                <!-- ADICIONAR PRODUTO -->
+
+                <div class="mb-8">
+                
+                    <button
+                        type="button"
+                        id="addSaleItem"
+                        class="
+                            w-full
+                            flex
+                            items-center
+                            justify-center
+                            gap-2
+                            bg-white/5
+                            hover:bg-white/10
+                            border
+                            border-[#29322C]
+                            hover:border-green-500/50
+                            text-white
+                            font-semibold
+                            rounded-xl
+                            py-3
+                            transition
+                        "
+                    >
+                
+                        <i
+                            data-lucide="plus"
+                            class="w-5 h-5"
+                        ></i>
+                
+                        Adicionar produto
+                
+                    </button>
+                
+                </div>
+
+                <!-- ITENS DA VENDA -->
+
+                <div
+                    id="saleItemsContainer"
+                    class="hidden mb-8"
+                >
+                
+                    <div
+                        class="
+                            flex
+                            items-center
+                            justify-between
+                            mb-4
+                        "
+                    >
+                
+                        <div>
+                
+                            <h3
+                                class="
+                                    text-sm
+                                    font-semibold
+                                    text-white
+                                "
+                            >
+                
+                                Itens da venda
+                
+                            </h3>
+                
+                
+                            <p
+                                class="
+                                    text-xs
+                                    text-slate-500
+                                    mt-1
+                                "
+                            >
+                
+                                Produtos adicionados a esta venda.
+                
+                            </p>
+                
+                        </div>
+                
+                
+                        <span
+                            id="saleItemsCount"
+                            class="
+                                text-xs
+                                text-slate-500
+                            "
+                        >
+                
+                            0 itens
+                
+                        </span>
+                
+                    </div>
+                
+                
+                    <div
+                        id="saleItemsList"
+                        class="space-y-3"
+                    ></div>
+                
+                
+                    <!-- TOTAL -->
+                
+                    <div
+                        class="
+                            flex
+                            items-center
+                            justify-between
+                            mt-5
+                            pt-5
+                            border-t
+                            border-[#29322C]
+                        "
+                    >
+                
+                        <span
+                            class="
+                                text-sm
+                                text-slate-400
+                            "
+                        >
+                
+                            Total da venda
+                
+                        </span>
+                
+                
+                        <strong
+                            id="saleTotal"
+                            class="
+                                text-xl
+                                font-bold
+                                text-green-400
+                            "
+                        >
+                
+                            R$ 0,00
+                
+                        </strong>
+                
+                    </div>
+                
+                </div>
+
                 <!-- DADOS DO CLIENTE -->
 
                 <div class="mt-6">
@@ -349,54 +546,6 @@
                 
                     </div>
                 
-                </div>
-
-
-                <!-- LOJA -->
-
-                <div class="mb-8">
-
-                    <label
-                        for="store"
-                        class="
-                            block
-                            text-sm
-                            font-medium
-                            text-slate-300
-                            mb-2
-                        ">
-
-                        Loja
-
-                    </label>
-
-                    <select
-                        id="store"
-                        class="
-                            w-full
-                            bg-[#0F1411]
-                            border
-                            border-[#29322C]
-                            rounded-xl
-                            px-4
-                            py-3
-                            outline-none
-                            focus:border-green-500
-                            transition
-                        ">
-
-                    </select>
-
-                    <p
-                        id="storeHelp"
-                        class="
-                            text-xs
-                            text-slate-500
-                            mt-2
-                        ">
-
-                    </p>
-
                 </div>
 
 
