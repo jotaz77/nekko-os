@@ -1054,7 +1054,134 @@ Api.getSaleItems = async (
 
 };
 
+// =========================================
+// CRIAR VENDA COMPLETA
+// =========================================
 
+Api.createCompleteSale = async (
+    sale
+) => {
+
+    // ---------------------------------
+    // 1. Criar a venda principal
+    // ---------------------------------
+
+    const createdSale =
+        await Api.createSale({
+            company_id:
+                sale.company_id,
+
+            store_id:
+                sale.store_id,
+
+            product_name:
+                sale.product_name ||
+                (
+                    sale.items &&
+                    sale.items.length > 0
+                        ? sale.items[0].product_name
+                        : ""
+                ),
+
+            sale_price:
+                sale.sale_price ||
+                sale.total_price ||
+                0,
+
+            total_price:
+                sale.total_price ||
+                0,
+
+            payment_method:
+                sale.payment_method ||
+                null,
+
+            created_by:
+                sale.created_by,
+
+            customer_name:
+                sale.customer_name ||
+                null,
+
+            customer_document:
+                sale.customer_document ||
+                null,
+
+            customer_zip_code:
+                sale.customer_zip_code ||
+                null
+        });
+
+
+    // ---------------------------------
+    // 2. Criar os itens
+    // ---------------------------------
+
+    const items =
+        sale.items || [];
+
+
+    const createdItems = [];
+
+
+    for (
+        const item of items
+    ) {
+
+        const createdItem =
+            await Api.createSaleItem({
+
+                sale_id:
+                    createdSale.id,
+
+                product_id:
+                    item.product_id ||
+                    null,
+
+                product_name:
+                    item.product_name,
+
+                quantity:
+                    item.quantity ||
+                    1,
+
+                unit_price:
+                    item.unit_price ||
+                    0,
+
+                unit_cost:
+                    item.unit_cost ||
+                    0,
+
+                subtotal:
+                    item.subtotal ||
+                    0
+
+            });
+
+
+        createdItems.push(
+            createdItem
+        );
+
+    }
+
+
+    // ---------------------------------
+    // 3. Retornar tudo
+    // ---------------------------------
+
+    return {
+
+        sale:
+            createdSale,
+
+        items:
+            createdItems
+
+    };
+
+};
 
 // =========================================
 // BUSCAR VENDA PARA IMPRESSÃO
