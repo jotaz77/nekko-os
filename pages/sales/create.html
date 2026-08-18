@@ -504,12 +504,71 @@
 
                 <div class="mt-6">
                 
-                    <h3 class="text-sm font-semibold text-white mb-3">
-                        Dados do cliente
-                        <span class="text-xs text-slate-500 font-normal">
-                            (opcionais)
+                    <div
+                        class="
+                            flex
+                            items-center
+                            justify-between
+                            mb-4
+                        "
+                    >
+                    
+                        <label
+                            for="enableCustomerInfo"
+                            class="
+                                flex
+                                items-center
+                                gap-3
+                                cursor-pointer
+                            "
+                        >
+                    
+                            <input
+                                type="checkbox"
+                                id="enableCustomerInfo"
+                                class="
+                                    w-4
+                                    h-4
+                                    rounded
+                                    border-[#29322C]
+                                    bg-[#0F1411]
+                                    text-green-500
+                                    focus:ring-green-500
+                                "
+                            >
+                    
+                            <span
+                                class="
+                                    text-sm
+                                    font-semibold
+                                    text-white
+                                "
+                            >
+                    
+                                Informações do cliente
+                    
+                            </span>
+                    
+                        </label>
+                    
+                    
+                        <span
+                            class="
+                                text-xs
+                                text-slate-500
+                            "
+                        >
+                    
+                            Opcional
+                    
                         </span>
-                    </h3>
+                    
+                    </div>
+
+                    <div
+                        id="customerFields"
+                        class="hidden"
+                    >
                 
                 
                     <!-- NOME -->
@@ -609,6 +668,8 @@
                     </div>
                 
                 </div>
+                    
+            </div>
 
 
                 <!-- BOTÃO -->
