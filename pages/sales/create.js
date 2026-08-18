@@ -1090,7 +1090,35 @@ form.addEventListener(
 
             }
 
-
+            // ---------------------------------
+            // Calcular total da venda
+            // ---------------------------------
+            
+            const totalPrice =
+                saleItems.reduce(
+                    (
+                        total,
+                        item
+                    ) =>
+                        total +
+                        Number(
+                            item.unit_price || 0
+                        ),
+                    0
+                );
+            
+            
+            if (
+                totalPrice <= 0
+            ) {
+            
+                showMessage(
+                    "O total da venda precisa ser maior que zero."
+                );
+            
+                return;
+            
+            }
             // -----------------------------
             // Desabilitar botão
             // -----------------------------
