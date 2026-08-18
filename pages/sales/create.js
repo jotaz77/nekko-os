@@ -29,6 +29,16 @@ const salePriceInput =
 const customerNameInput =
     document.getElementById("customerName");
 
+const enableCustomerInfo =
+    document.getElementById(
+        "enableCustomerInfo"
+    );
+
+const customerFields =
+    document.getElementById(
+        "customerFields"
+    );
+
 const customerDocumentInput =
     document.getElementById("customerDocument");
 
@@ -46,6 +56,51 @@ const submitButton =
 
 const message =
     document.getElementById("message");
+
+// =========================================
+// INFORMAÇÕES DO CLIENTE
+// =========================================
+
+if (
+    enableCustomerInfo &&
+    customerFields
+) {
+
+    enableCustomerInfo.addEventListener(
+        "change",
+        () => {
+
+            if (
+                enableCustomerInfo.checked
+            ) {
+
+                customerFields.classList.remove(
+                    "hidden"
+                );
+
+            } else {
+
+                customerFields.classList.add(
+                    "hidden"
+                );
+
+                // Limpar dados quando desativado
+
+                customerNameInput.value =
+                    "";
+
+                customerDocumentInput.value =
+                    "";
+
+                customerZipCodeInput.value =
+                    "";
+
+            }
+
+        }
+    );
+
+}
 
 
 // =========================================
