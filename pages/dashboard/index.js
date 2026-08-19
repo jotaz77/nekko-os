@@ -460,7 +460,7 @@ function renderDashboard(data) {
                             ">
                         
                                 ${formatCurrency(
-                                    sale.sale_price
+                                    sale.total_price
                                 )}
                         
                             </p>
