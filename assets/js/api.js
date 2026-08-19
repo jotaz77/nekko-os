@@ -797,8 +797,8 @@ Api.getDashboardData = async (
 
         .select(`
             id,
-            product_name,
-            sale_price,
+            total_price,
+            payment_method,
             store_id,
             created_at
         `)
@@ -866,7 +866,7 @@ const {
 
                 return total +
                     Number(
-                        sale.sale_price || 0
+                        sale.total_price || 0
                     );
 
             },
