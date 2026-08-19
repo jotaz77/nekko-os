@@ -877,6 +877,34 @@ const {
     const salesCount =
         sales.length;
 
+    // ---------------------------------
+    // Carregar itens das vendas
+    // ---------------------------------
+    
+    const salesWithItems =
+        await Promise.all(
+    
+            sales.map(
+                async sale => {
+    
+                    const items =
+                        await Api.getSaleItems(
+                            sale.id
+                        );
+    
+                    return {
+    
+                        ...sale,
+    
+                        items
+    
+                    };
+    
+                }
+            )
+    
+        );
+
 
     // =================================
     // Retorno
@@ -898,7 +926,7 @@ const {
 
         salesCount,
 
-        sales
+        sales: salesWithItems
 
     };
 
