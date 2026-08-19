@@ -350,16 +350,38 @@ function renderDashboard(data) {
                         <!-- INFORMAÇÕES DA VENDA -->
                 
                         <div class="min-w-0">
-                
-                            <p class="
-                                font-semibold
-                                text-white
-                                truncate
-                            ">
-                
-                                ${sale.product_name}
-                
-                            </p>
+
+                            ${
+                                sale.items && sale.items.length > 0
+                        
+                                    ? sale.items.map(
+                                        item => `
+                                            <p
+                                                class="
+                                                    font-semibold
+                                                    text-white
+                                                    truncate
+                                                "
+                                            >
+                                                ${item.product_name}
+                                            </p>
+                                        `
+                                    ).join("")
+                        
+                                    : `
+                                        <p
+                                            class="
+                                                font-semibold
+                                                text-white
+                                                truncate
+                                            "
+                                        >
+                                            Venda sem produtos
+                                        </p>
+                                    `
+                            }
+                        
+                        </div>
                 
                 
                             <p class="
