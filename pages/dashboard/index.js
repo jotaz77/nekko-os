@@ -488,6 +488,8 @@ function renderDashboard(data) {
     // ATUALIZAR ÍCONES
     lucide.createIcons();
 
+    }
+
 // =========================================
 // IMPRIMIR VENDA
 // =========================================
