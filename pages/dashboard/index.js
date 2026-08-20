@@ -279,18 +279,6 @@ function renderDashboard(data) {
     document.getElementById("deliveredOrders").textContent =
         `${data.deliveredOrders} OS entregues`;
 
-
-    // -----------------------------
-    // Técnicos
-    // -----------------------------
-
-    document.getElementById("techniciansRevenue").textContent =
-        formatCurrency(data.techniciansRevenue);
-
-
-    document.getElementById("techniciansServices").textContent =
-        `${data.techniciansServices} serviços realizados`;
-
     // -----------------------------
     // Vendas
     // -----------------------------
@@ -499,95 +487,6 @@ function renderDashboard(data) {
 
     // ATUALIZAR ÍCONES
     lucide.createIcons();
-
-    // Tabela de técnicos
-
-    const container =
-        document.getElementById("techniciansTable");
-
-    container.innerHTML = "";
-
-
-    if (!data.technicians.length) {
-
-        container.innerHTML = `
-            <div class="
-                text-center
-                text-slate-500
-                py-8
-            ">
-                Nenhum serviço técnico encontrado.
-            </div>
-        `;
-
-        return;
-
-    }
-
-
-    data.technicians.forEach(technician => {
-
-        container.innerHTML += `
-
-            <div class="
-                flex
-                items-center
-                justify-between
-                gap-4
-                bg-[#0F1411]
-                border
-                border-[#29322C]
-                rounded-2xl
-                px-5
-                py-4
-            ">
-
-                <div>
-
-                    <p class="
-                        font-semibold
-                        text-white
-                    ">
-                        ${technician.name}
-                    </p>
-
-                    <p class="
-                        text-sm
-                        text-slate-500
-                        mt-1
-                    ">
-                        ${technician.services} serviços
-                    </p>
-
-                </div>
-
-
-                <div class="text-right">
-
-                    <p class="
-                        font-semibold
-                        text-green-400
-                    ">
-                        ${formatCurrency(technician.revenue)}
-                    </p>
-
-                    <p class="
-                        text-xs
-                        text-slate-500
-                        mt-1
-                    ">
-                        produção bruta
-                    </p>
-
-                </div>
-
-            </div>
-
-        `;
-
-    });
-
-}
 
 // =========================================
 // IMPRIMIR VENDA
