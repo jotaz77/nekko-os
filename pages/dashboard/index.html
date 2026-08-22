@@ -707,6 +707,179 @@
 
 </div>
 
+    <!-- MODAL — OS ENTREGUES -->
+
+<div
+    id="osDeliveredModal"
+    class="
+        hidden
+        fixed
+        inset-0
+        z-50
+        flex
+        items-center
+        justify-center
+        bg-black/70
+        backdrop-blur-sm
+        px-4
+    "
+>
+
+    <div
+        class="
+            w-full
+            max-w-2xl
+            max-h-[85vh]
+            overflow-hidden
+            bg-[#141A16]
+            border
+            border-[#29322C]
+            rounded-3xl
+            shadow-2xl
+        "
+    >
+
+        <!-- CABEÇALHO -->
+
+        <div
+            class="
+                flex
+                items-center
+                justify-between
+                p-6
+                border-b
+                border-[#29322C]
+            "
+        >
+
+            <div>
+
+                <h2
+                    class="
+                        text-xl
+                        font-semibold
+                        text-white
+                    "
+                >
+                    OS entregues
+                </h2>
+
+                <p
+                    id="osDeliveredModalPeriod"
+                    class="
+                        text-sm
+                        text-slate-500
+                        mt-1
+                    "
+                >
+                    Hoje
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="closeOsDeliveredModal"
+                class="
+                    w-9
+                    h-9
+                    rounded-xl
+                    border
+                    border-[#29322C]
+                    bg-[#0F1411]
+                    text-slate-400
+                    hover:text-white
+                    transition
+                    flex
+                    items-center
+                    justify-center
+                "
+            >
+
+                <i
+                    data-lucide="x"
+                    class="w-4 h-4"
+                ></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- LISTA -->
+
+        <div
+            id="osDeliveredList"
+            class="
+                p-6
+                space-y-3
+                overflow-y-auto
+                max-h-[55vh]
+            "
+        >
+
+            <!-- JS -->
+
+        </div>
+
+
+        <!-- TOTAL -->
+
+        <div
+            class="
+                flex
+                items-center
+                justify-between
+                p-6
+                border-t
+                border-[#29322C]
+            "
+        >
+
+            <div>
+
+                <span
+                    class="
+                        text-sm
+                        font-medium
+                        text-slate-400
+                    "
+                >
+                    Total das OS entregues
+                </span>
+
+                <p
+                    id="osDeliveredCount"
+                    class="
+                        text-xs
+                        text-slate-500
+                        mt-1
+                    "
+                >
+                    0 OS entregues
+                </p>
+
+            </div>
+
+
+            <strong
+                id="osDeliveredTotal"
+                class="
+                    text-2xl
+                    font-bold
+                    text-green-400
+            "
+            >
+                R$ 0,00
+            </strong>
+
+        </div>
+
+    </div>
+
+</div>
+
     <!-- LOADING -->
 
     <div
