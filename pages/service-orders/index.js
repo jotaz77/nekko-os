@@ -228,11 +228,63 @@ function renderOrders(orders) {
 
                         </p>
 
-                        <p class="text-sm text-slate-400 mt-1.5">
+                        <div class="mt-3">
 
-                            🔧 ${order.service || "--"}
-
-                        </p>
+                            <p
+                                class="
+                                    text-sm
+                                    text-slate-400
+                                    mb-2
+                                "
+                            >
+                                🔧 Serviços
+                            </p>
+                        
+                        
+                            ${
+                                order.service_order_items?.length
+                                    ? order.service_order_items.map(
+                                        item => `
+                                            <div
+                                                class="
+                                                    flex
+                                                    items-center
+                                                    justify-between
+                                                    gap-4
+                                                    text-sm
+                                                    text-slate-300
+                                                    mt-1.5
+                                                "
+                                            >
+                        
+                                                <span class="truncate">
+                                                    • ${item.service_name}
+                                                </span>
+                        
+                        
+                                                <span
+                                                    class="
+                                                        text-green-400
+                                                        font-medium
+                                                        whitespace-nowrap
+                                                    "
+                                                >
+                                                    ${formatCurrency(
+                                                        item.unit_price
+                                                    )}
+                                                </span>
+                        
+                                            </div>
+                                        `
+                                    ).join("")
+                                    : `
+                                        <p class="text-sm text-slate-500">
+                                            ${order.service || "--"}
+                                        </p>
+                                    `
+                            }
+                        
+                        </div>
 
                         <p class="text-sm text-slate-400 mt-1.5">
 
