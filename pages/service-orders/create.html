@@ -222,31 +222,243 @@
 
         </section>
 
-        <!-- SERVIÇO -->
+        <!-- SERVIÇOS -->
 
-        <section class="bg-[#141A16] border border-[#29322C] rounded-3xl p-8">
+<section
+    class="
+        bg-[#141A16]
+        border
+        border-[#29322C]
+        rounded-3xl
+        p-8
+    "
+>
 
-            <h2 class="text-xl font-semibold mb-6">
-                🔧 Serviço
+    <div
+        class="
+            flex
+            items-center
+            justify-between
+            mb-6
+        "
+    >
+
+        <div>
+
+            <h2 class="text-xl font-semibold">
+                🔧 Serviços
             </h2>
 
-            <div class="grid md:grid-cols-2 gap-5">
+            <p class="text-sm text-slate-500 mt-1">
+                Adicione todos os serviços realizados neste aparelho.
+            </p>
 
-                <input
-                    id="service"
-                    type="text"
-                    placeholder="Serviço"
-                    class="bg-[#0F1411] border border-[#29322C] rounded-xl p-3">
+        </div>
+
+        <span
+            id="serviceItemsCount"
+            class="text-xs text-slate-500"
+        >
+            0 serviços
+        </span>
+
+    </div>
+
+
+    <!-- ============================== -->
+    <!-- NOVO SERVIÇO -->
+    <!-- ============================== -->
+
+    <div class="grid md:grid-cols-[1fr_180px_auto] gap-4">
+
+        <div>
+
+            <label
+                for="service"
+                class="
+                    block
+                    text-sm
+                    font-medium
+                    text-slate-300
+                    mb-2
+                "
+            >
+                Serviço
+            </label>
+
+            <input
+                id="service"
+                type="text"
+                placeholder="Ex.: Troca de tela"
+                class="
+                    w-full
+                    bg-[#0F1411]
+                    border
+                    border-[#29322C]
+                    rounded-xl
+                    p-3
+                    outline-none
+                    focus:border-green-500
+                    transition
+                "
+            >
+
+        </div>
+
+
+        <div>
+
+            <label
+                for="price"
+                class="
+                    block
+                    text-sm
+                    font-medium
+                    text-slate-300
+                    mb-2
+                "
+            >
+                Valor
+            </label>
+
+            <div class="relative">
+
+                <span
+                    class="
+                        absolute
+                        left-3
+                        top-1/2
+                        -translate-y-1/2
+                        text-slate-500
+                    "
+                >
+                    R$
+                </span>
 
                 <input
                     id="price"
                     type="text"
-                    placeholder="Valor"
-                    class="bg-[#0F1411] border border-[#29322C] rounded-xl p-3">
+                    inputmode="decimal"
+                    placeholder="0,00"
+                    class="
+                        w-full
+                        bg-[#0F1411]
+                        border
+                        border-[#29322C]
+                        rounded-xl
+                        pl-11
+                        pr-3
+                        py-3
+                        outline-none
+                        focus:border-green-500
+                        transition
+                    "
+                >
 
             </div>
 
-        </section>
+        </div>
+
+
+        <div
+            class="
+                flex
+                items-end
+            "
+        >
+
+            <button
+                type="button"
+                id="addServiceItem"
+                class="
+                    w-full
+                    md:w-auto
+                    px-5
+                    py-3
+                    rounded-xl
+                    bg-white/5
+                    border
+                    border-[#29322C]
+                    hover:border-green-500/50
+                    hover:bg-white/10
+                    transition
+                    font-semibold
+                    flex
+                    items-center
+                    justify-center
+                    gap-2
+                    whitespace-nowrap
+                "
+            >
+
+                <i
+                    data-lucide="plus"
+                    class="w-4 h-4"
+                ></i>
+
+                Adicionar
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================== -->
+    <!-- LISTA DE SERVIÇOS -->
+    <!-- ============================== -->
+
+    <div
+        id="serviceItemsContainer"
+        class="hidden mt-8"
+    >
+
+        <div
+            id="serviceItemsList"
+            class="space-y-3"
+        ></div>
+
+
+        <!-- TOTAL -->
+
+        <div
+            class="
+                flex
+                items-center
+                justify-between
+                mt-5
+                pt-5
+                border-t
+                border-[#29322C]
+            "
+        >
+
+            <span
+                class="
+                    text-sm
+                    text-slate-400
+                "
+            >
+                Total dos serviços
+            </span>
+
+            <strong
+                id="serviceTotal"
+                class="
+                    text-xl
+                    font-bold
+                    text-green-400
+                "
+            >
+                R$ 0,00
+            </strong>
+
+        </div>
+
+    </div>
+
+</section>
 
         <!-- DIAGNÓSTICO -->
 
