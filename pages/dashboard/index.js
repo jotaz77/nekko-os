@@ -830,6 +830,39 @@ document.addEventListener(
             
             }
 
+            // =========================================
+            // FECHAR MODAL
+            // =========================================
+            
+            document
+                .getElementById(
+                    "closeSalesPaymentModal"
+                )
+                ?.addEventListener(
+                    "click",
+                    closeSalesPaymentModal
+                );
+
+            document
+                .getElementById(
+                    "salesPaymentModal"
+                )
+                ?.addEventListener(
+                    "click",
+                    (event) => {
+            
+                        if (
+                            event.target.id ===
+                            "salesPaymentModal"
+                        ) {
+            
+                            closeSalesPaymentModal();
+            
+                        }
+            
+                    }
+                );
+
 
             lucide.createIcons();
 
