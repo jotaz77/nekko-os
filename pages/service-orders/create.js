@@ -887,42 +887,32 @@ function validateForm() {
             id: "customerName",
             label: "Nome do cliente"
         },
-
+    
         {
             id: "deviceType",
             label: "Tipo de dispositivo"
         },
-
+    
         {
             id: "brand",
             label: "Marca"
         },
-
+    
         {
             id: "model",
             label: "Modelo"
         },
-
-        {
-            id: "service",
-            label: "Serviço"
-        },
-
-        {
-            id: "price",
-            label: "Valor"
-        },
-
+    
         {
             id: "problem",
             label: "Defeito relatado"
         },
-
+    
         {
             id: "technician",
             label: "Técnico"
         }
-
+    
     ];
 
     for (const field of requiredFields) {
