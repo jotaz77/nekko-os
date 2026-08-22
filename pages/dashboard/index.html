@@ -711,6 +711,7 @@
 
 <div
     id="osDeliveredModal"
+    onclick="if(event.target === this) this.classList.add('hidden')"
     class="
         hidden
         fixed
@@ -781,7 +782,7 @@
             <button
                 type="button"
                 id="closeOsDeliveredModal"
-                onclick="closeOsDeliveredModal()"
+                onclick="document.getElementById('osDeliveredModal').classList.add('hidden')"
                 class="
                     w-9
                     h-9
