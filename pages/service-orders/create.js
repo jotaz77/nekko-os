@@ -55,6 +55,28 @@ const cpfInput = document.getElementById("customerCpf");
 const cepInput = document.getElementById("customerCep");
 const phoneInput = document.getElementById("customerPhone");
 
+const serviceInput =
+    document.getElementById("service");
+
+const servicePriceInput =
+    document.getElementById("price");
+
+const addServiceItemButton =
+    document.getElementById("addServiceItem");
+
+const serviceItemsContainer =
+    document.getElementById("serviceItemsContainer");
+
+const serviceItemsList =
+    document.getElementById("serviceItemsList");
+
+const serviceItemsCount =
+    document.getElementById("serviceItemsCount");
+
+const serviceTotal =
+    document.getElementById("serviceTotal");
+
+
 // =========================================
 // CONTEXTO DA SESSÃO
 // =========================================
@@ -63,6 +85,7 @@ let context = null;
 let editingId = null;
 let isEditing = false;
 let editingOrder = null;
+let serviceItems = [];
 
 let pattern = [];
 let isDrawing = false;
@@ -562,6 +585,295 @@ async function loadTechnicians() {
     }
 
 }
+
+// =========================================
+// SERVIÇOS CUMULATIVOS
+// =========================================
+
+function parseServicePrice(value) {
+
+    return Number(
+        String(value || "0")
+            .replace(/\./g, "")
+            .replace(",", ".")
+    ) || 0;
+
+}
+
+
+function formatServiceCurrency(value) {
+
+    return Number(value || 0).toLocaleString(
+        "pt-BR",
+        {
+            style: "currency",
+            currency: "BRL"
+        }
+    );
+
+}
+
+
+function renderServiceItems() {
+
+    if (!serviceItemsList)
+        return;
+
+
+    serviceItemsList.innerHTML = "";
+
+
+    if (!serviceItems.length) {
+
+        serviceItemsContainer
+            ?.classList.add("hidden");
+
+        serviceItemsCount.textContent =
+            "0 serviços";
+
+        serviceTotal.textContent =
+            "R$ 0,00";
+
+        return;
+
+    }
+
+
+    serviceItemsContainer
+        ?.classList.remove("hidden");
+
+
+    serviceItemsCount.textContent =
+        `${serviceItems.length} ${
+            serviceItems.length === 1
+                ? "serviço"
+                : "serviços"
+        }`;
+
+
+    let total = 0;
+
+
+    serviceItems.forEach(
+        (item, index) => {
+
+            total += Number(
+                item.unit_price || 0
+            );
+
+
+            serviceItemsList.innerHTML += `
+
+                <div
+                    class="
+                        flex
+                        items-center
+                        justify-between
+                        gap-4
+                        bg-[#0F1411]
+                        border
+                        border-[#29322C]
+                        rounded-2xl
+                        px-4
+                        py-4
+                    "
+                >
+
+                    <div class="min-w-0">
+
+                        <p
+                            class="
+                                font-medium
+                                text-white
+                                truncate
+                            "
+                        >
+                            ${item.service_name}
+                        </p>
+
+                        <p
+                            class="
+                                text-xs
+                                text-slate-500
+                                mt-1
+                            "
+                        >
+                            Serviço ${index + 1}
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        class="
+                            flex
+                            items-center
+                            gap-3
+                            shrink-0
+                        "
+                    >
+
+                        <strong
+                            class="
+                                text-green-400
+                            "
+                        >
+                            ${formatServiceCurrency(
+                                item.unit_price
+                            )}
+                        </strong>
+
+
+                        <button
+                            type="button"
+                            class="
+                                w-9
+                                h-9
+                                rounded-xl
+                                border
+                                border-red-500/20
+                                bg-red-500/5
+                                text-red-400
+                                hover:bg-red-500/10
+                                transition
+                                flex
+                                items-center
+                                justify-center
+                            "
+                            data-service-index="${index}"
+                            title="Remover serviço"
+                        >
+
+                            <i
+                                data-lucide="trash-2"
+                                class="w-4 h-4"
+                            ></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    serviceTotal.textContent =
+        formatServiceCurrency(total);
+
+
+    lucide.createIcons();
+
+}
+
+
+function addServiceItem() {
+
+    const serviceName =
+        serviceInput?.value.trim();
+
+
+    const price =
+        parseServicePrice(
+            servicePriceInput?.value
+        );
+
+
+    if (!serviceName) {
+
+        showMessage(
+            "Informe o serviço.",
+            "error"
+        );
+
+        serviceInput?.focus();
+
+        return;
+
+    }
+
+
+    if (price <= 0) {
+
+        showMessage(
+            "Informe um valor válido para o serviço.",
+            "error"
+        );
+
+        servicePriceInput?.focus();
+
+        return;
+
+    }
+
+
+    serviceItems.push({
+
+        service_name:
+            serviceName,
+
+        unit_price:
+            price
+
+    });
+
+
+    serviceInput.value = "";
+
+    servicePriceInput.value = "";
+
+    serviceInput.focus();
+
+
+    renderServiceItems();
+
+}
+
+
+function removeServiceItem(index) {
+
+    serviceItems.splice(
+        index,
+        1
+    );
+
+
+    renderServiceItems();
+
+}
+
+addServiceItemButton?.addEventListener(
+    "click",
+    addServiceItem
+);
+
+serviceItemsList?.addEventListener(
+    "click",
+    (event) => {
+
+        const button =
+            event.target.closest(
+                "[data-service-index]"
+            );
+
+
+        if (!button)
+            return;
+
+
+        const index =
+            Number(
+                button.dataset.serviceIndex
+            );
+
+
+        removeServiceItem(index);
+
+    }
+);
 
 // =========================================
 // VALIDAÇÃO
