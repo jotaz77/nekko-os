@@ -825,11 +825,9 @@ function openOsDeliveredModal() {
                                     text-white
                                 "
                             >
-                                OS #${order.id
-                                    ? order.id
-                                        .slice(0, 8)
-                                        .toUpperCase()
-                                    : "--------"}
+                                OS #${String(
+                                    order.os_number || 0
+                                ).padStart(6, "0")}    
                             </p>
 
 
