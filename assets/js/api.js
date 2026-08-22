@@ -609,6 +609,16 @@ Api.getDashboardData = async (
 
     let deliveredOrders = 0;
 
+    // =================================
+    // Lista de OS entregues
+    // =================================
+    
+    const deliveredOrdersList =
+        serviceOrders.filter(
+            order =>
+                order.status === "Entregue"
+        );
+
 
     // =================================
     // Técnicos
@@ -974,7 +984,9 @@ const {
 
         sales: salesWithItems,
         
-        salesByPayment
+        salesByPayment,
+
+        deliveredOrdersList
         
     };
 
