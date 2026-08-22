@@ -1151,8 +1151,8 @@ document.addEventListener(
                     (event) => {
             
                         if (
-                            event.target.id ===
-                            "osDeliveredModal"
+                            event.target ===
+                            event.currentTarget
                         ) {
             
                             closeOsDeliveredModal();
