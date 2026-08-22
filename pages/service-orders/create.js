@@ -1114,15 +1114,18 @@ function buildServiceOrder() {
             .value
             .trim(),
 
-        price: Number(
-
-            document
-                .getElementById("price")
-                .value
-                .replace(/\./g, "")
-                .replace(",", ".")
-
-        ) || 0,
+        price:
+            serviceItems.reduce(
+                (total, item) => {
+        
+                    return total +
+                        Number(
+                            item.unit_price || 0
+                        );
+        
+                },
+                0
+            ),
 
         reported_issue: document
             .getElementById("problem")
@@ -1404,6 +1407,27 @@ form.addEventListener("submit", async (e) => {
                 serviceOrder
             );
 
+        // =====================================
+        // SALVAR SERVIÇOS DA OS
+        // =====================================
+        
+        for (
+            const item of serviceItems
+        ) {
+        
+            await Api.createServiceOrderItem({
+        
+                service_order_id:
+                    data.id,
+        
+                service_name:
+                    item.service_name,
+        
+                unit_price:
+                    item.unit_price
+        
+            });
+        
         }
 
         // =====================================
