@@ -244,6 +244,9 @@ async function loadDashboard() {
                 storeId
             );
 
+        window.dashboardData =
+            data;
+
         renderDashboard(data);
 
     }
@@ -491,6 +494,126 @@ function renderDashboard(data) {
     }
 
 // =========================================
+// MODAL — VENDAS POR PAGAMENTO
+// =========================================
+
+function openSalesPaymentModal() {
+
+    const modal =
+        document.getElementById(
+            "salesPaymentModal"
+        );
+
+
+    if (!modal)
+        return;
+
+
+    const data =
+        window.dashboardData;
+
+
+    if (!data)
+        return;
+
+
+    const payments =
+        data.salesByPayment || {};
+
+
+    // -----------------------------
+    // Valores
+    // -----------------------------
+
+    document.getElementById(
+        "salesPaymentPix"
+    ).textContent =
+        formatCurrency(
+            payments.pix || 0
+        );
+
+
+    document.getElementById(
+        "salesPaymentDebit"
+    ).textContent =
+        formatCurrency(
+            payments.debit || 0
+        );
+
+
+    document.getElementById(
+        "salesPaymentCash"
+    ).textContent =
+        formatCurrency(
+            payments.cash || 0
+        );
+
+
+    document.getElementById(
+        "salesPaymentCreditCash"
+    ).textContent =
+        formatCurrency(
+            payments.credit_cash || 0
+        );
+
+
+    document.getElementById(
+        "salesPaymentCreditInstallments"
+    ).textContent =
+        formatCurrency(
+            payments.credit_installments || 0
+        );
+
+
+    // -----------------------------
+    // Total
+    // -----------------------------
+
+    document.getElementById(
+        "salesPaymentTotal"
+    ).textContent =
+        formatCurrency(
+            data.salesRevenue || 0
+        );
+
+
+    // -----------------------------
+    // Mostrar modal
+    // -----------------------------
+
+    modal.classList.remove(
+        "hidden"
+    );
+
+
+    lucide.createIcons();
+
+}
+
+
+// =========================================
+// FECHAR MODAL
+// =========================================
+
+function closeSalesPaymentModal() {
+
+    const modal =
+        document.getElementById(
+            "salesPaymentModal"
+        );
+
+
+    if (!modal)
+        return;
+
+
+    modal.classList.add(
+        "hidden"
+    );
+
+}
+
+// =========================================
 // IMPRIMIR VENDA
 // =========================================
 
@@ -685,6 +808,27 @@ document.addEventListener(
                 );
             
             updateOsFilterButtons();
+
+            // =========================================
+            // CLIQUE — TOTAL DE VENDAS
+            // =========================================
+            
+            const salesCard =
+                document.getElementById(
+                    "salesRevenue"
+                )?.closest(
+                    "div.cursor-pointer"
+                );
+            
+            
+            if (salesCard) {
+            
+                salesCard.addEventListener(
+                    "click",
+                    openSalesPaymentModal
+                );
+            
+            }
 
 
             lucide.createIcons();
