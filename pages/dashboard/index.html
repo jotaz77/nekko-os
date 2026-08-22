@@ -258,6 +258,9 @@
             border-[#29322C]
             rounded-3xl
             p-6
+            cursor-pointer
+            hover:border-purple-400/40
+            transition
         ">
 
             <div class="flex items-center justify-between mb-5">
@@ -415,6 +418,290 @@
         </div>
 
     </section>
+
+    <!-- MODAL — DETALHES DAS VENDAS -->
+
+<div
+    id="salesPaymentModal"
+    class="
+        hidden
+        fixed
+        inset-0
+        z-50
+        flex
+        items-center
+        justify-center
+        bg-black/70
+        backdrop-blur-sm
+        px-4
+    "
+>
+
+    <div
+        class="
+            w-full
+            max-w-lg
+            bg-[#141A16]
+            border
+            border-[#29322C]
+            rounded-3xl
+            shadow-2xl
+            p-6
+        "
+    >
+
+        <!-- CABEÇALHO -->
+
+        <div
+            class="
+                flex
+                items-center
+                justify-between
+                mb-6
+            "
+        >
+
+            <div>
+
+                <h2
+                    class="
+                        text-xl
+                        font-semibold
+                        text-white
+                    "
+                >
+                    Vendas por pagamento
+                </h2>
+
+                <p
+                    id="salesPaymentModalPeriod"
+                    class="
+                        text-sm
+                        text-slate-500
+                        mt-1
+                    "
+                >
+                    Hoje
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="closeSalesPaymentModal"
+                class="
+                    w-9
+                    h-9
+                    rounded-xl
+                    border
+                    border-[#29322C]
+                    bg-[#0F1411]
+                    text-slate-400
+                    hover:text-white
+                    transition
+                    flex
+                    items-center
+                    justify-center
+                "
+            >
+
+                <i
+                    data-lucide="x"
+                    class="w-4 h-4"
+                ></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- FORMAS DE PAGAMENTO -->
+
+        <div class="space-y-3">
+
+            <div
+                class="
+                    flex
+                    items-center
+                    justify-between
+                    bg-[#0F1411]
+                    border
+                    border-[#29322C]
+                    rounded-2xl
+                    px-4
+                    py-4
+                "
+            >
+
+                <span class="text-slate-300">
+                    PIX
+                </span>
+
+                <strong
+                    id="salesPaymentPix"
+                    class="text-white"
+                >
+                    R$ 0,00
+                </strong>
+
+            </div>
+
+
+            <div
+                class="
+                    flex
+                    items-center
+                    justify-between
+                    bg-[#0F1411]
+                    border
+                    border-[#29322C]
+                    rounded-2xl
+                    px-4
+                    py-4
+                "
+            >
+
+                <span class="text-slate-300">
+                    Débito
+                </span>
+
+                <strong
+                    id="salesPaymentDebit"
+                    class="text-white"
+                >
+                    R$ 0,00
+                </strong>
+
+            </div>
+
+
+            <div
+                class="
+                    flex
+                    items-center
+                    justify-between
+                    bg-[#0F1411]
+                    border
+                    border-[#29322C]
+                    rounded-2xl
+                    px-4
+                    py-4
+                "
+            >
+
+                <span class="text-slate-300">
+                    Dinheiro
+                </span>
+
+                <strong
+                    id="salesPaymentCash"
+                    class="text-white"
+                >
+                    R$ 0,00
+                </strong>
+
+            </div>
+
+
+            <div
+                class="
+                    flex
+                    items-center
+                    justify-between
+                    bg-[#0F1411]
+                    border
+                    border-[#29322C]
+                    rounded-2xl
+                    px-4
+                    py-4
+                "
+            >
+
+                <span class="text-slate-300">
+                    Crédito à vista
+                </span>
+
+                <strong
+                    id="salesPaymentCreditCash"
+                    class="text-white"
+                >
+                    R$ 0,00
+                </strong>
+
+            </div>
+
+
+            <div
+                class="
+                    flex
+                    items-center
+                    justify-between
+                    bg-[#0F1411]
+                    border
+                    border-[#29322C]
+                    rounded-2xl
+                    px-4
+                    py-4
+                "
+            >
+
+                <span class="text-slate-300">
+                    Crédito parcelado
+                </span>
+
+                <strong
+                    id="salesPaymentCreditInstallments"
+                    class="text-white"
+                >
+                    R$ 0,00
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- TOTAL -->
+
+        <div
+            class="
+                flex
+                items-center
+                justify-between
+                mt-6
+                pt-5
+                border-t
+                border-[#29322C]
+            "
+        >
+
+            <span
+                class="
+                    text-sm
+                    font-medium
+                    text-slate-400
+                "
+            >
+                Total
+            </span>
+
+            <strong
+                id="salesPaymentTotal"
+                class="
+                    text-2xl
+                    font-bold
+                    text-purple-400
+            "
+            >
+                R$ 0,00
+            </strong>
+
+        </div>
+
+    </div>
+
+</div>
 
     <!-- LOADING -->
 
