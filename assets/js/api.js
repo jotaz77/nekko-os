@@ -347,6 +347,74 @@ Api.createServiceOrderItem = async (
 };
 
 // =====================================
+// BUSCAR ITENS DA ORDEM DE SERVIÇO
+// =====================================
+
+Api.getServiceOrderItems = async (
+    serviceOrderId
+) => {
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+
+        .from("service_order_items")
+
+        .select("*")
+
+        .eq(
+            "service_order_id",
+            serviceOrderId
+        )
+
+        .order(
+            "created_at",
+            {
+                ascending: true
+            }
+        );
+
+
+    if (error)
+        throw error;
+
+
+    return data || [];
+
+};
+
+// =====================================
+// EXCLUIR ITEM DA ORDEM DE SERVIÇO
+// =====================================
+
+Api.deleteServiceOrderItem = async (
+    itemId
+) => {
+
+    const {
+        error
+    } = await supabaseClient
+
+        .from("service_order_items")
+
+        .delete()
+
+        .eq(
+            "id",
+            itemId
+        );
+
+
+    if (error)
+        throw error;
+
+
+    return true;
+
+};
+
+// =====================================
 // TÉCNICOS
 // =====================================
 
