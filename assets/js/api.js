@@ -306,6 +306,47 @@ const Api = {
 };
 
 // =====================================
+// ITENS DA ORDEM DE SERVIÇO
+// =====================================
+
+Api.createServiceOrderItem = async (
+    item
+) => {
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+
+        .from("service_order_items")
+
+        .insert({
+
+            service_order_id:
+                item.service_order_id,
+
+            service_name:
+                item.service_name,
+
+            unit_price:
+                item.unit_price || 0
+
+        })
+
+        .select()
+
+        .single();
+
+
+    if (error)
+        throw error;
+
+
+    return data;
+
+};
+
+// =====================================
 // TÉCNICOS
 // =====================================
 
