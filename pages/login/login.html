@@ -3,112 +3,973 @@
 
 <head>
 
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Login • Nekko OS</title>
+
+
+    <!-- Favicon -->
+
     <link
         rel="icon"
         type="image/png"
         href="../../assets/img/nekkologo_favicon.png"
     >
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Login • Nekko OS</title>
 
     <!-- Tailwind -->
+
     <script src="https://cdn.tailwindcss.com"></script>
 
+
     <!-- Supabase -->
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <!-- Configuração visual -->
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            font-family:
+                Inter,
+                ui-sans-serif,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+        }
+
+
+        .login-bg {
+            background:
+                radial-gradient(
+                    circle at 20% 20%,
+                    rgba(34, 197, 94, 0.10),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at 80% 80%,
+                    rgba(34, 197, 94, 0.06),
+                    transparent 30%
+                ),
+                #090D0A;
+        }
+
+
+        .glow {
+            box-shadow:
+                0 0 80px rgba(34, 197, 94, 0.08);
+        }
+
+
+        .grid-pattern {
+            background-image:
+                linear-gradient(
+                    rgba(255,255,255,0.025) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(255,255,255,0.025) 1px,
+                    transparent 1px
+                );
+
+            background-size:
+                42px 42px;
+        }
+
+
+        .glass {
+            background:
+                rgba(20, 26, 22, 0.88);
+
+            backdrop-filter:
+                blur(20px);
+
+            -webkit-backdrop-filter:
+                blur(20px);
+        }
+
+
+        .input-field {
+            transition:
+                border-color 180ms ease,
+                box-shadow 180ms ease,
+                background-color 180ms ease;
+        }
+
+
+        .input-field:focus {
+            border-color:
+                rgba(34, 197, 94, 0.70);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(34, 197, 94, 0.10);
+
+            background:
+                rgba(15, 20, 17, 0.95);
+        }
+
+
+        .login-button {
+            transition:
+                transform 180ms ease,
+                box-shadow 180ms ease,
+                background-color 180ms ease;
+        }
+
+
+        .login-button:hover {
+            transform:
+                translateY(-1px);
+
+            box-shadow:
+                0 12px 30px
+                rgba(34, 197, 94, 0.18);
+        }
+
+
+        .login-button:active {
+            transform:
+                translateY(0);
+        }
+
+
+        .brand-orb {
+            box-shadow:
+                0 0 70px
+                rgba(34, 197, 94, 0.14),
+                inset 0 0 30px
+                rgba(34, 197, 94, 0.05);
+        }
+
+    </style>
 
 </head>
 
-<body class="min-h-screen bg-slate-100 flex items-center justify-center p-6">
 
-    <div class="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
+<body
+    class="
+        min-h-screen
+        login-bg
+        text-white
+        overflow-x-hidden
+    "
+>
 
-        <div class="text-center mb-8">
 
-            <h1 class="text-3xl font-bold text-slate-800">
-                Nekko OS
-            </h1>
+    <!-- ========================================= -->
+    <!-- FUNDO -->
+    <!-- ========================================= -->
 
-            <p class="text-slate-500 mt-2">
-                Faça login para continuar
-            </p>
+    <div
+        class="
+            fixed
+            inset-0
+            pointer-events-none
+            grid-pattern
+            opacity-40
+        "
+    ></div>
+
+
+    <div
+        class="
+            fixed
+            -top-40
+            -left-40
+            w-96
+            h-96
+            rounded-full
+            bg-green-500/5
+            blur-3xl
+            pointer-events-none
+        "
+    ></div>
+
+
+    <div
+        class="
+            fixed
+            -bottom-40
+            -right-40
+            w-96
+            h-96
+            rounded-full
+            bg-green-500/5
+            blur-3xl
+            pointer-events-none
+        "
+    ></div>
+
+
+
+    <!-- ========================================= -->
+    <!-- CONTAINER -->
+    <!-- ========================================= -->
+
+    <main
+        class="
+            relative
+            z-10
+            min-h-screen
+            flex
+            items-center
+            justify-center
+            p-5
+            md:p-8
+        "
+    >
+
+
+        <div
+            class="
+                w-full
+                max-w-6xl
+                min-h-[680px]
+                grid
+                grid-cols-1
+                lg:grid-cols-2
+                overflow-hidden
+                rounded-[32px]
+                border
+                border-[#29322C]
+                bg-[#0F1411]/90
+                shadow-2xl
+                glow
+            "
+        >
+
+
+            <!-- ================================= -->
+            <!-- LADO ESQUERDO -->
+            <!-- ================================= -->
+
+            <section
+                class="
+                    relative
+                    hidden
+                    lg:flex
+                    flex-col
+                    justify-between
+                    overflow-hidden
+                    p-12
+                    xl:p-16
+                    bg-[#0C120E]
+                    border-r
+                    border-[#29322C]
+                "
+            >
+
+
+                <!-- decoração -->
+
+                <div
+                    class="
+                        absolute
+                        -top-32
+                        -right-32
+                        w-80
+                        h-80
+                        rounded-full
+                        bg-green-500/10
+                        blur-3xl
+                    "
+                ></div>
+
+
+                <div
+                    class="
+                        absolute
+                        -bottom-40
+                        -left-32
+                        w-96
+                        h-96
+                        rounded-full
+                        bg-green-500/5
+                        blur-3xl
+                    "
+                ></div>
+
+
+
+                <!-- Logo -->
+
+                <div
+                    class="
+                        relative
+                        z-10
+                    "
+                >
+
+                    <div
+                        class="
+                            flex
+                            items-center
+                            gap-4
+                        "
+                    >
+
+                        <div
+                            class="
+                                w-14
+                                h-14
+                                rounded-2xl
+                                border
+                                border-green-500/20
+                                bg-green-500/10
+                                flex
+                                items-center
+                                justify-center
+                                brand-orb
+                            "
+                        >
+
+                            <img
+                                src="../../assets/img/nekkologo_favicon.png"
+                                alt="Nekko"
+                                class="
+                                    w-8
+                                    h-8
+                                    object-contain
+                                "
+                            >
+
+                        </div>
+
+
+                        <div>
+
+                            <p
+                                class="
+                                    text-xs
+                                    uppercase
+                                    tracking-[0.28em]
+                                    text-green-400
+                                    font-semibold
+                                "
+                            >
+                                NEKKO
+                            </p>
+
+                            <h1
+                                class="
+                                    text-2xl
+                                    font-bold
+                                    tracking-tight
+                                "
+                            >
+                                Nekko OS
+                            </h1>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Texto principal -->
+
+                <div
+                    class="
+                        relative
+                        z-10
+                        max-w-xl
+                    "
+                >
+
+                    <p
+                        class="
+                            text-sm
+                            uppercase
+                            tracking-[0.22em]
+                            text-green-400/80
+                            font-semibold
+                            mb-5
+                        "
+                    >
+                        Gestão inteligente
+                    </p>
+
+
+                    <h2
+                        class="
+                            text-4xl
+                            xl:text-5xl
+                            font-bold
+                            leading-tight
+                            tracking-tight
+                        "
+                    >
+
+                        Sua empresa inteira.
+                        <span
+                            class="text-green-400"
+                        >
+                            Um só sistema.
+                        </span>
+
+                    </h2>
+
+
+                    <p
+                        class="
+                            mt-6
+                            text-base
+                            xl:text-lg
+                            leading-8
+                            text-slate-400
+                            max-w-lg
+                        "
+                    >
+                        Controle estoque, vendas e ordens de serviço
+                        em um ambiente centralizado, rápido e pensado
+                        para a operação da sua empresa.
+                    </p>
+
+
+
+                    <!-- módulos -->
+
+                    <div
+                        class="
+                            grid
+                            grid-cols-2
+                            gap-3
+                            mt-10
+                            max-w-md
+                        "
+                    >
+
+                        <div
+                            class="
+                                rounded-2xl
+                                border
+                                border-[#29322C]
+                                bg-[#111712]
+                                px-4
+                                py-4
+                            "
+                        >
+
+                            <p
+                                class="
+                                    text-sm
+                                    font-semibold
+                                "
+                            >
+                                Estoque
+                            </p>
+
+                            <p
+                                class="
+                                    text-xs
+                                    text-slate-500
+                                    mt-1
+                                "
+                            >
+                                Produtos e movimentações
+                            </p>
+
+                        </div>
+
+
+                        <div
+                            class="
+                                rounded-2xl
+                                border
+                                border-[#29322C]
+                                bg-[#111712]
+                                px-4
+                                py-4
+                            "
+                        >
+
+                            <p
+                                class="
+                                    text-sm
+                                    font-semibold
+                                "
+                            >
+                                Vendas
+                            </p>
+
+                            <p
+                                class="
+                                    text-xs
+                                    text-slate-500
+                                    mt-1
+                                "
+                            >
+                                Pagamentos e faturamento
+                            </p>
+
+                        </div>
+
+
+                        <div
+                            class="
+                                rounded-2xl
+                                border
+                                border-[#29322C]
+                                bg-[#111712]
+                                px-4
+                                py-4
+                            "
+                        >
+
+                            <p
+                                class="
+                                    text-sm
+                                    font-semibold
+                                "
+                            >
+                                Ordens
+                            </p>
+
+                            <p
+                                class="
+                                    text-xs
+                                    text-slate-500
+                                    mt-1
+                                "
+                            >
+                                Controle de serviços
+                            </p>
+
+                        </div>
+
+
+                        <div
+                            class="
+                                rounded-2xl
+                                border
+                                border-[#29322C]
+                                bg-[#111712]
+                                px-4
+                                py-4
+                            "
+                        >
+
+                            <p
+                                class="
+                                    text-sm
+                                    font-semibold
+                                "
+                            >
+                                Dashboard
+                            </p>
+
+                            <p
+                                class="
+                                    text-xs
+                                    text-slate-500
+                                    mt-1
+                                "
+                            >
+                                Visão da operação
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- rodapé -->
+
+                <div
+                    class="
+                        relative
+                        z-10
+                        text-xs
+                        text-slate-600
+                    "
+                >
+                    NEKKO OS • Gestão empresarial
+                </div>
+
+            </section>
+
+
+
+            <!-- ================================= -->
+            <!-- LADO DIREITO -->
+            <!-- ================================= -->
+
+            <section
+                class="
+                    flex
+                    items-center
+                    justify-center
+                    p-7
+                    md:p-10
+                    xl:p-16
+                    bg-[#0F1411]
+                "
+            >
+
+                <div
+                    class="
+                        w-full
+                        max-w-md
+                    "
+                >
+
+
+                    <!-- marca mobile -->
+
+                    <div
+                        class="
+                            flex
+                            lg:hidden
+                            items-center
+                            justify-center
+                            gap-3
+                            mb-10
+                        "
+                    >
+
+                        <div
+                            class="
+                                w-12
+                                h-12
+                                rounded-2xl
+                                border
+                                border-green-500/20
+                                bg-green-500/10
+                                flex
+                                items-center
+                                justify-center
+                            "
+                        >
+
+                            <img
+                                src="../../assets/img/nekkologo_favicon.png"
+                                alt="Nekko"
+                                class="
+                                    w-7
+                                    h-7
+                                    object-contain
+                                "
+                            >
+
+                        </div>
+
+
+                        <div>
+
+                            <p
+                                class="
+                                    text-[10px]
+                                    uppercase
+                                    tracking-[0.25em]
+                                    text-green-400
+                                    font-semibold
+                                "
+                            >
+                                NEKKO
+                            </p>
+
+                            <h1
+                                class="
+                                    text-xl
+                                    font-bold
+                                "
+                            >
+                                Nekko OS
+                            </h1>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- cabeçalho -->
+
+                    <div
+                        class="
+                            mb-8
+                        "
+                    >
+
+                        <p
+                            class="
+                                text-sm
+                                text-green-400
+                                font-medium
+                                mb-3
+                            "
+                        >
+                            Acesso ao sistema
+                        </p>
+
+
+                        <h2
+                            class="
+                                text-3xl
+                                md:text-4xl
+                                font-bold
+                                tracking-tight
+                            "
+                        >
+                            Bem-vindo de volta.
+                        </h2>
+
+
+                        <p
+                            class="
+                                mt-3
+                                text-slate-500
+                            "
+                        >
+                            Entre na sua conta para continuar.
+                        </p>
+
+                    </div>
+
+
+
+                    <!-- ================================= -->
+                    <!-- FORMULÁRIO -->
+                    <!-- ================================= -->
+
+                    <div
+                        class="
+                            glass
+                            border
+                            border-[#29322C]
+                            rounded-3xl
+                            p-6
+                            md:p-7
+                        "
+                    >
+
+                        <form
+                            id="loginForm"
+                            class="space-y-5"
+                        >
+
+
+                            <!-- Email -->
+
+                            <div>
+
+                                <label
+                                    for="email"
+                                    class="
+                                        block
+                                        mb-2
+                                        text-sm
+                                        font-medium
+                                        text-slate-300
+                                    "
+                                >
+                                    Email
+                                </label>
+
+
+                                <input
+                                    id="email"
+                                    type="email"
+                                    class="
+                                        input-field
+                                        w-full
+                                        border
+                                        border-[#29322C]
+                                        bg-[#0F1411]
+                                        text-white
+                                        rounded-2xl
+                                        px-4
+                                        py-3.5
+                                        outline-none
+                                        placeholder:text-slate-700
+                                    "
+                                    placeholder="email@empresa.com"
+                                    autocomplete="email"
+                                    required
+                                >
+
+                            </div>
+
+
+
+                            <!-- Senha -->
+
+                            <div>
+
+                                <label
+                                    for="password"
+                                    class="
+                                        block
+                                        mb-2
+                                        text-sm
+                                        font-medium
+                                        text-slate-300
+                                    "
+                                >
+                                    Senha
+                                </label>
+
+
+                                <input
+                                    id="password"
+                                    type="password"
+                                    class="
+                                        input-field
+                                        w-full
+                                        border
+                                        border-[#29322C]
+                                        bg-[#0F1411]
+                                        text-white
+                                        rounded-2xl
+                                        px-4
+                                        py-3.5
+                                        outline-none
+                                        placeholder:text-slate-700
+                                    "
+                                    placeholder="Digite sua senha"
+                                    autocomplete="current-password"
+                                    required
+                                >
+
+                            </div>
+
+
+
+                            <!-- Botão -->
+
+                            <button
+                                type="submit"
+                                class="
+                                    login-button
+                                    w-full
+                                    bg-green-500
+                                    hover:bg-green-400
+                                    text-[#071009]
+                                    py-3.5
+                                    rounded-2xl
+                                    font-bold
+                                    transition
+                                    shadow-lg
+                                    shadow-green-500/10
+                                "
+                            >
+                                Entrar
+                            </button>
+
+
+                        </form>
+
+
+
+                        <!-- Cadastro -->
+
+                        <div
+                            class="
+                                mt-6
+                                pt-6
+                                border-t
+                                border-[#29322C]
+                                text-center
+                            "
+                        >
+
+                            <p
+                                class="
+                                    text-sm
+                                    text-slate-500
+                                "
+                            >
+                                Ainda não possui uma conta?
+                            </p>
+
+
+                            <a
+                                href="#"
+                                id="registerLink"
+                                class="
+                                    inline-block
+                                    mt-2
+                                    text-sm
+                                    font-semibold
+                                    text-green-400
+                                    hover:text-green-300
+                                    transition
+                                "
+                            >
+                                Criar conta
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- segurança -->
+
+                    <p
+                        class="
+                            text-center
+                            text-xs
+                            text-slate-700
+                            mt-6
+                        "
+                    >
+                        Acesso seguro ao ambiente Nekko OS.
+                    </p>
+
+                </div>
+
+            </section>
 
         </div>
 
-        <form id="loginForm" class="space-y-5">
+    </main>
 
-            <div>
 
-                <label class="block mb-2 text-sm font-medium">
-                    Email
-                </label>
 
-                <input
-                    id="email"
-                    type="email"
-                    class="w-full border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="email@empresa.com"
-                    required>
+    <!-- ========================================= -->
+    <!-- SCRIPTS DA APLICAÇÃO                     -->
+    <!-- ========================================= -->
 
-            </div>
-
-            <div>
-
-                <label class="block mb-2 text-sm font-medium">
-                    Senha
-                </label>
-
-                <input
-                    id="password"
-                    type="password"
-                    class="w-full border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="********"
-                    required>
-
-            </div>
-
-            <button
-                type="submit"
-                class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold transition">
-
-                Entrar
-
-            </button>
-
-        </form>
-
-        <div class="mt-6 text-center">
-
-            <a
-                href="#"
-                id="registerLink"
-                class="text-blue-600 hover:underline">
-
-                Criar conta
-
-            </a>
-
-        </div>
-
-    </div>
-
-    <!-- Configuração -->
     <script src="../../assets/js/config.js"></script>
 
-    <!-- Supabase -->
     <script src="../../assets/js/supabase.js"></script>
 
-    <!-- Serviços -->
     <script src="../../assets/js/storage.js"></script>
+
     <script src="../../assets/js/auth.js"></script>
+
     <script src="../../assets/js/api.js"></script>
+
     <script src="../../assets/js/bootstrap.js"></script>
 
+
     <!-- Página -->
+
     <script src="login.js"></script>
+
 
 </body>
 
