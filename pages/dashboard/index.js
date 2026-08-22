@@ -756,6 +756,28 @@ function openOsDeliveredModal() {
 
     }
 
+    // =========================================
+    // FECHAR MODAL DE OS
+    // =========================================
+    
+    function closeOsDeliveredModal() {
+    
+        const modal =
+            document.getElementById(
+                "osDeliveredModal"
+            );
+    
+    
+        if (!modal)
+            return;
+    
+    
+        modal.classList.add(
+            "hidden"
+        );
+    
+    }
+
 
     // ---------------------------------
     // Renderizar OS
@@ -1111,6 +1133,35 @@ document.addEventListener(
                 ?.addEventListener(
                     "click",
                     closeSalesPaymentModal
+                );
+
+            document
+                .getElementById(
+                    "closeOsDeliveredModal"
+                )
+                ?.addEventListener(
+                    "click",
+                    closeOsDeliveredModal
+                );
+
+            document
+                .getElementById(
+                    "osDeliveredModal"
+                )
+                ?.addEventListener(
+                    "click",
+                    (event) => {
+            
+                        if (
+                            event.target.id ===
+                            "osDeliveredModal"
+                        ) {
+            
+                            closeOsDeliveredModal();
+            
+                        }
+            
+                    }
                 );
 
             document
