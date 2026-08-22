@@ -891,7 +891,7 @@ const {
     
         credit_cash: 0,
     
-        credit_installment: 0
+        credit_installments: 0
     
     };
     
