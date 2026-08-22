@@ -878,6 +878,52 @@ const {
         sales.length;
 
     // ---------------------------------
+    // Resumo das vendas por pagamento
+    // ---------------------------------
+    
+    const salesByPayment = {
+    
+        pix: 0,
+    
+        debit: 0,
+    
+        cash: 0,
+    
+        credit_cash: 0,
+    
+        credit_installment: 0
+    
+    };
+    
+    
+    sales.forEach(
+        sale => {
+    
+            const payment =
+                sale.payment_method;
+    
+            const value =
+                Number(
+                    sale.total_price || 0
+                );
+    
+    
+            if (
+                Object.prototype.hasOwnProperty.call(
+                    salesByPayment,
+                    payment
+                )
+            ) {
+    
+                salesByPayment[payment] +=
+                    value;
+    
+            }
+    
+        }
+    );
+
+    // ---------------------------------
     // Carregar itens das vendas
     // ---------------------------------
     
