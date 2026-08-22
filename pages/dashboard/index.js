@@ -614,6 +614,255 @@ function closeSalesPaymentModal() {
 }
 
 // =========================================
+// MODAL — OS ENTREGUES
+// =========================================
+
+function openOsDeliveredModal() {
+
+    const modal =
+        document.getElementById(
+            "osDeliveredModal"
+        );
+
+
+    if (!modal)
+        return;
+
+
+    const data =
+        window.dashboardData;
+
+
+    if (!data)
+        return;
+
+
+    const orders =
+        data.deliveredOrdersList || [];
+
+
+    const list =
+        document.getElementById(
+            "osDeliveredList"
+        );
+
+
+    const count =
+        document.getElementById(
+            "osDeliveredCount"
+        );
+
+
+    const total =
+        document.getElementById(
+            "osDeliveredTotal"
+        );
+
+
+    if (!list || !count || !total)
+        return;
+
+
+    // ---------------------------------
+    // Atualizar período
+    // ---------------------------------
+
+    const periodLabel = {
+
+        today: "Hoje",
+
+        week: "Esta semana",
+
+        month: "Este mês"
+
+    };
+
+
+    document.getElementById(
+        "osDeliveredModalPeriod"
+    ).textContent =
+        periodLabel[osPeriod] ||
+        "Período selecionado";
+
+
+    // ---------------------------------
+    // Total
+    // ---------------------------------
+
+    const totalValue =
+        orders.reduce(
+            (sum, order) => {
+
+                return sum +
+                    Number(
+                        order.price || 0
+                    );
+
+            },
+            0
+        );
+
+
+    count.textContent =
+        `${orders.length} OS entregues`;
+
+
+    total.textContent =
+        formatCurrency(
+            totalValue
+        );
+
+
+    // ---------------------------------
+    // Lista vazia
+    // ---------------------------------
+
+    if (!orders.length) {
+
+        list.innerHTML = `
+
+            <div
+                class="
+                    text-center
+                    text-slate-500
+                    py-10
+                "
+            >
+
+                <i
+                    data-lucide="clipboard-x"
+                    class="
+                        w-8
+                        h-8
+                        mx-auto
+                        mb-3
+                        opacity-50
+                    "
+                ></i>
+
+                <p>
+                    Nenhuma OS entregue neste período.
+                </p>
+
+            </div>
+
+        `;
+
+        modal.classList.remove("hidden");
+
+        lucide.createIcons();
+
+        return;
+
+    }
+
+
+    // ---------------------------------
+    // Renderizar OS
+    // ---------------------------------
+
+    list.innerHTML = "";
+
+
+    orders.forEach(
+        order => {
+
+            const orderPrice =
+                Number(
+                    order.price || 0
+                );
+
+
+            list.innerHTML += `
+
+                <div
+                    class="
+                        bg-[#0F1411]
+                        border
+                        border-[#29322C]
+                        rounded-2xl
+                        px-4
+                        py-4
+                    "
+                >
+
+                    <div
+                        class="
+                            flex
+                            items-start
+                            justify-between
+                            gap-4
+                        "
+                    >
+
+                        <div class="min-w-0">
+
+                            <p
+                                class="
+                                    font-semibold
+                                    text-white
+                                "
+                            >
+                                OS #${order.id
+                                    ? order.id
+                                        .slice(0, 8)
+                                        .toUpperCase()
+                                    : "--------"}
+                            </p>
+
+
+                            <p
+                                class="
+                                    text-sm
+                                    text-slate-400
+                                    mt-1
+                                "
+                            >
+                                ${
+                                    order.created_at
+                                        ? new Date(
+                                            order.created_at
+                                        ).toLocaleString(
+                                            "pt-BR"
+                                        )
+                                        : ""
+                                }
+                            </p>
+
+                        </div>
+
+
+                        <strong
+                            class="
+                                text-green-400
+                                whitespace-nowrap
+                            "
+                        >
+                            ${formatCurrency(
+                                orderPrice
+                            )}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    modal.classList.remove(
+        "hidden"
+    );
+
+
+    lucide.createIcons();
+
+}
+
+// =========================================
 // IMPRIMIR VENDA
 // =========================================
 
@@ -826,6 +1075,27 @@ document.addEventListener(
                 salesCard.addEventListener(
                     "click",
                     openSalesPaymentModal
+                );
+            
+            }
+
+            // =========================================
+            // CLIQUE — FATURAMENTO BRUTO DE OS
+            // =========================================
+            
+            const osCard =
+                document.getElementById(
+                    "osRevenue"
+                )?.closest(
+                    "div.cursor-pointer"
+                );
+            
+            
+            if (osCard) {
+            
+                osCard.addEventListener(
+                    "click",
+                    openOsDeliveredModal
                 );
             
             }
