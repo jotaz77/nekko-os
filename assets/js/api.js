@@ -972,8 +972,10 @@ const {
 
         salesCount,
 
-        sales: salesWithItems
-
+        sales: salesWithItems,
+        
+        salesByPayment
+        
     };
 
 };
