@@ -496,6 +496,7 @@ Api.getDashboardData = async (
             .from("service_orders")
     
             .select(`
+                id,
                 technician,
                 status,
                 price,
