@@ -981,6 +981,23 @@ function validateForm() {
 
     }
 
+    // =========================================
+    // VALIDAR SERVIÇOS
+    // =========================================
+    
+    if (!serviceItems.length) {
+    
+        showMessage(
+            "Adicione pelo menos um serviço.",
+            "error"
+        );
+    
+        serviceInput?.focus();
+    
+        return false;
+    
+    }
+
     return true;
 
 }
