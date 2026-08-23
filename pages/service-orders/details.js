@@ -256,10 +256,7 @@ function renderOrder() {
         order.problem || order.reported_issue
     );
 
-    setText(
-        "serviceName",
-        order.service
-    );
+    renderServiceItems();
 
     setText(
         "technicianName",
