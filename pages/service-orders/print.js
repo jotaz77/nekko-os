@@ -135,25 +135,109 @@ function preencherCupom() {
         "-"
     );
 
-    // Serviço
-
-    setText(
-        "serviceName",
-        order.service
-    );
-
+    // ==================================================
+    // SERVIÇOS
+    // ==================================================
+    
+    const serviceItems =
+        order.service_order_items || [];
+    
+    const serviceContainer =
+        document.getElementById(
+            "serviceItemsList"
+        );
+    
+    
+    if (serviceContainer) {
+    
+        // ------------------------------------------
+        // OS nova com serviços cumulativos
+        // ------------------------------------------
+    
+        if (serviceItems.length) {
+    
+            serviceContainer.innerHTML =
+                serviceItems
+                    .map(
+                        item => `
+    
+                            <div class="row">
+    
+                                <span>
+                                    ${item.service_name}
+                                </span>
+    
+                                <span>
+                                    ${formatMoney(
+                                        item.unit_price
+                                    )}
+                                </span>
+    
+                            </div>
+    
+                        `
+                    )
+                    .join("");
+    
+        }
+    
+        // ------------------------------------------
+        // OS antiga
+        // ------------------------------------------
+    
+        else {
+    
+            serviceContainer.innerHTML = `
+    
+                <p>
+                    ${order.service || "-"}
+                </p>
+    
+            `;
+    
+        }
+    
+    }
+    
+    
+    // ------------------------------------------
+    // TOTAL
+    // ------------------------------------------
+    
+    let serviceTotal = 0;
+    
+    if (serviceItems.length) {
+    
+        serviceTotal =
+            serviceItems.reduce(
+                (total, item) => {
+    
+                    return total +
+                        Number(
+                            item.unit_price || 0
+                        );
+    
+                },
+                0
+            );
+    
+    } else {
+    
+        serviceTotal =
+            Number(
+                order.price || 0
+            );
+    
+    }
+    
+    
     setText(
         "servicePrice",
-        formatMoney(order.price)
+        formatMoney(
+            serviceTotal
+        )
     );
-
-    // Rodapé
-
-    setText(
-        "printedAt",
-        formatDate(new Date())
-    );
-
+    
 }
 
 function setText(id, value) {
