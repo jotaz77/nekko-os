@@ -1181,6 +1181,59 @@ async function loadServiceOrder() {
 
     }
 
+    // =========================================
+    // CARREGAR SERVIÇOS DA OS
+    // =========================================
+    
+    const existingServiceItems =
+        await Api.getServiceOrderItems(
+            editingId
+        );
+    
+    
+    if (existingServiceItems.length) {
+    
+        serviceItems =
+            existingServiceItems.map(item => ({
+    
+                service_name:
+                    item.service_name,
+    
+                unit_price:
+                    Number(
+                        item.unit_price || 0
+                    )
+    
+            }));
+    
+    } else if (
+        order.service
+    ) {
+    
+        // =====================================
+        // COMPATIBILIDADE COM OS ANTIGAS
+        // =====================================
+    
+        serviceItems = [
+    
+            {
+                service_name:
+                    order.service,
+    
+                unit_price:
+                    Number(
+                        order.price || 0
+                    )
+    
+            }
+    
+        ];
+    
+    }
+
+
+renderServiceItems();
+
     document.getElementById("customerName").value = order.customer_name ?? "";
     document.getElementById("customerCpf").value = order.customer_cpf ?? "";
     document.getElementById("customerCep").value = order.customer_cep ?? "";
