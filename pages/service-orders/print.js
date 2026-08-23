@@ -23,6 +23,9 @@ async function init() {
             return;
         }
 
+        order.service_order_items =
+            await Api.getServiceOrderItems(id);
+
         preencherCupom();
 
         setTimeout(() => {
