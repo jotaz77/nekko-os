@@ -42,6 +42,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         }
 
+        order.service_order_items =
+            await Api.getServiceOrderItems(id);
+
         renderOrder();
 
         setupEvents();
