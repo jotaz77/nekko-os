@@ -251,10 +251,7 @@ function renderOrder() {
         order.problem || order.reported_issue
     );
 
-    setText(
-        "serviceName",
-        order.service
-    );
+    renderServiceItems();
 
     setText(
         "technicianName",
@@ -276,6 +273,127 @@ function renderOrder() {
     );
 
     updateStatusBadge(order.status);
+
+}
+
+// ======================================================
+// SERVIÇOS DA OS
+// ======================================================
+
+function renderServiceItems() {
+
+    const container =
+        document.getElementById(
+            "serviceItemsList"
+        );
+
+
+    const totalElement =
+        document.getElementById(
+            "servicePrice"
+        );
+
+
+    if (!container || !totalElement)
+        return;
+
+
+    const items =
+        order.service_order_items || [];
+
+
+    // =========================================
+    // COMPATIBILIDADE COM OS ANTIGAS
+    // =========================================
+
+    if (!items.length) {
+
+        container.innerHTML = `
+
+            <p class="text-zinc-400">
+                ${order.service || "Não informado"}
+            </p>
+
+        `;
+
+
+        totalElement.textContent =
+            formatCurrency(
+                order.price
+            );
+
+        return;
+
+    }
+
+
+    // =========================================
+    // LISTA DE SERVIÇOS
+    // =========================================
+
+    container.innerHTML =
+        items
+            .map(
+                item => `
+
+                    <div
+                        class="
+                            flex
+                            items-center
+                            justify-between
+                            gap-4
+                            py-2
+                        "
+                    >
+
+                        <span
+                            class="
+                                text-zinc-300
+                            "
+                        >
+                            ${item.service_name}
+                        </span>
+
+
+                        <span
+                            class="
+                                text-emerald-400
+                                font-medium
+                                whitespace-nowrap
+                            "
+                        >
+                            ${formatCurrency(
+                                item.unit_price
+                            )}
+                        </span>
+
+                    </div>
+
+                `
+            )
+            .join("");
+
+
+    // =========================================
+    // TOTAL
+    // =========================================
+
+    const total =
+        items.reduce(
+            (sum, item) => {
+
+                return sum +
+                    Number(
+                        item.unit_price || 0
+                    );
+
+            },
+            0
+        );
+
+
+    totalElement.textContent =
+        formatCurrency(total);
 
 }
 
