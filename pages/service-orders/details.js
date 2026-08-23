@@ -282,6 +282,127 @@ function renderOrder() {
 }
 
 // ======================================================
+// SERVIÇOS DA OS
+// ======================================================
+
+function renderServiceItems() {
+
+    const container =
+        document.getElementById(
+            "serviceItemsList"
+        );
+
+
+    const totalElement =
+        document.getElementById(
+            "servicePrice"
+        );
+
+
+    if (!container || !totalElement)
+        return;
+
+
+    const items =
+        order.service_order_items || [];
+
+
+    // ---------------------------------
+    // OS antiga sem itens
+    // ---------------------------------
+
+    if (!items.length) {
+
+        container.innerHTML = `
+
+            <p class="text-zinc-400">
+                ${order.service || "Não informado"}
+            </p>
+
+        `;
+
+
+        totalElement.textContent =
+            formatCurrency(
+                order.price
+            );
+
+        return;
+
+    }
+
+
+    // ---------------------------------
+    // Serviços
+    // ---------------------------------
+
+    container.innerHTML =
+        items
+            .map(
+                item => `
+
+                    <div
+                        class="
+                            flex
+                            items-center
+                            justify-between
+                            gap-4
+                            py-2
+                        "
+                    >
+
+                        <span
+                            class="
+                                text-zinc-300
+                            "
+                        >
+                            ${item.service_name}
+                        </span>
+
+
+                        <span
+                            class="
+                                text-emerald-400
+                                font-medium
+                                whitespace-nowrap
+                            "
+                        >
+                            ${formatCurrency(
+                                item.unit_price
+                            )}
+                        </span>
+
+                    </div>
+
+                `
+            )
+            .join("");
+
+
+    // ---------------------------------
+    // Total
+    // ---------------------------------
+
+    const total =
+        items.reduce(
+            (sum, item) => {
+
+                return sum +
+                    Number(
+                        item.unit_price || 0
+                    );
+
+            },
+            0
+        );
+
+
+    totalElement.textContent =
+        formatCurrency(total);
+
+}
+
+// ======================================================
 // Badge
 // ======================================================
 
