@@ -1453,12 +1453,61 @@ form.addEventListener("submit", async (e) => {
                 let data;
 
         if (isEditing) {
-
+        
             data = await Api.updateServiceOrder(
                 editingId,
                 serviceOrder
             );
-
+        
+        
+            // =====================================
+            // ATUALIZAR SERVIÇOS DA OS
+            // =====================================
+        
+            const existingItems =
+                await Api.getServiceOrderItems(
+                    editingId
+                );
+        
+        
+            // -------------------------------------
+            // Remover itens antigos
+            // -------------------------------------
+        
+            for (
+                const item of existingItems
+            ) {
+        
+                await Api.deleteServiceOrderItem(
+                    item.id
+                );
+        
+            }
+        
+        
+            // -------------------------------------
+            // Criar os itens atuais
+            // -------------------------------------
+        
+            for (
+                const item of serviceItems
+            ) {
+        
+                await Api.createServiceOrderItem({
+        
+                    service_order_id:
+                        editingId,
+        
+                    service_name:
+                        item.service_name,
+        
+                    unit_price:
+                        item.unit_price
+        
+                });
+        
+            }
+        
         } else {
 
             serviceOrder.created_by = user.id;
