@@ -66,6 +66,50 @@ p{
 
 }
 
+/* =========================================
+   SERVIÇOS CUMULATIVOS
+========================================= */
+
+#serviceItemsList{
+
+    margin-top: 1mm;
+
+}
+
+
+#serviceItemsList .row{
+
+    margin: 1.2mm 0;
+
+    align-items: flex-start;
+
+}
+
+
+#serviceItemsList .row span:first-child{
+
+    max-width: 70%;
+
+    font-weight: 500;
+
+}
+
+
+#serviceItemsList .row span:last-child{
+
+    white-space: nowrap;
+
+    font-weight: bold;
+
+}
+
+
+#serviceItemsList p{
+
+    margin-top: 1mm;
+
+}
+
 hr{
 
     border:none;
