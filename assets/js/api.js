@@ -197,6 +197,13 @@ const Api = {
                 stores (
                     id,
                     name
+                ),
+                service_order_items (
+                    id,
+                    service_order_id,
+                    service_name,
+                    unit_price,
+                    created_at
                 )
             `)
            .eq("company_id", context.company.id);
