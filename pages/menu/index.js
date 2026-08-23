@@ -206,40 +206,277 @@ document.addEventListener("DOMContentLoaded", async () => {
             .forEach(module => {
 
                 grid.innerHTML += `
+
                     <a
                         href="${module.href || "#"}"
                         ${module.action ? `data-action="${module.action}"` : ""}
-                        class="group
-                               bg-[#141A16]
-                               border
-                               border-[#29322C]
-                               rounded-3xl
-                               p-6
-                               transition-all
-                               duration-300
-                               hover:border-[#22C55E]
-                               hover:-translate-y-2
-                               hover:bg-[#1B231D]
-                               hover:shadow-[0_0_25px_rgba(34,197,94,.12)]">
-
-                        <div class="mb-6">
-
-                            <i
-                                data-lucide="${module.icon}"
-                                class="w-10 h-10 text-slate-400 group-hover:text-green-500 transition-colors">
-                            </i>
-
+                
+                        class="
+                            group
+                            relative
+                            overflow-hidden
+                
+                            min-h-[210px]
+                
+                            bg-[#0C110E]/85
+                            backdrop-blur-xl
+                
+                            border
+                            border-[#202923]
+                
+                            rounded-[28px]
+                
+                            p-6
+                            md:p-7
+                
+                            transition-all
+                            duration-300
+                
+                            hover:-translate-y-1
+                
+                            hover:border-green-500/30
+                
+                            hover:bg-[#101710]/95
+                
+                            hover:shadow-[0_18px_50px_rgba(0,0,0,.25)]
+                
+                            flex
+                            flex-col
+                        "
+                    >
+                
+                
+                        <!-- BRILHO DO CARD -->
+                
+                        <div
+                            class="
+                                absolute
+                                -top-20
+                                -right-20
+                
+                                w-40
+                                h-40
+                
+                                rounded-full
+                
+                                bg-green-400/5
+                
+                                blur-3xl
+                
+                                opacity-0
+                                group-hover:opacity-100
+                
+                                transition
+                                duration-500
+                            "
+                        ></div>
+                
+                
+                
+                        <!-- LINHA SUPERIOR -->
+                
+                        <div
+                            class="
+                                relative
+                                flex
+                                items-start
+                                justify-between
+                                gap-4
+                            "
+                        >
+                
+                            <!-- ÍCONE -->
+                
+                            <div
+                                class="
+                                    w-12
+                                    h-12
+                
+                                    rounded-2xl
+                
+                                    bg-white/[0.025]
+                
+                                    border
+                                    border-[#29322C]
+                
+                                    flex
+                                    items-center
+                                    justify-center
+                
+                                    text-slate-400
+                
+                                    group-hover:text-green-400
+                                    group-hover:border-green-500/20
+                                    group-hover:bg-green-500/5
+                
+                                    transition-all
+                                    duration-300
+                                "
+                            >
+                
+                                <i
+                                    data-lucide="${module.icon}"
+                                    class="
+                                        w-5
+                                        h-5
+                
+                                        transition
+                                        duration-300
+                
+                                        group-hover:scale-110
+                                    "
+                                ></i>
+                
+                            </div>
+                
+                
+                
+                            <!-- SETA -->
+                
+                            <div
+                                class="
+                                    w-8
+                                    h-8
+                
+                                    rounded-xl
+                
+                                    border
+                                    border-[#202923]
+                
+                                    flex
+                                    items-center
+                                    justify-center
+                
+                                    text-slate-700
+                
+                                    group-hover:text-green-400
+                                    group-hover:border-green-500/20
+                
+                                    transition-all
+                                    duration-300
+                                "
+                            >
+                
+                                <i
+                                    data-lucide="arrow-up-right"
+                                    class="
+                                        w-4
+                                        h-4
+                
+                                        transition
+                                        duration-300
+                
+                                        group-hover:translate-x-0.5
+                                        group-hover:-translate-y-0.5
+                                    "
+                                ></i>
+                
+                            </div>
+                
                         </div>
-
-                        <h3 class="text-xl font-semibold mb-2 group-hover:text-green-400 transition-colors">
-                            ${module.title}
-                        </h3>
-
-                        <p class="text-sm text-slate-500 leading-relaxed">
-                            ${module.description}
-                        </p>
-
+                
+                
+                
+                        <!-- CONTEÚDO -->
+                
+                        <div
+                            class="
+                                relative
+                                mt-8
+                                flex-1
+                            "
+                        >
+                
+                            <h3
+                                class="
+                                    text-lg
+                                    md:text-xl
+                
+                                    font-bold
+                
+                                    text-white
+                
+                                    group-hover:text-green-400
+                
+                                    transition-colors
+                                    duration-300
+                                "
+                            >
+                                ${module.title}
+                            </h3>
+                
+                
+                            <p
+                                class="
+                                    text-sm
+                                    text-slate-500
+                
+                                    leading-6
+                
+                                    mt-2
+                                "
+                            >
+                                ${module.description}
+                            </p>
+                
+                        </div>
+                
+                
+                
+                        <!-- RODAPÉ -->
+                
+                        <div
+                            class="
+                                relative
+                
+                                flex
+                                items-center
+                                justify-between
+                
+                                mt-7
+                                pt-4
+                
+                                border-t
+                                border-[#18201B]
+                            "
+                        >
+                
+                            <span
+                                class="
+                                    text-[10px]
+                                    uppercase
+                                    tracking-[0.2em]
+                
+                                    text-slate-700
+                
+                                    group-hover:text-green-400/60
+                
+                                    transition
+                                "
+                            >
+                                Módulo
+                            </span>
+                
+                
+                            <span
+                                class="
+                                    text-xs
+                                    font-semibold
+                
+                                    text-slate-600
+                
+                                    group-hover:text-slate-300
+                
+                                    transition
+                                "
+                            >
+                                Acessar
+                            </span>
+                
+                        </div>
+                
                     </a>
+                
                 `;
 
             });
