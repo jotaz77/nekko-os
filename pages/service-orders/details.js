@@ -33,17 +33,25 @@ document.addEventListener("DOMContentLoaded", async () => {
         order = await Api.getServiceOrder(id);
 
         if (!order) {
-
+        
             alert("Ordem de serviço não encontrada.");
-
+        
             window.location.href = "index.html";
-
+        
             return;
-
+        
         }
+        
+        order.service_order_items =
+            await Api.getServiceOrderItems(id);
 
+        console.log(
+            "SERVIÇOS DA OS:",
+            order.service_order_items
+        );
+        
         renderOrder();
-
+        
         setupEvents();
 
     }
