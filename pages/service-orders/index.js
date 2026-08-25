@@ -122,6 +122,9 @@ function getStatusBadge(status) {
         "Aberta":
             "bg-blue-500/15 text-blue-400",
 
+        "Aguardando aprovação":
+            "bg-purple-500/15 text-purple-400",
+
         "Aguardando peça":
             "bg-yellow-500/15 text-yellow-400",
 
