@@ -219,7 +219,7 @@ const Api = {
         context,
         status = null,
         search = ""
-    )
+    ) {
     
         let query = supabaseClient
             .from("service_orders")
