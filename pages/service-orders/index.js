@@ -41,17 +41,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         document
             .getElementById("refreshButton")
-            .addEventListener("click", () => {
+            .addEventListener(
+                "click",
+                () => {
         
-                const currentStatus =
-                    document.getElementById(
-                        "statusFilter"
-                    ).value;
+                    const currentStatus =
+                        document.getElementById(
+                            "statusFilter"
+                        ).value;
         
-                loadServiceOrders(
-                    result.context,
-                    currentStatus || "Aberta"
-                );
+                    loadServiceOrders(
+                        result.context,
+                        currentStatus
+                    );
+        
+                }
+            );
         
             });
 
