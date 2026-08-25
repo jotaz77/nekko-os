@@ -1491,46 +1491,47 @@ function renderOrders(orders) {
                             button.dataset.id,
                             option.dataset.status
                         );
-
-
+                    
+                    
                         const currentStatus =
                             document.getElementById(
                                 "statusFilter"
                             ).value;
-                        
+                    
+                    
                         const currentSearch =
                             document.getElementById(
                                 "searchInput"
                             ).value.trim();
-                        
-                        
+                    
+                    
                         if (currentSearch) {
-                        
+                    
                             await loadServiceOrders(
                                 appContext,
                                 null,
                                 currentSearch
                             );
-                        
+                    
                         } else {
-                        
+                    
                             await loadServiceOrders(
                                 appContext,
                                 currentStatus
                             );
-                        
+                    
                         }
-
+                    
+                    }
+                    
                     catch (error) {
-
-                        console.error(
-                            error
-                        );
-
+                    
+                        console.error(error);
+                    
                         alert(
                             error.message
                         );
-
+                    
                     }
 
                 }
