@@ -143,7 +143,10 @@ const Api = {
     // SERVICE ORDERS
     // =====================================
 
-    async getServiceOrders(context) {
+    async getServiceOrders(
+        context,
+        status = null
+    ) {
     
         let query = supabaseClient
             .from("service_orders")
@@ -166,6 +169,15 @@ const Api = {
             "order_type",
             "customer"
         );
+
+        if (status) {
+
+            query = query.eq(
+                "status",
+                status
+            );
+        
+        }
             
         if (context.store) {
     
@@ -188,7 +200,10 @@ const Api = {
     
     },
 
-    async getDealerServiceOrders(context) {
+    async getDealerServiceOrders(
+        context,
+        status = null
+    ) {
     
         let query = supabaseClient
             .from("service_orders")
@@ -212,6 +227,15 @@ const Api = {
             "order_type",
             "dealer"
 );
+
+        if (status) {
+
+            query = query.eq(
+                "status",
+                status
+            );
+        
+        }
         
         if (context.store) {
     
