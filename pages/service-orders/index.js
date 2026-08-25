@@ -427,6 +427,21 @@ function renderOrders(orders) {
                                 🔵 Aberta
                             </button>
 
+                            <button
+                                class="
+                                    status-option
+                                    w-full
+                                    text-left
+                                    px-4
+                                    py-3
+                                    hover:bg-[#202823]
+                                    transition
+                                "
+                                data-status="Aguardando aprovação"
+                            >
+                                🟣 Aguardando aprovação
+                            </button>
+
 
                             <button
                                 class="
