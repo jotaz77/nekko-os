@@ -217,8 +217,9 @@ const Api = {
 
     async getDealerServiceOrders(
         context,
-        status = null
-    ) {
+        status = null,
+        search = ""
+    )
     
         let query = supabaseClient
             .from("service_orders")
@@ -241,7 +242,30 @@ const Api = {
         query = query.eq(
             "order_type",
             "dealer"
-);
+        );
+
+        if (search) {
+        
+            const term =
+                search.trim();
+        
+            if (term) {
+        
+                query = query.or(
+                    `customer_name.ilike.%${term}%,brand.ilike.%${term}%,model.ilike.%${term}%`
+                );
+        
+            }
+        
+        }
+        else if (status) {
+        
+            query = query.eq(
+                "status",
+                status
+            );
+        
+        }
 
         if (status) {
 
