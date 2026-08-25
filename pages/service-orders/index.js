@@ -131,7 +131,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 async function loadServiceOrders(
     context,
-    status = null
+    status = null,
     search = ""
 ) {
 
