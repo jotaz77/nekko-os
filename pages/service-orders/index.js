@@ -42,9 +42,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         document
             .getElementById("refreshButton")
             .addEventListener("click", () => {
-
-                loadServiceOrders(result.context);
-
+        
+                const currentStatus =
+                    document.getElementById(
+                        "statusFilter"
+                    ).value;
+        
+                loadServiceOrders(
+                    result.context,
+                    currentStatus || "Aberta"
+                );
+        
             });
 
         document
