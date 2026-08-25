@@ -30,7 +30,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Carregar OS
         // ---------------------------------
 
-        await loadServiceOrders(result.context);
+        await loadServiceOrders(
+            result.context,
+            "Aberta"
+        );
 
         // ---------------------------------
         // Eventos
@@ -68,12 +71,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 // Carregar OS
 // =========================================
 
-async function loadServiceOrders(context) {
+async function loadServiceOrders(
+    context,
+    status = null
+) {
 
     try {
 
-        serviceOrders = await Api.getServiceOrders(context);
-
+        serviceOrders =
+            await Api.getServiceOrders(
+                context,
+                status
+            );
+        
         renderOrders(serviceOrders);
 
     }
