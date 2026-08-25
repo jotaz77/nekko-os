@@ -425,6 +425,15 @@ function updateStatusBadge(status) {
 
             break;
 
+        case "Aguardando aprovação":
+
+            badge.classList.add(
+                "bg-purple-500/15",
+                "text-purple-400"
+            );
+        
+            break;
+
         case "Aguardando peça":
 
             badge.classList.add(
