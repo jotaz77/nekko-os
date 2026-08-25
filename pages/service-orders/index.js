@@ -65,35 +65,53 @@ document.addEventListener("DOMContentLoaded", async () => {
                 "input",
                 () => {
         
-                    const search =
-                        document.getElementById(
-                            "searchInput"
-                        ).value.trim();
-        
-                    if (search) {
-        
-                        loadServiceOrders(
-                            result.context,
-                            null,
-                            search
-                        );
-        
-                        return;
-        
-                    }
-        
-                    const currentStatus =
-                        document.getElementById(
-                            "statusFilter"
-                        ).value;
-        
-                    loadServiceOrders(
-                        result.context,
-                        currentStatus
+                    clearTimeout(
+                        searchTimeout
                     );
+        
+                    searchTimeout =
+                        setTimeout(
+                            () => {
+        
+                                const search =
+                                    document
+                                        .getElementById(
+                                            "searchInput"
+                                        )
+                                        .value
+                                        .trim();
+        
+                                if (search) {
+        
+                                    loadServiceOrders(
+                                        result.context,
+                                        null,
+                                        search
+                                    );
+        
+                                    return;
+        
+                                }
+        
+                                const currentStatus =
+                                    document
+                                        .getElementById(
+                                            "statusFilter"
+                                        )
+                                        .value;
+        
+                                loadServiceOrders(
+                                    result.context,
+                                    currentStatus
+                                );
+        
+                            },
+                            300
+                        );
         
                 }
             );
+        
         document
             .getElementById("statusFilter")
             .addEventListener(
