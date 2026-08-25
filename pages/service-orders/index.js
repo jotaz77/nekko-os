@@ -57,8 +57,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         
                 }
             );
-        
-            });
 
         document
             .getElementById("searchInput")
