@@ -61,7 +61,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         document
             .getElementById("statusFilter")
-            .addEventListener("change", filterOrders);
+            .addEventListener(
+                "change",
+                () => {
+        
+                    const status =
+                        document.getElementById(
+                            "statusFilter"
+                        ).value;
+        
+                    loadServiceOrders(
+                        result.context,
+                        status
+                    );
+        
+                }
+            );
 
     }
 
