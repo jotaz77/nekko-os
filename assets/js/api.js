@@ -193,15 +193,6 @@ const Api = {
             );
         
         }
-
-        if (status) {
-
-            query = query.eq(
-                "status",
-                status
-            );
-        
-        }
             
         if (context.store) {
     
