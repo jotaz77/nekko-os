@@ -7,6 +7,7 @@ let serviceOrders = [];
 let appContext = null;
 let orderToDelete = null;
 let orderToChangeStatus = null;
+let searchTimeout = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
 
@@ -60,8 +61,39 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         document
             .getElementById("searchInput")
-            .addEventListener("input", filterOrders);
-
+            .addEventListener(
+                "input",
+                () => {
+        
+                    const search =
+                        document.getElementById(
+                            "searchInput"
+                        ).value.trim();
+        
+                    if (search) {
+        
+                        loadServiceOrders(
+                            result.context,
+                            null,
+                            search
+                        );
+        
+                        return;
+        
+                    }
+        
+                    const currentStatus =
+                        document.getElementById(
+                            "statusFilter"
+                        ).value;
+        
+                    loadServiceOrders(
+                        result.context,
+                        currentStatus
+                    );
+        
+                }
+            );
         document
             .getElementById("statusFilter")
             .addEventListener(
@@ -100,6 +132,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function loadServiceOrders(
     context,
     status = null
+    search = ""
 ) {
 
     try {
@@ -107,7 +140,8 @@ async function loadServiceOrders(
         serviceOrders =
             await Api.getServiceOrders(
                 context,
-                status
+                status,
+                search
             );
         
         renderOrders(serviceOrders);
