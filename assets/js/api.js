@@ -145,7 +145,7 @@ const Api = {
 
     async getServiceOrders(
         context,
-        status = null
+        status = null,
         search = ""
     ) {
     
