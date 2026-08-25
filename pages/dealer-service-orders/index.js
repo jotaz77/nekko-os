@@ -122,6 +122,9 @@ function getStatusBadge(status) {
         "Aberta":
             "bg-blue-500/15 text-blue-400",
 
+        "Aguardando aprovação":
+            "bg-purple-500/15 text-purple-400",
+
         "Aguardando peça":
             "bg-yellow-500/15 text-yellow-400",
 
@@ -421,6 +424,21 @@ function renderOrders(orders) {
                                 data-status="Aberta"
                             >
                                 🔵 Aberta
+                            </button>
+
+                            <button
+                                class="
+                                    status-option
+                                    w-full
+                                    text-left
+                                    px-4
+                                    py-3
+                                    hover:bg-[#202823]
+                                    transition
+                                "
+                                data-status="Aguardando aprovação"
+                            >
+                                🟣 Aguardando aprovação
                             </button>
 
 
