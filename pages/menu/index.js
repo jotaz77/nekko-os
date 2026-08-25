@@ -493,9 +493,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         
             });
 
-        console.log("✅ Menu carregado.");
-        console.log("Contexto:", result.context);
-
     }
 
     catch (error) {
