@@ -1,49 +1,61 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createClient } from "npm:@supabase/supabase-js@2";
 
-Deno.serve(async (req) => {
+const corsHeaders = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers":
+        "authorization, x-client-info, apikey, content-type",
+    "Access-Control-Allow-Methods":
+        "POST, OPTIONS",
+};
+
+Deno.serve(async (req: Request) => {
+
+    if (req.method === "OPTIONS") {
+
+        return new Response(
+            "ok",
+            {
+                headers: corsHeaders,
+            }
+        );
+
+    }
+
+    if (req.method !== "POST") {
+
+        return new Response(
+            JSON.stringify({
+                error: "Método não permitido",
+            }),
+            {
+                status: 405,
+                headers: {
+                    ...corsHeaders,
+                    "Content-Type":
+                        "application/json",
+                },
+            }
+        );
+
+    }
 
     try {
 
-        if (req.method !== "POST") {
-
-            return new Response(
-                JSON.stringify({
-                    error: "Método não permitido"
-                }),
-                {
-                    status: 405,
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                }
-            );
-
-        }
-
         const supabaseUrl =
-            Deno.env.get("SUPABASE_URL");
+            Deno.env.get("SUPABASE_URL") ?? "";
 
         const serviceRoleKey =
             Deno.env.get(
                 "SUPABASE_SERVICE_ROLE_KEY"
-            );
+            ) ?? "";
 
         if (
             !supabaseUrl ||
             !serviceRoleKey
         ) {
 
-            return new Response(
-                JSON.stringify({
-                    error:
-                        "Variáveis do Supabase não configuradas"
-                }),
-                {
-                    status: 500,
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                }
+            throw new Error(
+                "Variáveis do Supabase não configuradas"
             );
 
         }
@@ -57,38 +69,72 @@ Deno.serve(async (req) => {
 
             return new Response(
                 JSON.stringify({
-                    error: "Não autenticado"
+                    error:
+                        "Authorization ausente",
                 }),
                 {
                     status: 401,
                     headers: {
-                        "Content-Type": "application/json"
-                    }
+                        ...corsHeaders,
+                        "Content-Type":
+                            "application/json",
+                    },
                 }
             );
 
         }
 
-        const supabaseAdmin =
-            createClient(
-                supabaseUrl,
-                serviceRoleKey
-            );
-
         const token =
             authHeader.replace(
                 "Bearer ",
                 ""
+            ).trim();
+
+        if (!token) {
+
+            return new Response(
+                JSON.stringify({
+                    error:
+                        "Token de autenticação ausente",
+                }),
+                {
+                    status: 401,
+                    headers: {
+                        ...corsHeaders,
+                        "Content-Type":
+                            "application/json",
+                    },
+                }
+            );
+
+        }
+
+        // Cliente com a sessão do CEO.
+        // É este cliente que mantém auth.uid()
+        // e respeita RLS.
+        const supabaseUser =
+            createClient(
+                supabaseUrl,
+                Deno.env.get(
+                    "SUPABASE_ANON_KEY"
+                ) ?? "",
+                {
+                    global: {
+                        headers: {
+                            Authorization:
+                                `Bearer ${token}`,
+                        },
+                    },
+                }
             );
 
         const {
             data: {
-                user
+                user,
             },
-            error: userError
-        } = await supabaseAdmin.auth.getUser(
-            token
-        );
+            error: userError,
+        } =
+            await supabaseUser.auth.getUser();
 
         if (
             userError ||
@@ -97,31 +143,29 @@ Deno.serve(async (req) => {
 
             return new Response(
                 JSON.stringify({
-                    error: "Sessão inválida"
+                    error:
+                        "Sessão inválida",
                 }),
                 {
                     status: 401,
                     headers: {
-                        "Content-Type": "application/json"
-                    }
+                        ...corsHeaders,
+                        "Content-Type":
+                            "application/json",
+                    },
                 }
             );
 
         }
 
+        // Aqui a RPC roda com o JWT real do CEO.
         const {
             data: isCeo,
-            error: ceoError
-        } = await supabaseAdmin.rpc(
-            "is_company_ceo",
-            {},
-            {
-                headers: {
-                    Authorization:
-                        `Bearer ${token}`
-                }
-            }
-        );
+            error: ceoError,
+        } =
+            await supabaseUser.rpc(
+                "is_company_ceo"
+            );
 
         if (ceoError) {
 
@@ -134,30 +178,42 @@ Deno.serve(async (req) => {
             return new Response(
                 JSON.stringify({
                     error:
-                        "Somente o CEO pode cadastrar funcionários"
+                        "Somente o CEO pode cadastrar funcionários",
                 }),
                 {
                     status: 403,
                     headers: {
-                        "Content-Type": "application/json"
-                    }
+                        ...corsHeaders,
+                        "Content-Type":
+                            "application/json",
+                    },
                 }
             );
 
         }
+
+        // Cliente administrativo.
+        // NUNCA enviar esta chave para o navegador.
+        const supabaseAdmin =
+            createClient(
+                supabaseUrl,
+                serviceRoleKey
+            );
 
         return new Response(
             JSON.stringify({
                 success: true,
                 message:
                     "Edge Function funcionando",
-                user_id: user.id
+                user_id: user.id,
             }),
             {
                 status: 200,
                 headers: {
-                    "Content-Type": "application/json"
-                }
+                    ...corsHeaders,
+                    "Content-Type":
+                        "application/json",
+                },
             }
         );
 
@@ -173,13 +229,15 @@ Deno.serve(async (req) => {
                 error:
                     error instanceof Error
                         ? error.message
-                        : "Erro interno"
+                        : "Erro interno",
             }),
             {
                 status: 500,
                 headers: {
-                    "Content-Type": "application/json"
-                }
+                    ...corsHeaders,
+                    "Content-Type":
+                        "application/json",
+                },
             }
         );
 
