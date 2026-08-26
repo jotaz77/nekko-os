@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Configurações | NEKKO OS</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+
+<body class="min-h-screen bg-[#0B0F0C] text-white">
+
+    <!-- ========================================= -->
+    <!-- HEADER -->
+    <!-- ========================================= -->
+
+    <header
+        class="
+            border-b
+            border-[#202822]
+            bg-[#0B0F0C]/95
+            backdrop-blur-xl
+            sticky
+            top-0
+            z-50
+        "
+    >
+
+        <div
+            class="
+                max-w-7xl
+                mx-auto
+                px-6
+                py-5
+                flex
+                items-center
+                justify-between
+                gap-6
+            "
+        >
+
+            <!-- Esquerda -->
+
+            <div class="flex items-center gap-4">
+
+                <a
+                    href="../menu/index.html"
+                    class="
+                        w-11
+                        h-11
+                        rounded-2xl
+                        bg-[#141A16]
+                        border
+                        border-[#29322C]
+                        flex
+                        items-center
+                        justify-center
+                        text-slate-400
+                        hover:text-green-400
+                        hover:border-green-500/40
+                        transition
+                    "
+                    aria-label="Voltar ao menu"
+                >
+
+                    <i
+                        data-lucide="arrow-left"
+                        class="w-5 h-5"
+                    ></i>
+
+                </a>
+
+
+                <div>
+
+                    <p
+                        class="
+                            text-xs
+                            uppercase
+                            tracking-[0.2em]
+                            text-green-500
+                            font-medium
+                        "
+                    >
+                        NEKKO OS
+                    </p>
+
+                    <h1
+                        class="
+                            text-2xl
+                            md:text-3xl
+                            font-bold
+                            tracking-tight
+                        "
+                    >
+                        Configurações
+                    </h1>
+
+                </div>
+
+            </div>
+
+
+            <!-- Direita -->
+
+            <div
+                class="
+                    hidden
+                    sm:flex
+                    items-center
+                    gap-3
+                    px-4
+                    py-2.5
+                    rounded-2xl
+                    bg-[#141A16]
+                    border
+                    border-[#29322C]
+                    text-sm
+                    text-slate-400
+                "
+            >
+
+                <i
+                    data-lucide="settings-2"
+                    class="w-4 h-4 text-green-400"
+                ></i>
+
+                <span>
+                    Administração
+                </span>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- ========================================= -->
+    <!-- CONTEÚDO -->
+    <!-- ========================================= -->
+
+    <main
+        class="
+            max-w-7xl
+            mx-auto
+            px-6
+            py-10
+            md:py-14
+        "
+    >
+
+        <!-- INTRO -->
+
+        <section class="mb-10">
+
+            <div
+                class="
+                    max-w-2xl
+                "
+            >
+
+                <p
+                    class="
+                        text-sm
+                        text-slate-500
+                        mb-3
+                    "
+                >
+                    Administração da empresa
+                </p>
+
+                <h2
+                    class="
+                        text-3xl
+                        md:text-4xl
+                        font-bold
+                        tracking-tight
+                    "
+                >
+                    Controle tudo
+                    <span class="text-green-400">
+                        em um só lugar.
+                    </span>
+                </h2>
+
+                <p
+                    class="
+                        text-slate-400
+                        mt-4
+                        leading-relaxed
+                    "
+                >
+                    Gerencie funcionários,
+                    lojas, permissões e
+                    configurações da sua empresa.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ========================================= -->
+        <!-- FUNCIONÁRIOS -->
+        <!-- ========================================= -->
+
+        <section
+            class="
+                bg-[#101510]
+                border
+                border-[#222B25]
+                rounded-[28px]
+                overflow-hidden
+                mb-8
+            "
+        >
+
+            <div
+                class="
+                    p-6
+                    md:p-8
+                    border-b
+                    border-[#222B25]
+                    flex
+                    flex-col
+                    lg:flex-row
+                    lg:items-center
+                    lg:justify-between
+                    gap-6
+                "
+            >
+
+                <div
+                    class="
+                        flex
+                        items-start
+                        gap-4
+                    "
+                >
+
+                    <div
+                        class="
+                            w-14
+                            h-14
+                            rounded-2xl
+                            bg-green-500/10
+                            border
+                            border-green-500/10
+                            flex
+                            items-center
+                            justify-center
+                            text-green-400
+                            shrink-0
+                        "
+                    >
+
+                        <i
+                            data-lucide="users"
+                            class="w-6 h-6"
+                        ></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <p
+                            class="
+                                text-xs
+                                uppercase
+                                tracking-[0.18em]
+                                text-green-400
+                                font-medium
+                            "
+                        >
+                            Equipe
+                        </p>
+
+                        <h3
+                            class="
+                                text-2xl
+                                font-semibold
+                                mt-1
+                            "
+                        >
+                            Funcionários
+                        </h3>
+
+                        <p
+                            class="
+                                text-slate-400
+                                mt-2
+                                max-w-xl
+                            "
+                        >
+                            Cadastre funcionários,
+                            defina a loja, a categoria
+                            e os acessos de cada usuário.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    id="registerEmployeeButton"
+                    type="button"
+                    class="
+                        inline-flex
+                        items-center
+                        justify-center
+                        gap-2
+                        px-5
+                        py-3.5
+                        rounded-2xl
+                        bg-green-500
+                        text-black
+                        font-semibold
+                        hover:bg-green-400
+                        active:scale-[0.98]
+                        transition
+                        shadow-[0_0_30px_rgba(34,197,94,.10)]
+                    "
+                >
+
+                    <i
+                        data-lucide="user-plus"
+                        class="w-5 h-5"
+                    ></i>
+
+                    Registrar funcionário
+
+                </button>
+
+            </div>
+
+
+            <!-- Lista futura -->
+
+            <div
+                id="employeesContainer"
+                class="
+                    p-6
+                    md:p-8
+                "
+            >
+
+                <div
+                    class="
+                        rounded-2xl
+                        border
+                        border-dashed
+                        border-[#29322C]
+                        bg-[#0D120E]
+                        p-8
+                        md:p-10
+                        text-center
+                    "
+                >
+
+                    <div
+                        class="
+                            w-14
+                            h-14
+                            mx-auto
+                            rounded-2xl
+                            bg-[#141A16]
+                            border
+                            border-[#29322C]
+                            flex
+                            items-center
+                            justify-center
+                            text-slate-500
+                            mb-5
+                        "
+                    >
+
+                        <i
+                            data-lucide="user-round-search"
+                            class="w-6 h-6"
+                        ></i>
+
+                    </div>
+
+
+                    <h4
+                        class="
+                            text-xl
+                            font-semibold
+                        "
+                    >
+                        Nenhum funcionário carregado
+                    </h4>
+
+
+                    <p
+                        class="
+                            text-slate-500
+                            mt-2
+                        "
+                    >
+                        A lista de funcionários
+                        aparecerá aqui.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ========================================= -->
+        <!-- OUTRAS CONFIGURAÇÕES -->
+        <!-- ========================================= -->
+
+        <section>
+
+            <div
+                class="
+                    flex
+                    items-center
+                    gap-3
+                    mb-5
+                "
+            >
+
+                <div
+                    class="
+                        h-px
+                        flex-1
+                        bg-[#202822]
+                    "
+                ></div>
+
+                <span
+                    class="
+                        text-xs
+                        uppercase
+                        tracking-[0.18em]
+                        text-slate-600
+                    "
+                >
+                    Em breve
+                </span>
+
+                <div
+                    class="
+                        h-px
+                        flex-1
+                        bg-[#202822]
+                    "
+                ></div>
+
+            </div>
+
+
+            <div
+                class="
+                    grid
+                    grid-cols-1
+                    md:grid-cols-2
+                    xl:grid-cols-3
+                    gap-5
+                "
+            >
+
+                <!-- Empresa -->
+
+                <div
+                    class="
+                        bg-[#101510]
+                        border
+                        border-[#222B25]
+                        rounded-3xl
+                        p-6
+                        opacity-70
+                    "
+                >
+
+                    <div
+                        class="
+                            w-12
+                            h-12
+                            rounded-2xl
+                            bg-[#141A16]
+                            border
+                            border-[#29322C]
+                            flex
+                            items-center
+                            justify-center
+                            text-slate-400
+                            mb-5
+                        "
+                    >
+
+                        <i
+                            data-lucide="building-2"
+                            class="w-5 h-5"
+                        ></i>
+
+                    </div>
+
+                    <h4
+                        class="
+                            text-lg
+                            font-semibold
+                        "
+                    >
+                        Empresa
+                    </h4>
+
+                    <p
+                        class="
+                            text-sm
+                            text-slate-500
+                            mt-2
+                            leading-relaxed
+                        "
+                    >
+                        Dados, identidade e informações
+                        da empresa.
+                    </p>
+
+                </div>
+
+
+                <!-- Lojas -->
+
+                <div
+                    class="
+                        bg-[#101510]
+                        border
+                        border-[#222B25]
+                        rounded-3xl
+                        p-6
+                        opacity-70
+                    "
+                >
+
+                    <div
+                        class="
+                            w-12
+                            h-12
+                            rounded-2xl
+                            bg-[#141A16]
+                            border
+                            border-[#29322C]
+                            flex
+                            items-center
+                            justify-center
+                            text-slate-400
+                            mb-5
+                        "
+                    >
+
+                        <i
+                            data-lucide="store"
+                            class="w-5 h-5"
+                        ></i>
+
+                    </div>
+
+                    <h4
+                        class="
+                            text-lg
+                            font-semibold
+                        "
+                    >
+                        Lojas
+                    </h4>
+
+                    <p
+                        class="
+                            text-sm
+                            text-slate-500
+                            mt-2
+                            leading-relaxed
+                        "
+                    >
+                        Gerenciamento das filiais
+                        e unidades da empresa.
+                    </p>
+
+                </div>
+
+
+                <!-- Preferências -->
+
+                <div
+                    class="
+                        bg-[#101510]
+                        border
+                        border-[#222B25]
+                        rounded-3xl
+                        p-6
+                        opacity-70
+                    "
+                >
+
+                    <div
+                        class="
+                            w-12
+                            h-12
+                            rounded-2xl
+                            bg-[#141A16]
+                            border
+                            border-[#29322C]
+                            flex
+                            items-center
+                            justify-center
+                            text-slate-400
+                            mb-5
+                        "
+                    >
+
+                        <i
+                            data-lucide="sliders-horizontal"
+                            class="w-5 h-5"
+                        ></i>
+
+                    </div>
+
+                    <h4
+                        class="
+                            text-lg
+                            font-semibold
+                        "
+                    >
+                        Preferências
+                    </h4>
+
+                    <p
+                        class="
+                            text-sm
+                            text-slate-500
+                            mt-2
+                            leading-relaxed
+                        "
+                    >
+                        Personalizações e preferências
+                        gerais do sistema.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ========================================= -->
+    <!-- SCRIPTS -->
+    <!-- ========================================= -->
+
+    <script>
+
+        lucide.createIcons();
+
+    </script>
+
+    <script
+        type="module"
+        src="./index.js"
+    ></script>
+
+</body>
+
+</html>
