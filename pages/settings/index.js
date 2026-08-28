@@ -7,6 +7,7 @@
 let appContext = null;
 let stores = [];
 let permissions = [];
+let employees = [];
 
 
 // =========================================
@@ -591,8 +592,455 @@ function renderEmployees() {
 
     lucide.createIcons();
 
-}    
+}
 
+// =========================================
+// CARREGAR FUNCIONÁRIOS
+// =========================================
+
+async function loadEmployees() {
+
+    const container =
+        document.getElementById(
+            "employeesContainer"
+        );
+
+    try {
+
+        container.innerHTML = `
+            <div
+                class="
+                    rounded-2xl
+                    border
+                    border-[#29322C]
+                    bg-[#0D120E]
+                    p-8
+                    text-center
+                    text-slate-500
+                "
+            >
+                Carregando funcionários...
+            </div>
+        `;
+
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("company_members")
+                .select(`
+                    id,
+                    profile_id,
+                    role,
+                    active,
+                    store_id,
+                    category,
+                    profiles (
+                        full_name
+                    ),
+                    stores (
+                        name
+                    )
+                `)
+                .eq(
+                    "company_id",
+                    appContext.company.id
+                )
+                .neq(
+                    "role",
+                    "CEO"
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
+
+
+        if (error)
+            throw error;
+
+
+        employees =
+            data || [];
+
+
+        renderEmployees();
+
+    }
+    catch (error) {
+
+        console.error(
+            "Erro ao carregar funcionários:",
+            error
+        );
+
+
+        container.innerHTML = `
+            <div
+                class="
+                    rounded-2xl
+                    border
+                    border-red-500/10
+                    bg-red-500/5
+                    p-8
+                    text-center
+                "
+            >
+
+                <p
+                    class="
+                        text-red-400
+                        font-medium
+                    "
+                >
+                    Não foi possível carregar
+                    os funcionários.
+                </p>
+
+                <p
+                    class="
+                        text-sm
+                        text-slate-500
+                        mt-2
+                    "
+                >
+                    ${error.message}
+                </p>
+
+            </div>
+        `;
+
+    }
+
+}
+
+
+// =========================================
+// RENDERIZAR FUNCIONÁRIOS
+// =========================================
+
+function renderEmployees() {
+
+    const container =
+        document.getElementById(
+            "employeesContainer"
+        );
+
+
+    if (
+        !employees ||
+        employees.length === 0
+    ) {
+
+        container.innerHTML = `
+            <div
+                class="
+                    rounded-2xl
+                    border
+                    border-dashed
+                    border-[#29322C]
+                    bg-[#0D120E]
+                    p-8
+                    md:p-10
+                    text-center
+                "
+            >
+
+                <div
+                    class="
+                        w-14
+                        h-14
+                        mx-auto
+                        rounded-2xl
+                        bg-[#141A16]
+                        border
+                        border-[#29322C]
+                        flex
+                        items-center
+                        justify-center
+                        text-slate-500
+                        mb-5
+                    "
+                >
+
+                    <i
+                        data-lucide="users-round"
+                        class="w-6 h-6"
+                    ></i>
+
+                </div>
+
+
+                <h4
+                    class="
+                        text-xl
+                        font-semibold
+                    "
+                >
+                    Nenhum funcionário cadastrado
+                </h4>
+
+
+                <p
+                    class="
+                        text-slate-500
+                        mt-2
+                    "
+                >
+                    Cadastre o primeiro funcionário
+                    da empresa.
+                </p>
+
+            </div>
+        `;
+
+
+        lucide.createIcons();
+
+        return;
+
+    }
+
+
+    container.innerHTML = "";
+
+
+    employees.forEach(
+        employee => {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className = `
+                rounded-2xl
+                border
+                border-[#29322C]
+                bg-[#0D120E]
+                p-5
+                md:p-6
+                transition
+                hover:border-green-500/20
+            `;
+
+
+            const fullName =
+                employee.profiles
+                    ?.full_name ||
+                "Usuário";
+
+
+            const storeName =
+                employee.stores
+                    ?.name ||
+                "Sem loja";
+
+
+            const category =
+                employee.category ||
+                employee.role ||
+                "Funcionário";
+
+
+            const active =
+                employee.active;
+
+
+            card.innerHTML = `
+
+                <div
+                    class="
+                        flex
+                        flex-col
+                        md:flex-row
+                        md:items-center
+                        md:justify-between
+                        gap-5
+                    "
+                >
+
+                    <div
+                        class="
+                            flex
+                            items-center
+                            gap-4
+                        "
+                    >
+
+                        <div
+                            class="
+                                w-12
+                                h-12
+                                rounded-2xl
+                                bg-green-500/10
+                                border
+                                border-green-500/10
+                                flex
+                                items-center
+                                justify-center
+                                text-green-400
+                                shrink-0
+                            "
+                        >
+
+                            <i
+                                data-lucide="user"
+                                class="w-5 h-5"
+                            ></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <h4
+                                class="
+                                    font-semibold
+                                    text-white
+                                "
+                            >
+                                ${fullName}
+                            </h4>
+
+
+                            <div
+                                class="
+                                    flex
+                                    flex-wrap
+                                    items-center
+                                    gap-2
+                                    mt-1.5
+                                "
+                            >
+
+                                <span
+                                    class="
+                                        text-xs
+                                        text-slate-400
+                                    "
+                                >
+                                    ${category}
+                                </span>
+
+                                <span
+                                    class="
+                                        text-slate-700
+                                    "
+                                >
+                                    •
+                                </span>
+
+                                <span
+                                    class="
+                                        text-xs
+                                        text-slate-500
+                                    "
+                                >
+                                    ${storeName}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="
+                            flex
+                            items-center
+                            gap-3
+                        "
+                    >
+
+                        <span
+                            class="
+                                inline-flex
+                                items-center
+                                gap-2
+                                px-3
+                                py-1.5
+                                rounded-xl
+                                text-xs
+                                ${
+                                    active
+                                        ? "bg-green-500/10 text-green-400"
+                                        : "bg-red-500/10 text-red-400"
+                                }
+                            "
+                        >
+
+                            <span
+                                class="
+                                    w-1.5
+                                    h-1.5
+                                    rounded-full
+                                    ${
+                                        active
+                                            ? "bg-green-400"
+                                            : "bg-red-400"
+                                    }
+                                "
+                            ></span>
+
+                            ${
+                                active
+                                    ? "Ativo"
+                                    : "Inativo"
+                            }
+
+                        </span>
+
+
+                        <button
+                            type="button"
+                            class="
+                                w-10
+                                h-10
+                                rounded-xl
+                                border
+                                border-[#29322C]
+                                bg-[#141A16]
+                                text-slate-400
+                                hover:text-white
+                                hover:border-green-500/30
+                                transition
+                            "
+                            title="Em breve"
+                        >
+
+                            <i
+                                data-lucide="more-horizontal"
+                                class="w-5 h-5"
+                            ></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+
+            container.appendChild(
+                card
+            );
+
+        }
+    );
+
+
+    lucide.createIcons();
+
+}
 
 // =========================================
 // MODAL
