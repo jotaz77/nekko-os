@@ -2234,38 +2234,85 @@ async function submitEmployee(
 
 
     }
-    catch (error) {
+catch (error) {
 
-        console.error(
-            "Erro ao registrar funcionário:",
-            error
-        );
+    console.error(
+        "Erro ao registrar funcionário:",
+        error
+    );
 
+    // =====================================
+    // TENTAR OBTER A RESPOSTA REAL
+    // DA EDGE FUNCTION
+    // =====================================
 
-        showEmployeeMessage(
-            error.message ||
-            "Erro ao registrar funcionário.",
-            "error"
-        );
+    let realError =
+        error?.message ||
+        "Erro ao registrar funcionário.";
 
+    try {
 
-        button.disabled =
-            false;
+        if (
+            error?.context &&
+            typeof error.context.json ===
+                "function"
+        ) {
 
+            const response =
+                await error.context.json();
 
-        button.innerHTML = `
-            <i
-                data-lucide="user-plus"
-                class="w-5 h-5"
-            ></i>
+            console.error(
+                "RESPOSTA DA EDGE FUNCTION:",
+                response
+            );
 
-            Registrar funcionário
-        `;
+            realError =
+                response?.error ||
+                realError;
 
-
-        lucide.createIcons();
+        }
 
     }
+        
+    catch (readError) {
+
+        console.error(
+            "Não foi possível ler a resposta da Edge Function:",
+            readError
+        );
+
+    }
+
+
+    // =====================================
+    // MOSTRAR ERRO REAL
+    // =====================================
+
+    showEmployeeMessage(
+        realError,
+        "error"
+    );
+
+
+    // =====================================
+    // RESTAURAR BOTÃO
+    // =====================================
+
+    button.disabled =
+        false;
+
+
+    button.innerHTML = `
+        <i
+            data-lucide="user-plus"
+            class="w-5 h-5"
+        ></i>
+
+        Registrar funcionário
+    `;
+
+
+    lucide.createIcons();
 
 }
 
