@@ -1992,6 +1992,8 @@ async function submitEmployee(
         lucide.createIcons();
     
     }
+
+}
 // =========================================
 // MENSAGEM
 // =========================================
