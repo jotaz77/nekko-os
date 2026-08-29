@@ -2234,87 +2234,87 @@ async function submitEmployee(
 
 
     }
-catch (error) {
-
-    console.error(
-        "Erro ao registrar funcionário:",
-        error
-    );
-
-    // =====================================
-    // TENTAR OBTER A RESPOSTA REAL
-    // DA EDGE FUNCTION
-    // =====================================
-
-    let realError =
-        error?.message ||
-        "Erro ao registrar funcionário.";
-
-    try {
-
-        if (
-            error?.context &&
-            typeof error.context.json ===
-                "function"
-        ) {
-
-            const response =
-                await error.context.json();
-
-            console.error(
-                "RESPOSTA DA EDGE FUNCTION:",
-                response
-            );
-
-            realError =
-                response?.error ||
-                realError;
-
-        }
-
-    }
-        
-    catch (readError) {
-
+    catch (error) {
+    
         console.error(
-            "Não foi possível ler a resposta da Edge Function:",
-            readError
+            "Erro ao registrar funcionário:",
+            error
         );
-
+    
+        // =====================================
+        // TENTAR OBTER A RESPOSTA REAL
+        // DA EDGE FUNCTION
+        // =====================================
+    
+        let realError =
+            error?.message ||
+            "Erro ao registrar funcionário.";
+    
+        try {
+    
+            if (
+                error?.context &&
+                typeof error.context.json ===
+                    "function"
+            ) {
+    
+                const response =
+                    await error.context.json();
+    
+                console.error(
+                    "RESPOSTA DA EDGE FUNCTION:",
+                    response
+                );
+    
+                realError =
+                    response?.error ||
+                    realError;
+    
+            }
+    
+        }
+            
+        catch (readError) {
+    
+            console.error(
+                "Não foi possível ler a resposta da Edge Function:",
+                readError
+            );
+    
+        }
+    
+    
+        // =====================================
+        // MOSTRAR ERRO REAL
+        // =====================================
+    
+        showEmployeeMessage(
+            realError,
+            "error"
+        );
+    
+    
+        // =====================================
+        // RESTAURAR BOTÃO
+        // =====================================
+    
+        button.disabled =
+            false;
+    
+    
+        button.innerHTML = `
+            <i
+                data-lucide="user-plus"
+                class="w-5 h-5"
+            ></i>
+    
+            Registrar funcionário
+        `;
+    
+    
+        lucide.createIcons();
+    
     }
-
-
-    // =====================================
-    // MOSTRAR ERRO REAL
-    // =====================================
-
-    showEmployeeMessage(
-        realError,
-        "error"
-    );
-
-
-    // =====================================
-    // RESTAURAR BOTÃO
-    // =====================================
-
-    button.disabled =
-        false;
-
-
-    button.innerHTML = `
-        <i
-            data-lucide="user-plus"
-            class="w-5 h-5"
-        ></i>
-
-        Registrar funcionário
-    `;
-
-
-    lucide.createIcons();
-
-}
 
 
 // =========================================
