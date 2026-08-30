@@ -731,7 +731,36 @@ function renderEmployees() {
     );
 
 
-    lucide.createIcons();
+        lucide.createIcons();
+
+
+    // ---------------------------------
+    // Botão Editar
+    // ---------------------------------
+
+    container
+        .querySelectorAll(
+            '[data-action="edit"]'
+        )
+        .forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        const memberId =
+                            button.dataset.memberId;
+
+                        openEditEmployeeModal(
+                            memberId
+                        );
+
+                    }
+                );
+
+            }
+        );
 
 }
 
