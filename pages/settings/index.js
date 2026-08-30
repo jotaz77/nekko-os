@@ -377,8 +377,10 @@ function renderEmployees() {
                 bg-[#0D120E]
                 p-5
                 md:p-6
-                transition
-                hover:border-green-500/20
+                transition-all
+                duration-200
+                hover:border-[#3A463E]
+                hover:bg-[#101610]
             `;
 
 
@@ -404,24 +406,37 @@ function renderEmployees() {
                 employee.active;
 
 
+            const createdAt =
+                employee.created_at
+                    ? new Date(
+                        employee.created_at
+                    ).toLocaleDateString(
+                        "pt-BR"
+                    )
+                    : "—";
+
+
             card.innerHTML = `
 
                 <div
                     class="
                         flex
                         flex-col
-                        md:flex-row
-                        md:items-center
-                        md:justify-between
+                        xl:flex-row
+                        xl:items-center
+                        xl:justify-between
                         gap-5
                     "
                 >
+
+                    <!-- IDENTIDADE -->
 
                     <div
                         class="
                             flex
                             items-center
                             gap-4
+                            min-w-0
                         "
                     >
 
@@ -442,19 +457,22 @@ function renderEmployees() {
                         >
 
                             <i
-                                data-lucide="user"
+                                data-lucide="user-round"
                                 class="w-5 h-5"
                             ></i>
 
                         </div>
 
 
-                        <div>
+                        <div
+                            class="min-w-0"
+                        >
 
                             <h4
                                 class="
                                     font-semibold
                                     text-white
+                                    truncate
                                 "
                             >
                                 ${fullName}
@@ -480,6 +498,7 @@ function renderEmployees() {
                                     ${category}
                                 </span>
 
+
                                 <span
                                     class="
                                         text-slate-700
@@ -488,13 +507,24 @@ function renderEmployees() {
                                     •
                                 </span>
 
+
                                 <span
                                     class="
+                                        inline-flex
+                                        items-center
+                                        gap-1.5
                                         text-xs
                                         text-slate-500
                                     "
                                 >
+
+                                    <i
+                                        data-lucide="store"
+                                        class="w-3.5 h-3.5"
+                                    ></i>
+
                                     ${storeName}
+
                                 </span>
 
                             </div>
@@ -504,51 +534,160 @@ function renderEmployees() {
                     </div>
 
 
+                    <!-- INFORMAÇÕES -->
+
+                    <div
+                        class="
+                            flex
+                            flex-wrap
+                            items-center
+                            gap-x-6
+                            gap-y-3
+                            text-sm
+                        "
+                    >
+
+                        <div>
+
+                            <p
+                                class="
+                                    text-xs
+                                    text-slate-600
+                                    mb-1
+                                "
+                            >
+                                Cadastro
+                            </p>
+
+                            <p
+                                class="
+                                    text-slate-400
+                                "
+                            >
+                                ${createdAt}
+                            </p>
+
+                        </div>
+
+
+                        <div>
+
+                            <p
+                                class="
+                                    text-xs
+                                    text-slate-600
+                                    mb-1
+                                "
+                            >
+                                Permissões
+                            </p>
+
+                            <p
+                                class="
+                                    text-slate-400
+                                "
+                                data-permission-count
+                                data-member-id="${employee.id}"
+                            >
+                                —
+                            </p>
+
+                        </div>
+
+
+                        <div>
+
+                            <p
+                                class="
+                                    text-xs
+                                    text-slate-600
+                                    mb-1
+                                "
+                            >
+                                Status
+                            </p>
+
+                            <span
+                                class="
+                                    inline-flex
+                                    items-center
+                                    gap-2
+                                    px-3
+                                    py-1.5
+                                    rounded-xl
+                                    text-xs
+                                    ${
+                                        active
+                                            ? "bg-green-500/10 text-green-400"
+                                            : "bg-red-500/10 text-red-400"
+                                    }
+                                "
+                            >
+
+                                <span
+                                    class="
+                                        w-1.5
+                                        h-1.5
+                                        rounded-full
+                                        ${
+                                            active
+                                                ? "bg-green-400"
+                                                : "bg-red-400"
+                                        }
+                                    "
+                                ></span>
+
+                                ${
+                                    active
+                                        ? "Ativo"
+                                        : "Inativo"
+                                }
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- AÇÕES -->
+
                     <div
                         class="
                             flex
                             items-center
-                            gap-3
+                            gap-2
+                            shrink-0
                         "
                     >
 
-                        <span
+                        <button
+                            type="button"
                             class="
-                                inline-flex
-                                items-center
-                                gap-2
-                                px-3
-                                py-1.5
+                                h-10
+                                px-4
                                 rounded-xl
-                                text-xs
-                                ${
-                                    active
-                                        ? "bg-green-500/10 text-green-400"
-                                        : "bg-red-500/10 text-red-400"
-                                }
+                                border
+                                border-[#29322C]
+                                bg-[#141A16]
+                                text-sm
+                                text-slate-300
+                                hover:text-white
+                                hover:border-green-500/30
+                                transition
                             "
+                            data-action="edit"
+                            data-member-id="${employee.id}"
                         >
 
-                            <span
-                                class="
-                                    w-1.5
-                                    h-1.5
-                                    rounded-full
-                                    ${
-                                        active
-                                            ? "bg-green-400"
-                                            : "bg-red-400"
-                                    }
-                                "
-                            ></span>
+                            <i
+                                data-lucide="pencil"
+                                class="w-4 h-4 inline-block mr-1.5"
+                            ></i>
 
-                            ${
-                                active
-                                    ? "Ativo"
-                                    : "Inativo"
-                            }
+                            Editar
 
-                        </span>
+                        </button>
 
 
                         <button
@@ -565,7 +704,9 @@ function renderEmployees() {
                                 hover:border-green-500/30
                                 transition
                             "
-                            title="Em breve"
+                            title="Mais ações"
+                            data-action="menu"
+                            data-member-id="${employee.id}"
                         >
 
                             <i
