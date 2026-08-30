@@ -87,6 +87,88 @@ const Bootstrap = {
         }
 
         // ---------------------------------
+        // Funcionário
+        // ---------------------------------
+        
+        if (
+            membership.role !==
+            Roles.CEO
+        ) {
+        
+            if (!membership.store_id) {
+        
+                return {
+        
+                    status: "ERROR",
+                    user,
+                    company,
+                    membership
+        
+                };
+        
+            }
+        
+        
+            const employeeStore =
+                stores.find(
+                    store =>
+                        store.id ===
+                        membership.store_id
+                );
+        
+        
+            if (!employeeStore) {
+        
+                return {
+        
+                    status: "ERROR",
+                    user,
+                    company,
+                    membership
+        
+                };
+        
+            }
+        
+        
+            const employeeContext = {
+        
+                user,
+        
+                company,
+        
+                membership,
+        
+                store:
+                    employeeStore,
+        
+                role:
+                    membership.role
+        
+            };
+        
+        
+            Storage.setContext(
+                employeeContext
+            );
+        
+        
+            window.NEKKO =
+                employeeContext;
+        
+        
+            return {
+        
+                status: "READY",
+        
+                context:
+                    employeeContext
+        
+            };
+        
+        }
+
+        // ---------------------------------
         // Contexto salvo
         // ---------------------------------
 
