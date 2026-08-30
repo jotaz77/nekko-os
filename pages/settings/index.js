@@ -736,6 +736,652 @@ function renderEmployees() {
 }
 
 // =========================================
+// MODAL DE EDIÇÃO
+// =========================================
+
+function openEditEmployeeModal(
+    memberId
+) {
+
+    const employee =
+        employees.find(
+            employee =>
+                employee.id === memberId
+        );
+
+
+    if (!employee) {
+
+        console.error(
+            "Funcionário não encontrado:",
+            memberId
+        );
+
+        return;
+
+    }
+
+
+    const oldModal =
+        document.getElementById(
+            "employeeModal"
+        );
+
+
+    if (oldModal)
+        oldModal.remove();
+
+
+    const modal =
+        document.createElement(
+            "div"
+        );
+
+
+    modal.id =
+        "employeeModal";
+
+
+    modal.className = `
+        fixed
+        inset-0
+        z-[100]
+        bg-black/70
+        backdrop-blur-sm
+        flex
+        items-center
+        justify-center
+        p-4
+    `;
+
+
+    const fullName =
+        employee.profiles
+            ?.full_name ||
+        "";
+
+
+    modal.innerHTML = `
+
+        <div
+            class="
+                w-full
+                max-w-3xl
+                max-h-[92vh]
+                overflow-hidden
+                bg-[#101510]
+                border
+                border-[#29322C]
+                rounded-[28px]
+                shadow-2xl
+                flex
+                flex-col
+            "
+        >
+
+            <!-- HEADER -->
+
+            <div
+                class="
+                    px-6
+                    md:px-8
+                    py-6
+                    border-b
+                    border-[#222B25]
+                    flex
+                    items-center
+                    justify-between
+                    gap-4
+                "
+            >
+
+                <div>
+
+                    <p
+                        class="
+                            text-xs
+                            uppercase
+                            tracking-[0.18em]
+                            text-green-400
+                            font-medium
+                        "
+                    >
+                        Equipe
+                    </p>
+
+                    <h2
+                        class="
+                            text-2xl
+                            font-bold
+                            mt-1
+                        "
+                    >
+                        Editar funcionário
+                    </h2>
+
+                    <p
+                        class="
+                            text-sm
+                            text-slate-500
+                            mt-1
+                        "
+                    >
+                        Atualize os dados administrativos.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="closeEditEmployeeModal"
+                    class="
+                        w-10
+                        h-10
+                        rounded-xl
+                        border
+                        border-[#29322C]
+                        bg-[#141A16]
+                        text-slate-400
+                        hover:text-white
+                        hover:border-red-500/30
+                        transition
+                        flex
+                        items-center
+                        justify-center
+                    "
+                >
+
+                    <i
+                        data-lucide="x"
+                        class="w-5 h-5"
+                    ></i>
+
+                </button>
+
+            </div>
+
+
+            <!-- FORM -->
+
+            <form
+                id="editEmployeeForm"
+                class="
+                    flex-1
+                    overflow-y-auto
+                    p-6
+                    md:p-8
+                    space-y-6
+                "
+            >
+
+                <!-- NOME -->
+
+                <div>
+
+                    <label
+                        class="
+                            block
+                            text-sm
+                            text-slate-300
+                            mb-2
+                        "
+                    >
+                        Nome completo
+                    </label>
+
+                    <input
+                        id="editEmployeeName"
+                        type="text"
+                        value="${fullName}"
+                        required
+                        class="
+                            w-full
+                            bg-[#0D120E]
+                            border
+                            border-[#29322C]
+                            rounded-2xl
+                            px-4
+                            py-3.5
+                            text-white
+                            outline-none
+                            focus:border-green-500/60
+                            focus:ring-4
+                            focus:ring-green-500/5
+                        "
+                    >
+
+                </div>
+
+
+                <!-- LOJA -->
+
+                <div>
+
+                    <label
+                        class="
+                            block
+                            text-sm
+                            text-slate-300
+                            mb-2
+                        "
+                    >
+                        Loja
+                    </label>
+
+                    <select
+                        id="editEmployeeStore"
+                        required
+                        class="
+                            w-full
+                            bg-[#0D120E]
+                            border
+                            border-[#29322C]
+                            rounded-2xl
+                            px-4
+                            py-3.5
+                            text-white
+                            outline-none
+                            focus:border-green-500/60
+                        "
+                    >
+
+                        <option value="">
+                            Selecione a loja
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- CATEGORIA -->
+
+                <div>
+
+                    <label
+                        class="
+                            block
+                            text-sm
+                            text-slate-300
+                            mb-2
+                        "
+                    >
+                        Categoria
+                    </label>
+
+                    <select
+                        id="editEmployeeCategory"
+                        required
+                        class="
+                            w-full
+                            bg-[#0D120E]
+                            border
+                            border-[#29322C]
+                            rounded-2xl
+                            px-4
+                            py-3.5
+                            text-white
+                            outline-none
+                            focus:border-green-500/60
+                        "
+                    >
+
+                        <option value="">
+                            Selecione a categoria
+                        </option>
+
+                        <option
+                            value="MANAGER"
+                        >
+                            Gerente
+                        </option>
+
+                        <option
+                            value="EMPLOYEE"
+                        >
+                            Funcionário
+                        </option>
+
+                        <option
+                            value="TECHNICIAN"
+                        >
+                            Técnico
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div>
+
+                    <label
+                        class="
+                            block
+                            text-sm
+                            text-slate-300
+                            mb-2
+                        "
+                    >
+                        Status
+                    </label>
+
+                    <select
+                        id="editEmployeeStatus"
+                        required
+                        class="
+                            w-full
+                            bg-[#0D120E]
+                            border
+                            border-[#29322C]
+                            rounded-2xl
+                            px-4
+                            py-3.5
+                            text-white
+                            outline-none
+                            focus:border-green-500/60
+                        "
+                    >
+
+                        <option value="true">
+                            Ativo
+                        </option>
+
+                        <option value="false">
+                            Inativo
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- MENSAGEM -->
+
+                <div
+                    id="editEmployeeMessage"
+                    class="
+                        hidden
+                        rounded-2xl
+                        px-4
+                        py-3
+                        text-sm
+                    "
+                ></div>
+
+            </form>
+
+
+            <!-- FOOTER -->
+
+            <div
+                class="
+                    px-6
+                    md:px-8
+                    py-5
+                    border-t
+                    border-[#222B25]
+                    flex
+                    flex-col-reverse
+                    sm:flex-row
+                    sm:justify-end
+                    gap-3
+                "
+            >
+
+                <button
+                    type="button"
+                    id="cancelEditEmployeeButton"
+                    class="
+                        px-5
+                        py-3
+                        rounded-2xl
+                        border
+                        border-[#29322C]
+                        bg-[#141A16]
+                        text-slate-300
+                        hover:text-white
+                        transition
+                    "
+                >
+                    Cancelar
+                </button>
+
+
+                <button
+                    type="submit"
+                    form="editEmployeeForm"
+                    id="saveEditEmployeeButton"
+                    class="
+                        px-6
+                        py-3
+                        rounded-2xl
+                        bg-green-500
+                        text-black
+                        font-semibold
+                        hover:bg-green-400
+                        transition
+                        inline-flex
+                        items-center
+                        justify-center
+                        gap-2
+                    "
+                >
+
+                    <i
+                        data-lucide="save"
+                        class="w-5 h-5"
+                    ></i>
+
+                    Salvar alterações
+
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    document.body.appendChild(
+        modal
+    );
+
+
+    // ---------------------------------
+    // Preencher lojas
+    // ---------------------------------
+
+    const storeSelect =
+        document.getElementById(
+            "editEmployeeStore"
+        );
+
+
+    stores.forEach(
+        store => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                store.id;
+
+            option.textContent =
+                store.name;
+
+            if (
+                store.id ===
+                employee.store_id
+            ) {
+
+                option.selected =
+                    true;
+
+            }
+
+            storeSelect.appendChild(
+                option
+            );
+
+        }
+    );
+
+
+    // ---------------------------------
+    // Categoria
+    // ---------------------------------
+
+    document
+        .getElementById(
+            "editEmployeeCategory"
+        )
+        .value =
+        employee.role ||
+        "";
+
+
+    // ---------------------------------
+    // Status
+    // ---------------------------------
+
+    document
+        .getElementById(
+            "editEmployeeStatus"
+        )
+        .value =
+        String(
+            employee.active
+        );
+
+
+    // ---------------------------------
+    // Fechar
+    // ---------------------------------
+
+    document
+        .getElementById(
+            "closeEditEmployeeModal"
+        )
+        .addEventListener(
+            "click",
+            closeEmployeeModal
+        );
+
+
+    document
+        .getElementById(
+            "cancelEditEmployeeButton"
+        )
+        .addEventListener(
+            "click",
+            closeEmployeeModal
+        );
+
+
+    // ---------------------------------
+    // Submit
+    // ---------------------------------
+
+    document
+        .getElementById(
+            "editEmployeeForm"
+        )
+        .addEventListener(
+            "submit",
+            event => {
+
+                event.preventDefault();
+
+
+                console.log(
+                    "Editar funcionário:",
+                    employee
+                );
+
+                showEditEmployeeMessage(
+                    "O formulário de edição está pronto. A gravação será conectada na próxima etapa.",
+                    "success"
+                );
+
+            }
+        );
+
+
+    // ---------------------------------
+    // Fechar clicando fora
+    // ---------------------------------
+
+    modal.addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target ===
+                modal
+            ) {
+
+                closeEmployeeModal();
+
+            }
+
+        }
+    );
+
+
+    lucide.createIcons();
+
+}
+
+// =========================================
+// MENSAGEM — EDIÇÃO
+// =========================================
+
+function showEditEmployeeMessage(
+    text,
+    type = "error"
+) {
+
+    const message =
+        document.getElementById(
+            "editEmployeeMessage"
+        );
+
+
+    if (!message)
+        return;
+
+
+    message.className = `
+        rounded-2xl
+        px-4
+        py-3
+        text-sm
+        ${
+            type === "success"
+                ? "bg-green-500/10 text-green-400 border border-green-500/20"
+                : "bg-red-500/10 text-red-400 border border-red-500/20"
+        }
+    `;
+
+
+    message.textContent =
+        text;
+
+
+    message.classList.remove(
+        "hidden"
+    );
+
+}
+
+// =========================================
 // MODAL
 // =========================================
 
