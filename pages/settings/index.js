@@ -1324,49 +1324,315 @@ function openEditEmployeeModal(
         )
         .addEventListener(
             "submit",
-            event => {
-
+            async event => {
+    
                 event.preventDefault();
-
-
-                console.log(
-                    "Editar funcionário:",
-                    employee
-                );
-
-                showEditEmployeeMessage(
-                    "O formulário de edição está pronto. A gravação será conectada na próxima etapa.",
-                    "success"
-                );
-
+    
+    
+                const button =
+                    document.getElementById(
+                        "saveEditEmployeeButton"
+                    );
+    
+    
+                const nameInput =
+                    document.getElementById(
+                        "editEmployeeName"
+                    );
+    
+    
+                const storeInput =
+                    document.getElementById(
+                        "editEmployeeStore"
+                    );
+    
+    
+                const categoryInput =
+                    document.getElementById(
+                        "editEmployeeCategory"
+                    );
+    
+    
+                const statusInput =
+                    document.getElementById(
+                        "editEmployeeStatus"
+                    );
+    
+    
+                const fullName =
+                    nameInput.value.trim();
+    
+    
+                const storeId =
+                    storeInput.value;
+    
+    
+                const role =
+                    categoryInput.value;
+    
+    
+                const active =
+                    statusInput.value ===
+                    "true";
+    
+    
+                if (!fullName) {
+    
+                    showEditEmployeeMessage(
+                        "Informe o nome completo.",
+                        "error"
+                    );
+    
+                    return;
+    
+                }
+    
+    
+                if (!storeId) {
+    
+                    showEditEmployeeMessage(
+                        "Selecione a loja.",
+                        "error"
+                    );
+    
+                    return;
+    
+                }
+    
+    
+                if (!role) {
+    
+                    showEditEmployeeMessage(
+                        "Selecione a categoria.",
+                        "error"
+                    );
+    
+                    return;
+    
+                }
+    
+    
+                button.disabled =
+                    true;
+    
+    
+                button.innerHTML = `
+                    <i
+                        data-lucide="loader-circle"
+                        class="w-5 h-5 animate-spin"
+                    ></i>
+    
+                    Salvando...
+                `;
+    
+    
+                lucide.createIcons();
+    
+    
+                try {
+    
+                    const {
+                        data,
+                        error
+                    } =
+                        await supabaseClient
+                            .functions
+                            .invoke(
+                                "update-employee",
+                                {
+                                    body: {
+    
+                                        member_id:
+                                            employee.id,
+    
+                                        full_name:
+                                            fullName,
+    
+                                        store_id:
+                                            storeId,
+    
+                                        role,
+    
+                                        category:
+                                            categoryInput
+                                                .selectedOptions[0]
+                                                ?.textContent
+                                                .trim() ||
+                                            "",
+    
+                                        active
+    
+                                    }
+                                }
+                            );
+    
+    
+                    if (error)
+                        throw error;
+    
+    
+                    if (
+                        !data ||
+                        !data.success
+                    ) {
+    
+                        throw new Error(
+                            data?.error ||
+                            "Não foi possível salvar as alterações."
+                        );
+    
+                    }
+    
+    
+                    showEditEmployeeMessage(
+                        "Funcionário atualizado com sucesso!",
+                        "success"
+                    );
+    
+    
+                    // ---------------------------------
+                    // Atualizar lista local
+                    // ---------------------------------
+    
+                    employee.profiles =
+                        employee.profiles ||
+                        {};
+    
+    
+                    employee.profiles.full_name =
+                        fullName;
+    
+    
+                    employee.store_id =
+                        storeId;
+    
+    
+                    employee.role =
+                        role;
+    
+    
+                    employee.category =
+                        categoryInput
+                            .selectedOptions[0]
+                            ?.textContent
+                            .trim() ||
+                        "";
+    
+    
+                    employee.active =
+                        active;
+    
+    
+                    const selectedStore =
+                        stores.find(
+                            store =>
+                                store.id ===
+                                storeId
+                        );
+    
+    
+                    employee.stores =
+                        selectedStore
+                            ? {
+                                name:
+                                    selectedStore.name
+                            }
+                            : {
+                                name:
+                                    "Sem loja"
+                            };
+    
+    
+                    renderEmployees();
+    
+    
+                    setTimeout(
+                        closeEmployeeModal,
+                        900
+                    );
+    
+                }
+    
+                catch (error) {
+    
+                    console.error(
+                        "Erro ao editar funcionário:",
+                        error
+                    );
+    
+    
+                    let realError =
+                        error?.message ||
+                        "Erro ao salvar alterações.";
+    
+    
+                    try {
+    
+                        if (
+                            error?.context &&
+                            typeof
+                                error.context.json ===
+                                "function"
+                        ) {
+    
+                            const response =
+                                await error.context.json();
+    
+    
+                            console.error(
+                                "RESPOSTA DA EDGE FUNCTION:",
+                                response
+                            );
+    
+    
+                            realError =
+                                response?.error ||
+                                realError;
+    
+                        }
+    
+                    }
+    
+                    catch (readError) {
+    
+                        console.error(
+                            "Não foi possível ler a resposta da Edge Function:",
+                            readError
+                        );
+    
+                    }
+    
+    
+                    showEditEmployeeMessage(
+                        realError,
+                        "error"
+                    );
+    
+                }
+    
+    
+                finally {
+    
+                    button.disabled =
+                        false;
+    
+    
+                    button.innerHTML = `
+                        <i
+                            data-lucide="save"
+                            class="w-5 h-5"
+                        ></i>
+    
+                        Salvar alterações
+                    `;
+    
+    
+                    lucide.createIcons();
+    
+                }
+    
             }
         );
-
-
-    // ---------------------------------
-    // Fechar clicando fora
-    // ---------------------------------
-
-    modal.addEventListener(
-        "click",
-        event => {
-
-            if (
-                event.target ===
-                modal
-            ) {
-
-                closeEmployeeModal();
-
-            }
-
-        }
-    );
-
-
-    lucide.createIcons();
-
-}
 
 // =========================================
 // MENSAGEM — EDIÇÃO
