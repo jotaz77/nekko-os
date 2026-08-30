@@ -42,6 +42,11 @@ form.addEventListener("submit", async (event) => {
         
         const result = await Bootstrap.init();
 
+        console.log("===== RESULTADO DO BOOTSTRAP =====");
+        console.log("STATUS:", result.status);
+        console.log("RESULTADO COMPLETO:", result);
+        console.log("==================================");
+
         switch (result.status) {
 
             case "LOGIN":
