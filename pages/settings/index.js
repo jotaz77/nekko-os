@@ -1633,6 +1633,7 @@ function openEditEmployeeModal(
     
             }
         );
+    }
 
 // =========================================
 // MENSAGEM — EDIÇÃO
