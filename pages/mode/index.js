@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     <h2 class="text-2xl font-semibold flex items-center gap-3">
 
-                        👑 CEO
+                         CEO
 
                     </h2>
 
@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         <h2 class="text-2xl font-semibold flex items-center gap-3">
 
-                            🏪 ${store.name}
+                             ${store.name}
 
                         </h2>
 
