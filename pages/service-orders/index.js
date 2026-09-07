@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         await loadServiceOrders(
             result.context,
-            "Aberta"
+            "ativas"
         );
 
         // ---------------------------------
