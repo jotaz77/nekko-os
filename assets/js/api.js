@@ -1140,6 +1140,46 @@ const {
     
         );
 
+    const salesCost =
+    salesWithItems.reduce(
+        (total, sale) => {
+
+            const saleCost =
+                (sale.items || []).reduce(
+                    (itemTotal, item) => {
+
+                        const quantity =
+                            Number(
+                                item.quantity || 0
+                            );
+
+                        const unitCost =
+                            Number(
+                                item.unit_cost || 0
+                            );
+
+                        return itemTotal +
+                            (quantity * unitCost);
+
+                    },
+                    0
+                );
+
+            return total + saleCost;
+
+        },
+        0
+    );
+
+
+const salesNetRevenue =
+    salesRevenue - salesCost;
+
+
+const salesMarginPercent =
+    salesRevenue > 0
+        ? (salesNetRevenue / salesRevenue) * 100
+        : 0;
 
     // =================================
     // Retorno
@@ -1158,6 +1198,12 @@ const {
         technicians: techniciansList,
 
         salesRevenue,
+
+        salesCost,
+
+        salesNetRevenue,
+        
+        salesMarginPercent,
 
         salesCount,
 
