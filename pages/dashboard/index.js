@@ -285,22 +285,23 @@ function renderDashboard(data) {
     // -----------------------------
     // Vendas
     // -----------------------------
-
+    
     document.getElementById("salesRevenue").textContent =
         formatCurrency(data.salesRevenue);
-
+    
+    
     document.getElementById("salesCost").textContent =
         formatCurrency(data.salesCost);
-
-
+    
+    
     document.getElementById("salesNetRevenue").textContent =
         formatCurrency(data.salesNetRevenue);
     
     
     document.getElementById("salesMargin").textContent =
         `${Number(data.salesMarginPercent || 0).toFixed(1)}% de margem`;
-
-
+    
+    
     document.getElementById("salesCount").textContent =
         `${data.salesCount} vendas registradas`;
 
