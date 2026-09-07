@@ -1,82 +1,972 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
+
 <head>
 
-    <link
-        rel="icon"
-        type="image/png"
-        href="../../assets/img/nekkologo_favicon.png"
-    >
-    
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+```
+<link
+    rel="icon"
+    type="image/png"
+    href="../../assets/img/nekkologo_favicon.png"
+>
 
-    <title>Criar Conta • Nekko OS</title>
+<meta charset="UTF-8">
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <script src="../../assets/js/config.js"></script>
-    <script src="../../assets/js/supabase.js"></script>
+<title>Criar Conta • Nekko OS</title>
+
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- Configuração -->
+<script src="../../assets/js/config.js"></script>
+<script src="../../assets/js/supabase.js"></script>
+
+<style>
+
+    /* =====================================================
+       NEKKO OS — REGISTER
+       Camada visual. Lógica preservada.
+    ===================================================== */
+
+    :root {
+        color-scheme: dark;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    html,
+    body {
+        min-height: 100%;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+
+        font-family:
+            Inter,
+            ui-sans-serif,
+            system-ui,
+            -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            sans-serif;
+
+        background:
+            radial-gradient(
+                circle at 50% -10%,
+                rgba(34, 197, 94, 0.14),
+                transparent 34%
+            ),
+            radial-gradient(
+                circle at 100% 100%,
+                rgba(34, 197, 94, 0.045),
+                transparent 30%
+            ),
+            #070A08;
+
+        color: #F8FAFC;
+
+        overflow-x: hidden;
+    }
+
+    /* =====================================================
+       ATMOSFERA
+    ===================================================== */
+
+    body::before {
+        content: "";
+
+        position: fixed;
+
+        top: -220px;
+        left: 50%;
+
+        width: 720px;
+        height: 430px;
+
+        transform: translateX(-50%);
+
+        background: rgba(34, 197, 94, 0.075);
+
+        filter: blur(125px);
+
+        border-radius: 50%;
+
+        pointer-events: none;
+
+        z-index: 0;
+    }
+
+    body::after {
+        content: "";
+
+        position: fixed;
+
+        inset: 0;
+
+        background:
+            linear-gradient(
+                rgba(255,255,255,0.018) 1px,
+                transparent 1px
+            ),
+            linear-gradient(
+                90deg,
+                rgba(255,255,255,0.018) 1px,
+                transparent 1px
+            );
+
+        background-size: 56px 56px;
+
+        mask-image: linear-gradient(
+            to bottom,
+            black,
+            transparent 75%
+        );
+
+        pointer-events: none;
+
+        opacity: 0.22;
+
+        z-index: 0;
+    }
+
+    /* =====================================================
+       CONTAINER
+    ===================================================== */
+
+    .register-page {
+        position: relative;
+
+        z-index: 1;
+
+        animation:
+            registerEnter
+            0.7s
+            cubic-bezier(.22,1,.36,1)
+            both;
+    }
+
+    @keyframes registerEnter {
+
+        from {
+            opacity: 0;
+            transform: translateY(18px) scale(.985);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+    }
+
+    /* =====================================================
+       LOGO
+    ===================================================== */
+
+    .brand-mark {
+        position: relative;
+
+        width: 58px;
+        height: 58px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        margin: 0 auto 20px;
+
+        border-radius: 18px;
+
+        border: 1px solid rgba(34,197,94,.24);
+
+        background:
+            linear-gradient(
+                145deg,
+                rgba(34,197,94,.14),
+                rgba(15,20,17,.78)
+            );
+
+        box-shadow:
+            0 0 0 1px rgba(255,255,255,.02) inset,
+            0 20px 50px rgba(0,0,0,.38),
+            0 0 45px rgba(34,197,94,.09);
+
+        overflow: hidden;
+    }
+
+    .brand-mark::before {
+        content: "";
+
+        position: absolute;
+
+        inset: -40%;
+
+        background:
+            linear-gradient(
+                115deg,
+                transparent 35%,
+                rgba(255,255,255,.07) 50%,
+                transparent 65%
+            );
+
+        transform: translateX(-80%);
+
+        animation:
+            brandShine
+            5s
+            ease-in-out
+            infinite;
+    }
+
+    @keyframes brandShine {
+
+        0%,
+        70% {
+            transform: translateX(-80%);
+        }
+
+        90%,
+        100% {
+            transform: translateX(80%);
+        }
+
+    }
+
+    .brand-mark img {
+        position: relative;
+
+        width: 30px;
+        height: 30px;
+
+        object-fit: contain;
+
+        filter:
+            drop-shadow(
+                0 0 12px
+                rgba(34,197,94,.32)
+            );
+    }
+
+    .brand-name {
+        font-size: 11px;
+
+        letter-spacing: .28em;
+
+        color: #4ADE80;
+
+        font-weight: 700;
+
+        text-transform: uppercase;
+    }
+
+    /* =====================================================
+       CABEÇALHO
+    ===================================================== */
+
+    .register-kicker {
+        color: #4ADE80;
+
+        font-size: .82rem;
+
+        font-weight: 600;
+
+        letter-spacing: .02em;
+    }
+
+    .register-title {
+        margin-top: 9px;
+
+        font-size:
+            clamp(2rem, 5vw, 2.75rem);
+
+        line-height: 1.05;
+
+        letter-spacing: -.045em;
+
+        font-weight: 750;
+    }
+
+    .register-title span {
+        color: #4ADE80;
+    }
+
+    .register-description {
+        margin-top: 13px;
+
+        color: #64748B;
+
+        font-size: .95rem;
+
+        line-height: 1.65;
+    }
+
+    /* =====================================================
+       CARD
+    ===================================================== */
+
+    .register-card {
+
+        position: relative;
+
+        margin-top: 30px;
+
+        padding: 28px;
+
+        border-radius: 28px;
+
+        border: 1px solid
+            rgba(71,85,75,.55);
+
+        background:
+            linear-gradient(
+                145deg,
+                rgba(20,26,22,.88),
+                rgba(11,15,12,.92)
+            );
+
+        box-shadow:
+            0 35px 90px rgba(0,0,0,.42),
+            0 0 0 1px rgba(255,255,255,.018) inset,
+            0 0 55px rgba(34,197,94,.035);
+
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+
+        overflow: hidden;
+    }
+
+    .register-card::before {
+
+        content: "";
+
+        position: absolute;
+
+        top: 0;
+        left: 12%;
+        right: 12%;
+
+        height: 1px;
+
+        background:
+            linear-gradient(
+                90deg,
+                transparent,
+                rgba(74,222,128,.45),
+                transparent
+            );
+
+        opacity: .65;
+    }
+
+    /* =====================================================
+       CAMPOS
+    ===================================================== */
+
+    .field-group {
+        position: relative;
+    }
+
+    .field-label {
+
+        display: block;
+
+        margin-bottom: 9px;
+
+        color: #CBD5E1;
+
+        font-size: .82rem;
+
+        font-weight: 600;
+    }
+
+    .input-wrap {
+        position: relative;
+    }
+
+    .field-icon {
+
+        position: absolute;
+
+        left: 16px;
+        top: 50%;
+
+        transform: translateY(-50%);
+
+        color: #64748B;
+
+        pointer-events: none;
+
+        transition:
+            color .2s ease,
+            transform .2s ease;
+    }
+
+    .input-field {
+
+        width: 100%;
+
+        height: 54px;
+
+        padding:
+            0 16px
+            0 46px;
+
+        border-radius: 16px;
+
+        border: 1px solid #29322C;
+
+        background:
+            rgba(7,10,8,.72);
+
+        color: #F8FAFC;
+
+        outline: none;
+
+        font-size: .92rem;
+
+        transition:
+            border-color .2s ease,
+            box-shadow .2s ease,
+            background .2s ease,
+            transform .2s ease;
+    }
+
+    .input-field::placeholder {
+        color: #475569;
+    }
+
+    .input-field:hover {
+        border-color: #354238;
+    }
+
+    .input-field:focus {
+
+        border-color:
+            rgba(74,222,128,.65);
+
+        background:
+            rgba(10,15,11,.95);
+
+        box-shadow:
+            0 0 0 4px
+            rgba(34,197,94,.075),
+            0 0 30px
+            rgba(34,197,94,.055);
+
+        transform: translateY(-1px);
+    }
+
+    .input-wrap:focus-within .field-icon {
+
+        color: #4ADE80;
+
+        transform:
+            translateY(-50%)
+            scale(1.05);
+    }
+
+    /* =====================================================
+       BOTÃO
+    ===================================================== */
+
+    .register-button {
+
+        position: relative;
+
+        width: 100%;
+
+        height: 55px;
+
+        margin-top: 4px;
+
+        border: 0;
+
+        border-radius: 16px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #4ADE80,
+                #22C55E
+            );
+
+        color: #061009;
+
+        font-size: .92rem;
+
+        font-weight: 750;
+
+        cursor: pointer;
+
+        overflow: hidden;
+
+        box-shadow:
+            0 14px 35px
+            rgba(34,197,94,.16);
+
+        transition:
+            transform .2s ease,
+            box-shadow .2s ease,
+            filter .2s ease;
+    }
+
+    .register-button::before {
+
+        content: "";
+
+        position: absolute;
+
+        inset: 0;
+
+        background:
+            linear-gradient(
+                110deg,
+                transparent 25%,
+                rgba(255,255,255,.24) 50%,
+                transparent 75%
+            );
+
+        transform: translateX(-100%);
+
+        transition: transform .55s ease;
+    }
+
+    .register-button:hover {
+
+        transform: translateY(-2px);
+
+        filter: brightness(1.04);
+
+        box-shadow:
+            0 18px 42px
+            rgba(34,197,94,.23);
+    }
+
+    .register-button:hover::before {
+        transform: translateX(100%);
+    }
+
+    .register-button:active {
+        transform: translateY(0);
+    }
+
+    .register-button:disabled {
+        opacity: .6;
+        cursor: wait;
+        transform: none;
+    }
+
+    /* =====================================================
+       LOGIN LINK
+    ===================================================== */
+
+    .login-divider {
+
+        height: 1px;
+
+        margin: 24px 0 20px;
+
+        background:
+            linear-gradient(
+                90deg,
+                transparent,
+                #29322C,
+                transparent
+            );
+    }
+
+    .login-link {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 7px;
+
+        margin-top: 8px;
+
+        color: #4ADE80;
+
+        font-size: .84rem;
+
+        font-weight: 650;
+
+        text-decoration: none;
+
+        transition:
+            color .2s ease,
+            gap .2s ease;
+    }
+
+    .login-link:hover {
+
+        color: #86EFAC;
+
+        gap: 10px;
+    }
+
+    /* =====================================================
+       SEGURANÇA
+    ===================================================== */
+
+    .security-note {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 7px;
+
+        margin-top: 18px;
+
+        color: #475569;
+
+        font-size: .7rem;
+
+        letter-spacing: .01em;
+    }
+
+    .security-note svg {
+        width: 13px;
+        height: 13px;
+    }
+
+    /* =====================================================
+       RESPONSIVO
+    ===================================================== */
+
+    @media (max-width: 640px) {
+
+        body {
+            padding: 0;
+        }
+
+        .register-page {
+            width: 100%;
+        }
+
+        .register-card {
+            margin-top: 26px;
+
+            padding: 22px;
+
+            border-radius: 24px;
+        }
+
+        .register-title {
+            font-size: 2.1rem;
+        }
+
+        .brand-mark {
+            width: 54px;
+            height: 54px;
+        }
+
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+        *,
+        *::before,
+        *::after {
+            animation-duration: .01ms !important;
+            animation-iteration-count: 1 !important;
+            scroll-behavior: auto !important;
+        }
+
+    }
+
+</style>
+```
+
 </head>
 
-<body class="min-h-screen bg-slate-100 flex items-center justify-center p-6">
+<body>
 
-    <div class="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
+```
+<main
+    class="
+        min-h-screen
+        flex
+        items-center
+        justify-center
+        px-5
+        py-10
+        sm:px-6
+    "
+>
 
-        <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-slate-800">Criar Conta</h1>
-            <p class="text-slate-500 mt-2">
-                Cadastre sua assistência técnica
-            </p>
+    <div class="register-page w-full max-w-md">
+
+        <!-- =================================================
+             MARCA
+        ================================================== -->
+
+        <div class="text-center">
+
+            <div class="brand-mark">
+
+                <img
+                    src="../../assets/img/nekkologo_favicon.png"
+                    alt="Nekko"
+                >
+
+            </div>
+
+            <div class="brand-name">
+                NEKKO OS
+            </div>
+
         </div>
 
-        <form id="registerForm" class="space-y-5">
 
-            <div>
-                <label class="block mb-2 text-sm font-medium">Email</label>
+        <!-- =================================================
+             CABEÇALHO
+        ================================================== -->
 
-                <input
-                    id="email"
-                    type="email"
-                    required
-                    class="w-full border rounded-xl px-4 py-3">
+        <div class="text-center mt-7">
+
+            <p class="register-kicker">
+                Comece agora
+            </p>
+
+            <h1 class="register-title">
+                Crie sua <span>conta.</span>
+            </h1>
+
+            <p class="register-description">
+                Cadastre sua assistência técnica e comece a
+                organizar sua operação em um só lugar.
+            </p>
+
+        </div>
+
+
+        <!-- =================================================
+             FORMULÁRIO
+             IDs PRESERVADOS
+        ================================================== -->
+
+        <div class="register-card">
+
+            <form
+                id="registerForm"
+                class="space-y-5"
+            >
+
+                <!-- EMAIL -->
+
+                <div class="field-group">
+
+                    <label
+                        for="email"
+                        class="field-label"
+                    >
+                        Email
+                    </label>
+
+                    <div class="input-wrap">
+
+                        <svg
+                            class="field-icon"
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <rect
+                                width="20"
+                                height="16"
+                                x="2"
+                                y="4"
+                                rx="2"
+                            />
+                            <path
+                                d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"
+                            />
+                        </svg>
+
+                        <input
+                            id="email"
+                            type="email"
+                            required
+                            autocomplete="email"
+                            class="input-field"
+                            placeholder="email@empresa.com"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- SENHA -->
+
+                <div class="field-group">
+
+                    <label
+                        for="password"
+                        class="field-label"
+                    >
+                        Senha
+                    </label>
+
+                    <div class="input-wrap">
+
+                        <svg
+                            class="field-icon"
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <rect
+                                width="18"
+                                height="11"
+                                x="3"
+                                y="11"
+                                rx="2"
+                            />
+
+                            <path
+                                d="M7 11V7a5 5 0 0 1 10 0v4"
+                            />
+
+                        </svg>
+
+                        <input
+                            id="password"
+                            type="password"
+                            minlength="6"
+                            required
+                            autocomplete="new-password"
+                            class="input-field"
+                            placeholder="Crie uma senha segura"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- BOTÃO -->
+
+                <button
+                    type="submit"
+                    class="register-button"
+                >
+                    Criar minha conta
+                </button>
+
+            </form>
+
+
+            <!-- =================================================
+                 LOGIN
+            ================================================== -->
+
+            <div class="login-divider"></div>
+
+            <div class="text-center">
+
+                <p class="text-sm text-slate-500">
+                    Já possui uma conta?
+                </p>
+
+                <a
+                    href="login.html"
+                    class="login-link"
+                >
+                    Voltar para o login
+
+                    <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <path d="M5 12h14"/>
+                        <path d="m12 5 7 7-7 7"/>
+                    </svg>
+
+                </a>
+
             </div>
 
-            <div>
-                <label class="block mb-2 text-sm font-medium">Senha</label>
+        </div>
 
-                <input
-                    id="password"
-                    type="password"
-                    minlength="6"
-                    required
-                    class="w-full border rounded-xl px-4 py-3">
-            </div>
 
-            <button
-                type="submit"
-                class="w-full bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700">
+        <!-- =================================================
+             SEGURANÇA
+        ================================================== -->
 
-                Criar Conta
+        <div class="security-note">
 
-            </button>
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <rect
+                    width="18"
+                    height="11"
+                    x="3"
+                    y="11"
+                    rx="2"
+                />
 
-        </form>
+                <path
+                    d="M7 11V7a5 5 0 0 1 10 0v4"
+                />
+            </svg>
 
-        <div class="mt-6 text-center">
-            <a
-                href="login.html"
-                class="text-blue-600 hover:underline">
+            Ambiente seguro e protegido pelo Nekko OS.
 
-                Já tenho conta
-
-            </a>
         </div>
 
     </div>
 
-    <script src="register.js"></script>
+</main>
+
+
+<!-- =====================================================
+     LÓGICA DO CADASTRO
+     NÃO ALTERADA
+====================================================== -->
+
+<script src="register.js"></script>
+```
 
 </body>
+
 </html>
