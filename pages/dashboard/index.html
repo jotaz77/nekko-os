@@ -190,7 +190,7 @@
     
     <!-- CARDS PRINCIPAIS -->
 
-    <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
     
         <!-- LUCRO BRUTO DE OS -->
     
@@ -255,7 +255,7 @@
         </div>
     
     
-        <!-- VENDAS -->
+        <!-- FATURAMENTO BRUTO -->
     
         <div
             class="
@@ -317,8 +317,128 @@
     
         </div>
     
+    
+        <!-- CUSTO DOS PRODUTOS -->
+    
+        <div
+            class="
+                bg-[#141A16]
+                border
+                border-[#29322C]
+                rounded-3xl
+                p-6
+                transition
+                hover:border-orange-400/40
+            "
+        >
+    
+            <div class="flex items-center justify-between mb-5">
+    
+                <div>
+    
+                    <p class="text-sm text-slate-500">
+                        Custo dos produtos
+                    </p>
+    
+                    <h2
+                        id="salesCost"
+                        class="text-3xl font-bold mt-2"
+                    >
+                        R$ 0,00
+                    </h2>
+    
+                </div>
+    
+                <div
+                    class="
+                        w-12
+                        h-12
+                        rounded-2xl
+                        bg-orange-500/10
+                        flex
+                        items-center
+                        justify-center
+                    "
+                >
+    
+                    <i
+                        data-lucide="package"
+                        class="w-6 h-6 text-orange-400"
+                    ></i>
+    
+                </div>
+    
+            </div>
+    
+            <p class="text-sm text-slate-500">
+                Custo de aquisição dos produtos vendidos
+            </p>
+    
+        </div>
+    
+    
+        <!-- FATURAMENTO LÍQUIDO -->
+    
+        <div
+            class="
+                bg-[#141A16]
+                border
+                border-green-500/20
+                rounded-3xl
+                p-6
+                transition
+                hover:border-green-400/50
+            "
+        >
+    
+            <div class="flex items-center justify-between mb-5">
+    
+                <div>
+    
+                    <p class="text-sm text-slate-500">
+                        Faturamento líquido
+                    </p>
+    
+                    <h2
+                        id="salesNetRevenue"
+                        class="text-3xl font-bold mt-2 text-green-400"
+                    >
+                        R$ 0,00
+                    </h2>
+    
+                </div>
+    
+                <div
+                    class="
+                        w-12
+                        h-12
+                        rounded-2xl
+                        bg-green-500/10
+                        flex
+                        items-center
+                        justify-center
+                    "
+                >
+    
+                    <i
+                        data-lucide="trending-up"
+                        class="w-6 h-6 text-green-400"
+                    ></i>
+    
+                </div>
+    
+            </div>
+    
+            <p
+                id="salesMargin"
+                class="text-sm text-slate-500"
+            >
+                0.0% de margem
+            </p>
+    
+        </div>
+    
     </section>
-
 
     <!-- VENDAS -->
 
