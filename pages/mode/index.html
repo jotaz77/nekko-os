@@ -1,84 +1,314 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 
 <head>
 
-    <link
-        rel="icon"
-        type="image/png"
-        href="../../assets/img/nekkologo_favicon.png"
-    >
+```
+<link
+    rel="icon"
+    type="image/png"
+    href="../../assets/img/nekkologo_favicon.png"
+>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <title>NEKKO OS | Escolher modo</title>
+<title>NEKKO OS | Escolher modo</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.tailwindcss.com"></script>
 
-    <script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<style>
+
+    /* =====================================================
+       NEKKO MODE — BASE VISUAL
+       Somente aparência. Nenhuma lógica alterada.
+    ===================================================== */
+
+    :root {
+        color-scheme: dark;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    html {
+        min-height: 100%;
+        background: #070A08;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+            radial-gradient(
+                circle at 50% -15%,
+                rgba(34, 197, 94, 0.13),
+                transparent 38%
+            ),
+            radial-gradient(
+                circle at 0% 100%,
+                rgba(34, 197, 94, 0.045),
+                transparent 32%
+            ),
+            #070A08;
+        color: #F8FAFC;
+        font-family:
+            Inter,
+            ui-sans-serif,
+            system-ui,
+            -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            sans-serif;
+        overflow-x: hidden;
+    }
+
+    /* Luz ambiente superior */
+
+    body::before {
+        content: "";
+        position: fixed;
+        top: -180px;
+        left: 50%;
+        width: 700px;
+        height: 400px;
+        transform: translateX(-50%);
+        background: rgba(34, 197, 94, 0.07);
+        filter: blur(120px);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    /* =====================================================
+       CONTAINER PRINCIPAL
+    ===================================================== */
+
+    main {
+        position: relative;
+        z-index: 1;
+    }
+
+    .mode-container {
+        animation: modePageIn 0.65s ease-out both;
+    }
+
+    @keyframes modePageIn {
+        from {
+            opacity: 0;
+            transform: translateY(14px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* =====================================================
+       CABEÇALHO
+    ===================================================== */
+
+    .mode-header {
+        position: relative;
+    }
+
+    .mode-brand {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 58px;
+        height: 58px;
+        margin-bottom: 22px;
+        border: 1px solid rgba(34, 197, 94, 0.22);
+        border-radius: 18px;
+        background:
+            linear-gradient(
+                145deg,
+                rgba(34, 197, 94, 0.13),
+                rgba(20, 26, 22, 0.72)
+            );
+        box-shadow:
+            0 0 0 1px rgba(255, 255, 255, 0.02) inset,
+            0 12px 40px rgba(0, 0, 0, 0.28),
+            0 0 45px rgba(34, 197, 94, 0.07);
+    }
+
+    .mode-brand i {
+        width: 27px;
+        height: 27px;
+        color: #4ADE80;
+    }
+
+    .mode-title {
+        margin: 0;
+        font-size: clamp(2.25rem, 5vw, 3.5rem);
+        line-height: 1;
+        font-weight: 750;
+        letter-spacing: -0.045em;
+    }
+
+    .mode-title span {
+        color: #4ADE80;
+    }
+
+    .mode-subtitle {
+        margin: 18px auto 0;
+        max-width: 520px;
+        color: #94A3B8;
+        font-size: 1.05rem;
+        line-height: 1.7;
+    }
+
+    /* Pequeno indicador */
+
+    .mode-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 20px;
+        padding: 7px 12px;
+        border: 1px solid rgba(148, 163, 184, 0.12);
+        border-radius: 999px;
+        background: rgba(15, 23, 18, 0.58);
+        color: #94A3B8;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+
+    .mode-status-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #22C55E;
+        box-shadow: 0 0 12px rgba(34, 197, 94, 0.75);
+    }
+
+    /* =====================================================
+       ÁREA DOS CARDS
+    ===================================================== */
+
+    #modeGrid {
+        position: relative;
+        margin-top: 42px;
+    }
+
+    /* =====================================================
+       RESPONSIVO
+    ===================================================== */
+
+    @media (max-width: 640px) {
+
+        main {
+            padding: 28px 18px;
+        }
+
+        .mode-brand {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            margin-bottom: 18px;
+        }
+
+        .mode-title {
+            font-size: 2.25rem;
+        }
+
+        .mode-subtitle {
+            font-size: 0.95rem;
+        }
+
+        #modeGrid {
+            margin-top: 32px;
+        }
+    }
+
+</style>
+```
 
 </head>
 
-<body class="bg-[#0B0F0C] text-white min-h-screen">
+<body>
 
-    <main class="min-h-screen flex items-center justify-center p-6">
+```
+<main class="min-h-screen flex items-center justify-center p-6">
 
-        <div class="w-full max-w-3xl">
+    <div class="mode-container w-full max-w-4xl">
 
-            <!-- Cabeçalho -->
+        <!-- =================================================
+             CABEÇALHO
+        ================================================== -->
 
-            <div class="text-center mb-12">
+        <header class="mode-header text-center">
 
-                <h1 class="text-4xl font-bold mb-3">
+            <div class="mode-brand mx-auto">
 
-                    NEKKO OS
-
-                </h1>
-
-                <p class="text-slate-400 text-lg">
-
-                    Como deseja acessar o sistema?
-
-                </p>
+                <i data-lucide="cat"></i>
 
             </div>
 
-            <!-- Cards -->
+            <h1 class="mode-title">
+                Bem-vindo ao <span>NEKKO OS</span>
+            </h1>
 
-            <div
-                id="modeGrid"
-                class="grid gap-6">
+            <p class="mode-subtitle">
+                Escolha como deseja acessar o sistema e continue
+                para o ambiente de gerenciamento.
+            </p>
+
+            <div class="mode-status">
+
+                <span class="mode-status-dot"></span>
+
+                Sistema pronto para acesso
 
             </div>
 
-        </div>
+        </header>
 
-    </main>
+        <!-- =================================================
+             CARDS — GERADOS PELO index.js
+             NÃO ALTERAR O ID.
+        ================================================== -->
 
-    <!-- Supabase -->
+        <div
+            id="modeGrid"
+            class="grid gap-6"
+        ></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    </div>
 
-    <!-- Base -->
+</main>
 
-    <script src="../../assets/js/config.js"></script>
-    <script src="../../assets/js/supabase.js"></script>
-    <script src="../../assets/js/storage.js"></script>
-    <script src="../../assets/js/auth.js"></script>
-    <script src="../../assets/js/api.js"></script>
-    <script src="../../assets/js/bootstrap.js"></script>
-    <script src="../../assets/js/roles.js"></script>
+<!-- Supabase -->
 
-    <!-- Página -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <script src="index.js"></script>
+<!-- Base -->
 
-    <script>
+<script src="../../assets/js/config.js"></script>
+<script src="../../assets/js/supabase.js"></script>
+<script src="../../assets/js/storage.js"></script>
+<script src="../../assets/js/auth.js"></script>
+<script src="../../assets/js/api.js"></script>
+<script src="../../assets/js/bootstrap.js"></script>
+<script src="../../assets/js/roles.js"></script>
 
-        lucide.createIcons();
+<!-- Página -->
 
-    </script>
+<script src="index.js"></script>
+
+<script>
+    lucide.createIcons();
+</script>
+```
 
 </body>
 
