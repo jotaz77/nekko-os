@@ -186,11 +186,23 @@ const Api = {
         
         }
         else if (status) {
+
+            if (status === "ativas") {
         
-            query = query.eq(
-                "status",
-                status
-            );
+                query = query.not(
+                    "status",
+                    "in",
+                    '("Entregue","Cancelada")'
+                );
+        
+            } else {
+        
+                query = query.eq(
+                    "status",
+                    status
+                );
+        
+            }
         
         }
             
@@ -259,11 +271,23 @@ const Api = {
         
         }
         else if (status) {
+
+            if (status === "ativas") {
         
-            query = query.eq(
-                "status",
-                status
-            );
+                query = query.not(
+                    "status",
+                    "in",
+                    '("Entregue","Cancelada")'
+                );
+        
+            } else {
+        
+                query = query.eq(
+                    "status",
+                    status
+                );
+        
+            }
         
         }
         
