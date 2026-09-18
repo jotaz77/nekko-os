@@ -194,7 +194,7 @@ document.addEventListener(
             // Botão X do modal da empresa
             const closeCompanyButton =
                 document.getElementById(
-                    "closeCompanyModal"
+                    "closeCompanyModalButton"
                 );
             
             if (closeCompanyButton) {
