@@ -54,6 +54,22 @@ const Api = {
 
     },
 
+        async updateCompany(companyId, company) {
+
+        const { data, error } = await supabaseClient
+            .from("companies")
+            .update(company)
+            .eq("id", companyId)
+            .select()
+            .single();
+
+        if (error)
+            throw error;
+
+        return data;
+
+    },
+
     // =====================================
     // MEMBERS
     // =====================================
