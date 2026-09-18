@@ -3486,6 +3486,11 @@ function openStoresModal() {
             "storesModal"
         );
 
+    const container =
+        document.getElementById(
+            "storesEditContainer"
+        );
+
     if (!modal) {
 
         alert(
@@ -3495,6 +3500,18 @@ function openStoresModal() {
         return;
 
     }
+
+    if (!container) {
+
+        alert(
+            "O container de lojas ainda não foi encontrado no HTML."
+        );
+
+        return;
+
+    }
+
+    renderStores();
 
     modal.classList.remove(
         "hidden"
@@ -3506,6 +3523,395 @@ function openStoresModal() {
 
 }
 
+// =========================================
+// RENDERIZAR LOJAS
+// =========================================
+
+function renderStores() {
+
+    const container =
+        document.getElementById(
+            "storesEditContainer"
+        );
+
+    if (!container) {
+        return;
+    }
+
+    if (
+        !stores ||
+        stores.length === 0
+    ) {
+
+        container.innerHTML = `
+            <div
+                class="
+                    rounded-2xl
+                    border
+                    border-dashed
+                    border-[#29322C]
+                    bg-[#0D120E]
+                    p-8
+                    text-center
+                "
+            >
+
+                <div
+                    class="
+                        mx-auto
+                        mb-4
+                        flex
+                        h-14
+                        w-14
+                        items-center
+                        justify-center
+                        rounded-2xl
+                        border
+                        border-[#29322C]
+                        bg-[#141A16]
+                        text-slate-500
+                    "
+                >
+                    <i
+                        data-lucide="store"
+                        class="h-6 w-6"
+                    ></i>
+                </div>
+
+                <h4
+                    class="
+                        text-lg
+                        font-semibold
+                        text-white
+                    "
+                >
+                    Nenhuma loja encontrada
+                </h4>
+
+                <p
+                    class="
+                        mt-2
+                        text-sm
+                        text-slate-500
+                    "
+                >
+                    Nenhuma loja foi cadastrada para esta empresa.
+                </p>
+
+            </div>
+        `;
+
+        lucide.createIcons();
+
+        return;
+
+    }
+
+    container.innerHTML = stores
+        .map((store, index) => {
+
+            const storeName =
+                store.name ||
+                store.nome ||
+                `Loja ${index + 1}`;
+
+            const storeDocument =
+                store.document ||
+                store.cnpj ||
+                "";
+
+            const storePhone =
+                store.phone ||
+                store.telephone ||
+                "";
+
+            const storeEmail =
+                store.email ||
+                "";
+
+            const storeAddress =
+                store.address ||
+                store.address_line ||
+                store.endereco ||
+                "";
+
+            return `
+                <div
+                    class="
+                        rounded-2xl
+                        border
+                        border-[#29322C]
+                        bg-[#0D120E]
+                        p-5
+                    "
+                >
+
+                    <div
+                        class="
+                            flex
+                            items-start
+                            justify-between
+                            gap-4
+                        "
+                    >
+
+                        <div
+                            class="
+                                flex
+                                min-w-0
+                                items-center
+                                gap-3
+                            "
+                        >
+
+                            <div
+                                class="
+                                    flex
+                                    h-11
+                                    w-11
+                                    shrink-0
+                                    items-center
+                                    justify-center
+                                    rounded-xl
+                                    border
+                                    border-[#29322C]
+                                    bg-[#141A16]
+                                    text-green-400
+                                "
+                            >
+                                <i
+                                    data-lucide="store"
+                                    class="h-5 w-5"
+                                ></i>
+                            </div>
+
+                            <div
+                                class="min-w-0"
+                            >
+
+                                <h4
+                                    class="
+                                        truncate
+                                        text-lg
+                                        font-semibold
+                                        text-white
+                                    "
+                                >
+                                    ${escapeHtml(storeName)}
+                                </h4>
+
+                                <p
+                                    class="
+                                        mt-1
+                                        text-xs
+                                        text-slate-500
+                                    "
+                                >
+                                    Loja ${index + 1}
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <span
+                            class="
+                                shrink-0
+                                rounded-full
+                                border
+                                border-green-500/20
+                                bg-green-500/10
+                                px-3
+                                py-1
+                                text-xs
+                                font-medium
+                                text-green-400
+                            "
+                        >
+                            Cadastrada
+                        </span>
+
+                    </div>
+
+                    <div
+                        class="
+                            mt-5
+                            grid
+                            gap-3
+                            md:grid-cols-2
+                        "
+                    >
+
+                        <div
+                            class="
+                                rounded-xl
+                                border
+                                border-[#222B25]
+                                bg-[#101510]
+                                p-3
+                            "
+                        >
+
+                            <p
+                                class="
+                                    text-xs
+                                    text-slate-500
+                                "
+                            >
+                                CNPJ / Documento
+                            </p>
+
+                            <p
+                                class="
+                                    mt-1
+                                    break-words
+                                    text-sm
+                                    text-slate-200
+                                "
+                            >
+                                ${
+                                    escapeHtml(
+                                        storeDocument || "Não informado"
+                                    )
+                                }
+                            </p>
+
+                        </div>
+
+                        <div
+                            class="
+                                rounded-xl
+                                border
+                                border-[#222B25]
+                                bg-[#101510]
+                                p-3
+                            "
+                        >
+
+                            <p
+                                class="
+                                    text-xs
+                                    text-slate-500
+                                "
+                            >
+                                Telefone
+                            </p>
+
+                            <p
+                                class="
+                                    mt-1
+                                    break-words
+                                    text-sm
+                                    text-slate-200
+                                "
+                            >
+                                ${
+                                    escapeHtml(
+                                        storePhone || "Não informado"
+                                    )
+                                }
+                            </p>
+
+                        </div>
+
+                        <div
+                            class="
+                                rounded-xl
+                                border
+                                border-[#222B25]
+                                bg-[#101510]
+                                p-3
+                            "
+                        >
+
+                            <p
+                                class="
+                                    text-xs
+                                    text-slate-500
+                                "
+                            >
+                                E-mail
+                            </p>
+
+                            <p
+                                class="
+                                    mt-1
+                                    break-words
+                                    text-sm
+                                    text-slate-200
+                                "
+                            >
+                                ${
+                                    escapeHtml(
+                                        storeEmail || "Não informado"
+                                    )
+                                }
+                            </p>
+
+                        </div>
+
+                        <div
+                            class="
+                                rounded-xl
+                                border
+                                border-[#222B25]
+                                bg-[#101510]
+                                p-3
+                            "
+                        >
+
+                            <p
+                                class="
+                                    text-xs
+                                    text-slate-500
+                                "
+                            >
+                                Endereço
+                            </p>
+
+                            <p
+                                class="
+                                    mt-1
+                                    break-words
+                                    text-sm
+                                    text-slate-200
+                                "
+                            >
+                                ${
+                                    escapeHtml(
+                                        storeAddress || "Não informado"
+                                    )
+                                }
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            `;
+
+        })
+        .join("");
+
+    lucide.createIcons();
+
+}
+
+// =========================================
+// PROTEGER TEXTO HTML
+// =========================================
+
+function escapeHtml(value) {
+
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+}
 
 // =========================================
 // FECHAR MODAL DE LOJAS
