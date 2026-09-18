@@ -132,14 +132,17 @@ document.addEventListener(
                 document.getElementById(
                     "registerEmployeeButton"
                 );
-
-
-            registerButton
-                .addEventListener(
+            
+            if (registerButton) {
+            
+                registerButton.addEventListener(
                     "click",
                     openEmployeeModal
                 );
-
+            
+            }
+            
+            
             const editCompanyButton =
                 document.getElementById(
                     "editCompanyButton"
@@ -154,6 +157,7 @@ document.addEventListener(
             
             }
             
+            
             const editStoresButton =
                 document.getElementById(
                     "editStoresButton"
@@ -167,6 +171,7 @@ document.addEventListener(
                 );
             
             }
+            
             
             const companyForm =
                 document.getElementById(
@@ -3359,5 +3364,59 @@ async function saveCompany(event) {
         );
 
     }
+
+// =========================================
+// MODAL DE LOJAS
+// =========================================
+
+function openStoresModal() {
+
+    const modal =
+        document.getElementById(
+            "storesModal"
+        );
+
+    if (!modal) {
+
+        alert(
+            "O modal de lojas ainda não foi encontrado no HTML."
+        );
+
+        return;
+
+    }
+
+    modal.classList.remove(
+        "hidden"
+    );
+
+    modal.classList.add(
+        "flex"
+    );
+
+}
+
+
+// =========================================
+// FECHAR MODAL DE LOJAS
+// =========================================
+
+function closeStoresModal() {
+
+    const modal =
+        document.getElementById(
+            "storesModal"
+        );
+
+    if (!modal)
+        return;
+
+    modal.classList.add(
+        "hidden"
+    );
+
+    modal.classList.remove(
+        "flex"
+    );
 
 }
