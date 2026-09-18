@@ -222,6 +222,21 @@ document.addEventListener(
             
             }
 
+            // Botão cancelar do modal da empresa
+            const cancelCompanyButton =
+                document.getElementById(
+                    "cancelCompanyButton"
+                );
+            
+            if (cancelCompanyButton) {
+            
+                cancelCompanyButton.addEventListener(
+                    "click",
+                    closeCompanyModal
+                );
+            
+            }
+
             // =========================================
             // FECHAR AO CLICAR FORA DO MODAL
             // =========================================
