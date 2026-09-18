@@ -3420,3 +3420,5 @@ function closeStoresModal() {
     );
 
 }
+
+}
