@@ -210,7 +210,7 @@ document.addEventListener(
             // Botão X do modal de lojas
             const closeStoresButton =
                 document.getElementById(
-                    "closeStoresModal"
+                    "closeStoresModalButton"
                 );
             
             if (closeStoresButton) {
