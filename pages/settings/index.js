@@ -5,6 +5,7 @@
 // =========================================
 
 let appContext = null;
+let company = null;
 let stores = [];
 let permissions = [];
 let employees = [];
@@ -74,6 +75,15 @@ document.addEventListener(
                     appContext.company.id
                 );
 
+            // ---------------------------------
+            // Carregar empresa
+            // ---------------------------------
+            
+            company =
+                await Api.getCompany(
+                    appContext.company.id
+                );
+
 
             // ---------------------------------
             // Carregar permissões
@@ -129,6 +139,48 @@ document.addEventListener(
                     "click",
                     openEmployeeModal
                 );
+
+            const editCompanyButton =
+                document.getElementById(
+                    "editCompanyButton"
+                );
+            
+            if (editCompanyButton) {
+            
+                editCompanyButton.addEventListener(
+                    "click",
+                    openCompanyModal
+                );
+            
+            }
+            
+            const editStoresButton =
+                document.getElementById(
+                    "editStoresButton"
+                );
+            
+            if (editStoresButton) {
+            
+                editStoresButton.addEventListener(
+                    "click",
+                    openStoresModal
+                );
+            
+            }
+            
+            const companyForm =
+                document.getElementById(
+                    "companyForm"
+                );
+            
+            if (companyForm) {
+            
+                companyForm.addEventListener(
+                    "submit",
+                    saveCompany
+                );
+            
+            }
 
 
         }
@@ -3116,5 +3168,196 @@ function showEmployeeMessage(
     message.classList.remove(
         "hidden"
     );
+
+}
+
+// =========================================
+// EMPRESA
+// =========================================
+
+function setInputValue(id, value) {
+
+    const input =
+        document.getElementById(id);
+
+    if (!input)
+        return;
+
+    input.value =
+        value ?? "";
+
+}
+
+
+// =========================================
+// ABRIR MODAL DA EMPRESA
+// =========================================
+
+function openCompanyModal() {
+
+    if (!company) {
+
+        alert(
+            "Não foi possível carregar os dados da empresa."
+        );
+
+        return;
+
+    }
+
+    setInputValue(
+        "companyName",
+        company.name
+    );
+
+    setInputValue(
+        "companyDocument",
+        company.document
+    );
+
+    setInputValue(
+        "companyPhone",
+        company.phone
+    );
+
+    setInputValue(
+        "companyEmail",
+        company.email
+    );
+
+    const modal =
+        document.getElementById(
+            "companyModal"
+        );
+
+    if (!modal)
+        return;
+
+    modal.classList.remove("hidden");
+
+    modal.classList.add("flex");
+
+}
+
+
+// =========================================
+// FECHAR MODAL DA EMPRESA
+// =========================================
+
+function closeCompanyModal() {
+
+    const modal =
+        document.getElementById(
+            "companyModal"
+        );
+
+    if (!modal)
+        return;
+
+    modal.classList.add("hidden");
+
+    modal.classList.remove("flex");
+
+}
+
+
+// =========================================
+// SALVAR EMPRESA
+// =========================================
+
+async function saveCompany(event) {
+
+    event.preventDefault();
+
+    if (!company?.id) {
+
+        alert(
+            "Empresa não encontrada."
+        );
+
+        return;
+
+    }
+
+    const payload = {
+
+        name:
+            document
+                .getElementById("companyName")
+                ?.value
+                .trim(),
+
+        document:
+            document
+                .getElementById("companyDocument")
+                ?.value
+                .trim() || null,
+
+        phone:
+            document
+                .getElementById("companyPhone")
+                ?.value
+                .trim() || null,
+
+        email:
+            document
+                .getElementById("companyEmail")
+                ?.value
+                .trim() || null
+
+    };
+
+    if (!payload.name) {
+
+        alert(
+            "Informe o nome da empresa."
+        );
+
+        return;
+
+    }
+
+    try {
+
+        const savedCompany =
+            await Api.updateCompany(
+                company.id,
+                payload
+            );
+
+        company = {
+            ...company,
+            ...savedCompany
+        };
+
+        if (appContext?.company) {
+
+            appContext.company = {
+                ...appContext.company,
+                ...savedCompany
+            };
+
+        }
+
+        closeCompanyModal();
+
+        alert(
+            "Dados da empresa atualizados com sucesso!"
+        );
+
+    }
+    catch (error) {
+
+        console.error(
+            "Erro ao atualizar empresa:",
+            error
+        );
+
+        alert(
+            error.message ||
+            "Não foi possível atualizar a empresa."
+        );
+
+    }
 
 }
