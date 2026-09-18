@@ -187,6 +187,100 @@ document.addEventListener(
             
             }
 
+            // =========================================
+            // FECHAMENTO DOS MODAIS
+            // =========================================
+            
+            // Botão X do modal da empresa
+            const closeCompanyButton =
+                document.getElementById(
+                    "closeCompanyModal"
+                );
+            
+            if (closeCompanyButton) {
+            
+                closeCompanyButton.addEventListener(
+                    "click",
+                    closeCompanyModal
+                );
+            
+            }
+            
+            
+            // Botão X do modal de lojas
+            const closeStoresButton =
+                document.getElementById(
+                    "closeStoresModal"
+                );
+            
+            if (closeStoresButton) {
+            
+                closeStoresButton.addEventListener(
+                    "click",
+                    closeStoresModal
+                );
+            
+            }
+
+            // =========================================
+            // FECHAR AO CLICAR FORA DO MODAL
+            // =========================================
+            
+            // Modal da empresa
+            const companyModal =
+                document.getElementById(
+                    "companyModal"
+                );
+            
+            if (companyModal) {
+            
+                companyModal.addEventListener(
+                    "click",
+                    event => {
+            
+                        // Fecha somente se clicar no fundo
+                        if (
+                            event.target ===
+                            companyModal
+                        ) {
+            
+                            closeCompanyModal();
+            
+                        }
+            
+                    }
+                );
+            
+            }
+            
+            
+            // Modal de lojas
+            const storesModal =
+                document.getElementById(
+                    "storesModal"
+                );
+            
+            if (storesModal) {
+            
+                storesModal.addEventListener(
+                    "click",
+                    event => {
+            
+                        // Fecha somente se clicar no fundo
+                        if (
+                            event.target ===
+                            storesModal
+                        ) {
+            
+                            closeStoresModal();
+            
+                        }
+            
+                    }
+                );
+            
+            }
+
 
         }
         catch (error) {
