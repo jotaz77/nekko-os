@@ -155,6 +155,22 @@ const Api = {
 
     },
 
+        async updateStore(storeId, store) {
+
+        const { data, error } = await supabaseClient
+            .from("stores")
+            .update(store)
+            .eq("id", storeId)
+            .select()
+            .single();
+
+        if (error)
+            throw error;
+
+        return data;
+
+    },
+
     // =====================================
     // SERVICE ORDERS
     // =====================================
