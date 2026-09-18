@@ -3285,7 +3285,6 @@ async function saveCompany(event) {
     }
 
     const payload = {
-
         name:
             document
                 .getElementById("companyName")
@@ -3309,7 +3308,6 @@ async function saveCompany(event) {
                 .getElementById("companyEmail")
                 ?.value
                 .trim() || null
-
     };
 
     if (!payload.name) {
@@ -3365,6 +3363,9 @@ async function saveCompany(event) {
 
     }
 
+}
+
+
 // =========================================
 // MODAL DE LOJAS
 // =========================================
@@ -3418,7 +3419,5 @@ function closeStoresModal() {
     modal.classList.remove(
         "flex"
     );
-
-}
 
 }
