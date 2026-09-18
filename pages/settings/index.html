@@ -488,14 +488,21 @@
 
                 <!-- Empresa -->
 
-                <div
+                <button
+                    id="editCompanyButton"
+                    type="button"
                     class="
+                        w-full
+                        text-left
                         bg-[#101510]
                         border
                         border-[#222B25]
                         rounded-3xl
                         p-6
-                        opacity-70
+                        hover:border-green-500/40
+                        hover:bg-[#141A16]
+                        transition
+                        group
                     "
                 >
 
@@ -543,19 +550,26 @@
                         da empresa.
                     </p>
 
-                </div>
+                </button>
 
 
                 <!-- Lojas -->
 
-                <div
+                <button
+                    id="editStoresButton"
+                    type="button"
                     class="
+                        w-full
+                        text-left
                         bg-[#101510]
                         border
                         border-[#222B25]
                         rounded-3xl
                         p-6
-                        opacity-70
+                        hover:border-green-500/40
+                        hover:bg-[#141A16]
+                        transition
+                        group
                     "
                 >
 
@@ -603,7 +617,7 @@
                         e unidades da empresa.
                     </p>
 
-                </div>
+                </button>
 
 
                 <!-- Preferências -->
@@ -670,6 +684,327 @@
         </section>
 
     </main>
+
+
+    <!-- ========================================= -->
+<!-- MODAL: EDITAR EMPRESA -->
+<!-- ========================================= -->
+
+<div
+    id="companyModal"
+    class="
+        fixed
+        inset-0
+        z-[100]
+        hidden
+        items-center
+        justify-center
+        bg-black/70
+        backdrop-blur-sm
+        p-4
+    "
+>
+    <div
+        class="
+            w-full
+            max-w-xl
+            rounded-3xl
+            border
+            border-[#29322C]
+            bg-[#101510]
+            shadow-2xl
+            overflow-hidden
+        "
+    >
+
+        <div
+            class="
+                flex
+                items-center
+                justify-between
+                gap-4
+                border-b
+                border-[#222B25]
+                p-6
+            "
+        >
+            <div>
+                <p class="text-xs uppercase tracking-[0.18em] text-green-400">
+                    Configurações
+                </p>
+
+                <h3 class="mt-1 text-2xl font-semibold">
+                    Editar empresa
+                </h3>
+            </div>
+
+            <button
+                id="closeCompanyModalButton"
+                type="button"
+                class="
+                    flex
+                    h-10
+                    w-10
+                    items-center
+                    justify-center
+                    rounded-xl
+                    border
+                    border-[#29322C]
+                    text-slate-400
+                    hover:text-white
+                    hover:border-green-500/40
+                "
+                aria-label="Fechar modal"
+            >
+                <i data-lucide="x" class="h-5 w-5"></i>
+            </button>
+        </div>
+
+        <form id="companyForm" class="space-y-5 p-6">
+
+            <div>
+                <label
+                    for="companyName"
+                    class="mb-2 block text-sm font-medium text-slate-300"
+                >
+                    Nome da empresa
+                </label>
+
+                <input
+                    id="companyName"
+                    name="name"
+                    type="text"
+                    required
+                    class="
+                        w-full
+                        rounded-xl
+                        border
+                        border-[#29322C]
+                        bg-[#0B0F0C]
+                        px-4
+                        py-3
+                        text-white
+                        outline-none
+                        focus:border-green-500
+                    "
+                    placeholder="Nome da empresa"
+                >
+            </div>
+
+            <div>
+                <label
+                    for="companyDocument"
+                    class="mb-2 block text-sm font-medium text-slate-300"
+                >
+                    CNPJ ou CPF
+                </label>
+
+                <input
+                    id="companyDocument"
+                    name="document"
+                    type="text"
+                    class="
+                        w-full
+                        rounded-xl
+                        border
+                        border-[#29322C]
+                        bg-[#0B0F0C]
+                        px-4
+                        py-3
+                        text-white
+                        outline-none
+                        focus:border-green-500
+                    "
+                    placeholder="CNPJ ou CPF"
+                >
+            </div>
+
+            <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
+
+                <div>
+                    <label
+                        for="companyPhone"
+                        class="mb-2 block text-sm font-medium text-slate-300"
+                    >
+                        Telefone
+                    </label>
+
+                    <input
+                        id="companyPhone"
+                        name="phone"
+                        type="tel"
+                        class="
+                            w-full
+                            rounded-xl
+                            border
+                            border-[#29322C]
+                            bg-[#0B0F0C]
+                            px-4
+                            py-3
+                            text-white
+                            outline-none
+                            focus:border-green-500
+                        "
+                        placeholder="Telefone"
+                    >
+                </div>
+
+                <div>
+                    <label
+                        for="companyEmail"
+                        class="mb-2 block text-sm font-medium text-slate-300"
+                    >
+                        E-mail
+                    </label>
+
+                    <input
+                        id="companyEmail"
+                        name="email"
+                        type="email"
+                        class="
+                            w-full
+                            rounded-xl
+                            border
+                            border-[#29322C]
+                            bg-[#0B0F0C]
+                            px-4
+                            py-3
+                            text-white
+                            outline-none
+                            focus:border-green-500
+                        "
+                        placeholder="E-mail da empresa"
+                    >
+                </div>
+
+            </div>
+
+            <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+
+                <button
+                    id="cancelCompanyButton"
+                    type="button"
+                    class="
+                        rounded-xl
+                        border
+                        border-[#29322C]
+                        px-5
+                        py-3
+                        font-medium
+                        text-slate-300
+                        hover:border-slate-500
+                        hover:text-white
+                    "
+                >
+                    Cancelar
+                </button>
+
+                <button
+                    type="submit"
+                    class="
+                        rounded-xl
+                        bg-green-500
+                        px-5
+                        py-3
+                        font-semibold
+                        text-black
+                        hover:bg-green-400
+                    "
+                >
+                    Salvar alterações
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+
+<!-- ========================================= -->
+<!-- MODAL: EDITAR LOJAS -->
+<!-- ========================================= -->
+
+    <div
+        id="storesModal"
+        class="
+            fixed
+            inset-0
+            z-[100]
+            hidden
+            items-center
+            justify-center
+            bg-black/70
+            backdrop-blur-sm
+            p-4
+        "
+    >
+        <div
+            class="
+                w-full
+                max-w-3xl
+                max-h-[90vh]
+                overflow-y-auto
+                rounded-3xl
+                border
+                border-[#29322C]
+                bg-[#101510]
+                shadow-2xl
+            "
+        >
+    
+            <div
+                class="
+                    sticky
+                    top-0
+                    z-10
+                    flex
+                    items-center
+                    justify-between
+                    gap-4
+                    border-b
+                    border-[#222B25]
+                    bg-[#101510]
+                    p-6
+                "
+            >
+                <div>
+                    <p class="text-xs uppercase tracking-[0.18em] text-green-400">
+                        Configurações
+                    </p>
+    
+                    <h3 class="mt-1 text-2xl font-semibold">
+                        Editar lojas
+                    </h3>
+                </div>
+    
+                <button
+                    id="closeStoresModalButton"
+                    type="button"
+                    class="
+                        flex
+                        h-10
+                        w-10
+                        items-center
+                        justify-center
+                        rounded-xl
+                        border
+                        border-[#29322C]
+                        text-slate-400
+                        hover:text-white
+                        hover:border-green-500/40
+                    "
+                    aria-label="Fechar modal"
+                >
+                    <i data-lucide="x" class="h-5 w-5"></i>
+                </button>
+            </div>
+    
+            <div id="storesEditContainer" class="space-y-5 p-6"></div>
+    
+        </div>
+    </div>
 
 
     <!-- ========================================= -->
