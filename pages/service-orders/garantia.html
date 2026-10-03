@@ -4,29 +4,66 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Termo de Garantia</title>
-<link rel="stylesheet" href="print.css">
+<link rel="icon" type="image/png" href="../../assets/img/nekkologo_favicon.png">
+<link rel="stylesheet" href="garantia.css">
 </head>
 <body>
 <div class="receipt">
-<header><h1 id="companyName">EMPRESA</h1><p id="storeName">Loja</p><p id="storePhone">WhatsApp</p></header>
+<header>
+<h1 id="companyName">EMPRESA</h1>
+<p id="storeName">Loja</p>
+<p id="storePhone">WhatsApp</p>
+</header>
 <hr>
-<section><h2>TERMO DE GARANTIA</h2><div class="row"><span>OS</span><span id="osNumber">-</span></div><div class="row"><span>Data</span><span id="createdAt">-</span></div></section>
+<section>
+<h2>TERMO DE GARANTIA</h2>
+<div class="row"><span>OS</span><span id="osNumber">-</span></div>
+<div class="row"><span>Data</span><span id="createdAt">-</span></div>
+</section>
 <hr>
-<section><h2>CLIENTE</h2><p><strong>Nome:</strong> <span id="customerName">-</span></p><p><strong>Telefone:</strong> <span id="customerPhone">-</span></p><p><strong>Endereço:</strong> <span id="customerAddress">-</span></p></section>
+<section>
+<h2>CLIENTE</h2>
+<p><strong>Nome:</strong> <span id="customerName">-</span></p>
+<p><strong>Telefone:</strong> <span id="customerPhone">-</span></p>
+<p><strong>Endereço:</strong> <span id="customerAddress">-</span></p>
+</section>
 <hr>
-<section><h2>APARELHO</h2><p><strong>Dispositivo:</strong> <span id="device">-</span></p><p><strong>Defeito:</strong> <span id="defect">-</span></p><p><strong>Observações:</strong> <span id="notes">-</span></p><div id="deviceLockSection" style="display:none;"><p><strong>Senha/Padrão:</strong> <span id="deviceLock">-</span></p></div></section>
+<section>
+<h2>APARELHO</h2>
+<p><strong>Tipo:</strong> <span id="deviceType">-</span></p>
+<p><strong>Marca:</strong> <span id="deviceBrand">-</span></p>
+<p><strong>Modelo:</strong> <span id="deviceModel">-</span></p>
+<div id="deviceLockContainer"></div>
+</section>
 <hr>
-<section><h2>SERVIÇOS</h2><div id="serviceItemsList"></div><div class="row total"><strong>TOTAL</strong><strong id="serviceTotal">R$ 0,00</strong></div></section>
+<section><h2>DEFEITO</h2><p id="reportedProblem">-</p></section>
 <hr>
-<section><h2>TERMOS DE GARANTIA</h2><div id="warrantyTerms"></div></section>
+<section><h2>OBSERVAÇÕES</h2><p id="observations">-</p></section>
 <hr>
-<section><p><strong>ESSA NOTA SÓ SERÁ VÁLIDA COM A SUA ASSINATURA.</strong></p><div class="signature"><div class="signature-line"></div><p>Assinatura do Cliente</p></div></section>
+<section>
+<h2>SERVIÇOS</h2>
+<div id="serviceItemsList"></div>
+<p class="total"><strong>TOTAL:</strong><span id="serviceTotal">R$ 0,00</span></p>
+</section>
+<hr>
+<section>
+<h2>TERMOS DE GARANTIA</h2>
+<div id="warrantyTerms"></div>
+</section>
+<hr>
+<section class="signature-section">
+<p class="signature-warning">ESSA NOTA SÓ SERÁ VÁLIDA COM A SUA ASSINATURA.</p>
+<div class="signature"><div class="signature-line"></div><p>Assinatura do Cliente</p></div>
+</section>
 <hr>
 <footer><p>Impresso em</p><p id="printedAt">-</p><strong>NEKKO OS</strong></footer>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../../config.js"></script>
+<script src="../../assets/js/config.js"></script>
 <script src="../../assets/js/supabase.js"></script>
+<script src="../../assets/js/storage.js"></script>
+<script src="../../assets/js/auth.js"></script>
 <script src="../../assets/js/api.js"></script>
 <script src="../../assets/js/bootstrap.js"></script>
 <script src="../../assets/js/roles.js"></script>
