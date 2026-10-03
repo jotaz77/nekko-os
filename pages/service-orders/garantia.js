@@ -101,7 +101,7 @@ function renderServiceItems(items){
 
 const WARRANTY_RULES={
     screen:{
-        title:"TROCA DE TELA — 90 DIAS DE GARANTIA",
+        title:"TROCA DE TELA — 90 DIAS DE GARANTIA, COM TANTO QUE O DEFEITO NÃO SEJA CAUSADO POR MAU USO!",
         paragraphs:["Não cobrimos a garantia caso o defeito tenha sido causado por mau uso, incluindo rachaduras, LCD manchado, manchas, oxidação, marcas de água, gotículas ou gotas de água."]
     },
     premiumBattery:{
