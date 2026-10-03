@@ -10,6 +10,11 @@ let stores = [];
 let permissions = [];
 let employees = [];
 
+// Logo da empresa (estado temporário do modal)
+let pendingCompanyLogoFile = null;
+let removeCompanyLogo = false;
+const COMPANY_LOGO_BUCKET = "nekko-logos";
+
 
 // =========================================
 // INICIALIZAÇÃO
@@ -185,6 +190,26 @@ document.addEventListener(
                     saveCompany
                 );
             
+            }
+
+            const companyLogoInput =
+                document.getElementById("companyLogoInput");
+
+            if (companyLogoInput) {
+                companyLogoInput.addEventListener(
+                    "change",
+                    handleCompanyLogoSelection
+                );
+            }
+
+            const removeCompanyLogoButton =
+                document.getElementById("removeCompanyLogoButton");
+
+            if (removeCompanyLogoButton) {
+                removeCompanyLogoButton.addEventListener(
+                    "click",
+                    markCompanyLogoForRemoval
+                );
             }
 
             // =========================================
@@ -3339,6 +3364,10 @@ function openCompanyModal() {
         company.email
     );
 
+    pendingCompanyLogoFile = null;
+    removeCompanyLogo = false;
+    renderCompanyLogoPreview(company.logo_url || null);
+
     const modal =
         document.getElementById(
             "companyModal"
@@ -3351,6 +3380,142 @@ function openCompanyModal() {
 
     modal.classList.add("flex");
 
+}
+
+
+// =========================================
+// LOGO DA EMPRESA
+// =========================================
+
+function renderCompanyLogoPreview(url) {
+
+    const preview = document.getElementById("companyLogoPreview");
+    const removeButton = document.getElementById("removeCompanyLogoButton");
+    const status = document.getElementById("companyLogoStatus");
+
+    if (!preview) return;
+
+    if (url) {
+        preview.innerHTML = `
+            <img src="${escapeHtmlAttribute(url)}" alt="Logo da empresa" class="h-full w-full object-contain p-2">
+        `;
+    } else {
+        preview.innerHTML = `<i data-lucide="image" class="h-7 w-7"></i>`;
+    }
+
+    if (removeButton) {
+        const show = !!url || !!pendingCompanyLogoFile;
+        removeButton.classList.toggle("hidden", !show);
+        removeButton.classList.toggle("flex", show);
+    }
+
+    if (status) {
+        status.textContent = pendingCompanyLogoFile
+            ? `Nova logo selecionada: ${pendingCompanyLogoFile.name}`
+            : (removeCompanyLogo
+                ? "A logo será removida ao salvar."
+                : (url ? "Logo atual da empresa." : "PNG, JPG ou WEBP · máximo de 2 MB"));
+    }
+
+    if (window.lucide) lucide.createIcons();
+}
+
+function handleCompanyLogoSelection(event) {
+
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const allowedTypes = ["image/png", "image/jpeg", "image/webp"];
+
+    if (!allowedTypes.includes(file.type)) {
+        alert("Escolha uma imagem PNG, JPG ou WEBP.");
+        event.target.value = "";
+        return;
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+        alert("A logo deve ter no máximo 2 MB.");
+        event.target.value = "";
+        return;
+    }
+
+    pendingCompanyLogoFile = file;
+    removeCompanyLogo = false;
+
+    const objectUrl = URL.createObjectURL(file);
+    renderCompanyLogoPreview(objectUrl);
+    setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+}
+
+function markCompanyLogoForRemoval() {
+
+    pendingCompanyLogoFile = null;
+    removeCompanyLogo = true;
+
+    const input = document.getElementById("companyLogoInput");
+    if (input) input.value = "";
+
+    renderCompanyLogoPreview(null);
+}
+
+function companyLogoExtension(file) {
+
+    const extensionByType = {
+        "image/png": "png",
+        "image/jpeg": "jpg",
+        "image/webp": "webp"
+    };
+
+    return extensionByType[file.type] || "png";
+}
+
+async function uploadCompanyLogo(companyId, file) {
+
+    const extension = companyLogoExtension(file);
+    const path = `companies/${companyId}/logo.${extension}`;
+
+    const { error: uploadError } = await supabaseClient.storage
+        .from(COMPANY_LOGO_BUCKET)
+        .upload(path, file, {
+            upsert: true,
+            contentType: file.type,
+            cacheControl: "3600"
+        });
+
+    if (uploadError) throw uploadError;
+
+    const { data } = supabaseClient.storage
+        .from(COMPANY_LOGO_BUCKET)
+        .getPublicUrl(path);
+
+    if (!data?.publicUrl) {
+        throw new Error("Não foi possível obter a URL pública da logo.");
+    }
+
+    return `${data.publicUrl}?v=${Date.now()}`;
+}
+
+async function deleteCompanyLogoFile(companyId) {
+
+    const paths = [
+        `companies/${companyId}/logo.png`,
+        `companies/${companyId}/logo.jpg`,
+        `companies/${companyId}/logo.webp`
+    ];
+
+    const { error } = await supabaseClient.storage
+        .from(COMPANY_LOGO_BUCKET)
+        .remove(paths);
+
+    if (error) throw error;
+}
+
+function escapeHtmlAttribute(value) {
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/"/g, "&quot;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
 }
 
 
@@ -3431,6 +3596,21 @@ async function saveCompany(event) {
 
     try {
 
+        let nextLogoUrl = company.logo_url || null;
+
+        if (pendingCompanyLogoFile) {
+            nextLogoUrl = await uploadCompanyLogo(
+                company.id,
+                pendingCompanyLogoFile
+            );
+        }
+        else if (removeCompanyLogo) {
+            await deleteCompanyLogoFile(company.id);
+            nextLogoUrl = null;
+        }
+
+        payload.logo_url = nextLogoUrl;
+
         const savedCompany =
             await Api.updateCompany(
                 company.id,
@@ -3450,6 +3630,10 @@ async function saveCompany(event) {
             };
 
         }
+
+        pendingCompanyLogoFile = null;
+        removeCompanyLogo = false;
+        renderCompanyLogoPreview(company.logo_url || null);
 
         closeCompanyModal();
 
