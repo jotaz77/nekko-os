@@ -851,12 +851,12 @@ function openOsDeliveredModal() {
                                 "
                             >
                                 ${
-                                    order.created_at
-                                        ? new Date(
-                                            order.created_at
-                                        ).toLocaleString(
+                                    order.delivery_date
+                                        ? `Entregue em ${new Date(
+                                            `${order.delivery_date}T00:00:00`
+                                        ).toLocaleDateString(
                                             "pt-BR"
-                                        )
+                                        )}`
                                         : ""
                                 }
                             </p>
