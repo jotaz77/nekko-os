@@ -191,7 +191,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             sessionStorage.removeItem("nekko_mode_context");
 
-            window.location.href = "../menu/index.html";
+            window.location.href = "../menu/ceo/index.html";
 
         });
 
