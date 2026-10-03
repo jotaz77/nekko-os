@@ -404,7 +404,20 @@ async function getYearProfitData(year) {
 
     let items = [];
 
-    if (saleIds.length) {
+    // Evita uma requisição .in() gigantesca quando existem muitas vendas.
+    // O carregamento é feito em lotes menores.
+    const SALE_ID_BATCH_SIZE = 50;
+
+    for (
+        let offset = 0;
+        offset < saleIds.length;
+        offset += SALE_ID_BATCH_SIZE
+    ) {
+
+        const batch = saleIds.slice(
+            offset,
+            offset + SALE_ID_BATCH_SIZE
+        );
 
         const {
             data,
@@ -412,12 +425,12 @@ async function getYearProfitData(year) {
         } = await supabaseClient
             .from("sale_items")
             .select("sale_id,quantity,unit_cost")
-            .in("sale_id", saleIds);
+            .in("sale_id", batch);
 
         if (error)
             throw error;
 
-        items = data || [];
+        items.push(...(data || []));
 
     }
 
@@ -590,7 +603,18 @@ async function getPreviousDecember(start, end) {
 
     let items = [];
 
-    if (saleIds.length) {
+    const SALE_ID_BATCH_SIZE = 50;
+
+    for (
+        let offset = 0;
+        offset < saleIds.length;
+        offset += SALE_ID_BATCH_SIZE
+    ) {
+
+        const batch = saleIds.slice(
+            offset,
+            offset + SALE_ID_BATCH_SIZE
+        );
 
         const {
             data,
@@ -598,12 +622,12 @@ async function getPreviousDecember(start, end) {
         } = await supabaseClient
             .from("sale_items")
             .select("sale_id,quantity,unit_cost")
-            .in("sale_id", saleIds);
+            .in("sale_id", batch);
 
         if (error)
             throw error;
 
-        items = data || [];
+        items.push(...(data || []));
 
     }
 
