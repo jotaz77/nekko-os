@@ -105,15 +105,15 @@ const WARRANTY_RULES={
         paragraphs:["Não cobrimos a garantia caso o defeito tenha sido causado por mau uso, incluindo rachaduras, LCD manchado, manchas, oxidação, marcas de água, gotículas ou gotas de água."]
     },
     premiumBattery:{
-        title:"BATERIA PREMIUM — 1 ANO DE GARANTIA",
-        paragraphs:[]
+        title:"BATERIA PREMIUM — 1 ANO DE GARANTIA, COM TANTO QUE O DEFEITO NÃO SEJA CAUSADO POR MAU USO",
+        paragraphs:["Não garatimos problemas causados por mau uso, incluindo, bateria viciada, inxada, oxidada, entre outros!"]
     },
     parallelBattery:{
         title:"BATERIA PARALELA — 90 DIAS DE GARANTIA",
-        paragraphs:[]
+        paragraphs:["Não garatimos problemas causados por mau uso, incluindo, bateria viciada, inxada, oxidada, entre outros!"]
     },
     board:{
-        title:"REPARO DE PLACA / MEMÓRIA / CPU",
+        title:"REPARO / REPARO DE PLACA / MEMÓRIA / CPU",
         paragraphs:["Não garantimos problemas futuros, pois o serviço realizado consiste em um reparo e não na troca de um componente."]
     },
     component:{
