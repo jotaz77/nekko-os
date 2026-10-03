@@ -47,6 +47,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             role
         } = result.context;
 
+        // Compatibilidade para as páginas que ainda usam
+        // ../menu/index.html no botão "Voltar".
+        // CEO vai para o novo menu executivo; loja continua
+        // no menu normal.
+        if (role === Roles.CEO) {
+
+            window.location.replace("./ceo/index.html");
+            return;
+
+        }
+
         // ---------------------------------
         // Usuário
         // ---------------------------------
