@@ -1,1 +1,419 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEKKO CEO</title>
 
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        :root {
+            --bg: #050607;
+            --panel: #0d1012;
+            --panel2: #101417;
+            --border: #20262a;
+            --green: #19d37b;
+            --muted: #7f8a90;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 50% -20%, rgba(25,211,123,.11), transparent 38%),
+                radial-gradient(circle at 100% 70%, rgba(25,211,123,.035), transparent 30%),
+                #050607;
+            color: #f5f7f8;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(120deg, transparent, rgba(25,211,123,.018), transparent);
+        }
+
+        .ceo-shell {
+            max-width: 1320px;
+            margin: auto;
+            padding: 34px 30px 46px;
+        }
+
+        .ceo-card {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(145deg, rgba(13,16,18,.96), rgba(8,11,13,.96));
+            border: 1px solid var(--border);
+            border-radius: 20px;
+        }
+
+        .ceo-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(120deg, rgba(255,255,255,.018), transparent 35%);
+        }
+
+        .menu-card {
+            min-height: 116px;
+            transition: transform .22s ease, border-color .22s ease, background .22s ease, box-shadow .22s ease;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(25,211,123,.42);
+            background: linear-gradient(145deg, #101517, #0b0f11);
+            box-shadow: 0 14px 35px rgba(0,0,0,.24), 0 0 28px rgba(25,211,123,.045);
+        }
+
+        .menu-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 11px;
+            display: grid;
+            place-items: center;
+            color: #8f9a9f;
+            background: #111719;
+            border: 1px solid #222b2f;
+            transition: .22s ease;
+        }
+
+        .menu-card:hover .menu-icon {
+            color: var(--green);
+            border-color: rgba(25,211,123,.22);
+            background: #0c1913;
+        }
+
+        .intro-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            display: grid;
+            place-items: center;
+            background: #030404;
+            animation: introOut 1.65s ease forwards;
+        }
+
+        .intro-content {
+            text-align: center;
+            animation: introIn 1.15s cubic-bezier(.2,.8,.2,1) forwards;
+        }
+
+        .intro-logo {
+            width: 76px;
+            height: 76px;
+            margin: auto;
+            display: grid;
+            place-items: center;
+            border-radius: 23px;
+            border: 1px solid #294236;
+            color: var(--green);
+            background: #09100d;
+            font-size: 31px;
+            font-weight: 900;
+            box-shadow: 0 0 60px rgba(25,211,123,.13);
+        }
+
+        .intro-label {
+            margin-top: 19px;
+            color: #667278;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: .36em;
+        }
+
+        @keyframes introIn {
+            0% { opacity: 0; transform: translateY(14px) scale(.94); }
+            35% { opacity: 1; }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes introOut {
+            0%, 72% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; pointer-events: none; }
+        }
+
+        .chart-wrap {
+            position: relative;
+            height: 205px;
+        }
+
+        .chart-grid {
+            position: absolute;
+            left: 0;
+            right: 0;
+            border-top: 1px solid #171d20;
+        }
+
+        .chart-grid.one { top: 22%; }
+        .chart-grid.two { top: 50%; }
+        .chart-grid.three { top: 78%; }
+
+        #profitChart {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        .chart-tooltip {
+            position: absolute;
+            z-index: 5;
+            pointer-events: none;
+            opacity: 0;
+            transform: translate(-50%, -110%);
+            padding: 8px 10px;
+            border: 1px solid #26332d;
+            border-radius: 10px;
+            background: #090d0b;
+            box-shadow: 0 10px 25px rgba(0,0,0,.35);
+            white-space: nowrap;
+            transition: opacity .12s ease;
+        }
+
+        .month-labels {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            margin-top: 7px;
+            color: #5f696e;
+            font-size: 9px;
+            text-align: center;
+        }
+
+        .loading-pulse {
+            animation: pulse 1.2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: .42; }
+            50% { opacity: 1; }
+        }
+
+        .stat-number {
+            letter-spacing: -.055em;
+        }
+
+        @media (max-width: 900px) {
+            .ceo-shell { padding: 24px 16px 35px; }
+            .menu-card { min-height: 105px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="intro-overlay">
+    <div class="intro-content">
+        <div class="intro-logo">N</div>
+        <div class="intro-label">NEKKO CEO</div>
+    </div>
+</div>
+
+<div class="ceo-shell">
+
+    <!-- HEADER -->
+    <header class="flex flex-col gap-5 md:flex-row md:items-center md:justify-between mb-7">
+
+        <div class="flex items-center gap-4">
+
+            <div
+                class="w-12 h-12 rounded-[15px] bg-[#0B110E] border border-[#2B3832]
+                       grid place-items-center text-[#19D37B] font-black text-xl
+                       shadow-[0_0_30px_rgba(25,211,123,.07)]"
+            >
+                N
+            </div>
+
+            <div>
+                <p class="text-[10px] font-extrabold tracking-[.24em] text-[#19D37B]">
+                    NEKKO CEO
+                </p>
+
+                <h1 class="text-[27px] md:text-[30px] font-black tracking-[-.04em] mt-1">
+                    Executive Control Center
+                </h1>
+
+                <p class="text-xs text-[#7F8A90] mt-1">
+                    Visão estratégica da operação
+                </p>
+            </div>
+
+        </div>
+
+        <div class="flex items-center gap-3">
+
+            <div class="px-3 py-2 rounded-[13px] border border-[#20262A] bg-[#0D1012] text-xs text-[#9BA5A9]">
+                <span id="currentStore">Todas as Lojas</span>
+            </div>
+
+            <div class="flex items-center gap-2 px-3 py-2 rounded-[13px] border border-[#20262A] bg-[#0D1012]">
+                <div
+                    id="userAvatar"
+                    class="w-7 h-7 rounded-[9px] bg-[#151B1E] grid place-items-center text-[#19D37B] text-xs font-extrabold"
+                >U</div>
+                <span id="userName" class="text-xs">CEO</span>
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- ACESSOS REAIS DO MENU -->
+    <section
+        id="menuGrid"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 mb-5"
+    ></section>
+
+
+    <!-- INDICADORES -->
+    <section class="grid grid-cols-1 xl:grid-cols-[1.65fr_1fr] gap-4">
+
+        <!-- GRÁFICO -->
+        <div class="ceo-card p-5 md:p-6">
+
+            <div class="flex items-start justify-between gap-4 mb-4">
+
+                <div>
+                    <p class="text-[10px] font-extrabold tracking-[.17em] text-[#8D989D]">
+                        DESEMPENHO ANUAL
+                    </p>
+
+                    <h2 class="text-[17px] font-extrabold mt-1">
+                        Crescimento do lucro
+                    </h2>
+
+                    <p id="chartStatus" class="text-[10px] text-[#596469] mt-1">
+                        Carregando dados...
+                    </p>
+                </div>
+
+                <span
+                    id="chartYear"
+                    class="text-[10px] text-[#19D37B] bg-[#0B1B13] border border-[#173C2B]
+                           px-2.5 py-1.5 rounded-full"
+                ></span>
+
+            </div>
+
+            <div class="chart-wrap" id="chartArea">
+
+                <div class="chart-grid one"></div>
+                <div class="chart-grid two"></div>
+                <div class="chart-grid three"></div>
+
+                <svg id="profitChart" viewBox="0 0 1000 205" preserveAspectRatio="none">
+                    <defs>
+                        <linearGradient id="profitFill" x1="0" x2="0" y1="0" y2="1">
+                            <stop offset="0%" stop-color="#19D37B" stop-opacity=".17"/>
+                            <stop offset="100%" stop-color="#19D37B" stop-opacity="0"/>
+                        </linearGradient>
+                    </defs>
+
+                    <path id="profitArea" fill="url(#profitFill)" d=""></path>
+                    <path
+                        id="profitLine"
+                        fill="none"
+                        stroke="#19D37B"
+                        stroke-width="3"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d=""
+                    ></path>
+
+                    <g id="profitPoints"></g>
+                </svg>
+
+                <div id="chartTooltip" class="chart-tooltip"></div>
+
+            </div>
+
+            <div id="monthLabels" class="month-labels"></div>
+
+        </div>
+
+
+        <!-- LUCRO DO MÊS -->
+        <div class="ceo-card p-5 md:p-6 flex flex-col justify-between min-h-[285px]">
+
+            <div>
+
+                <p class="text-[10px] font-extrabold tracking-[.17em] text-[#8D989D]">
+                    RESULTADO DO MÊS
+                </p>
+
+                <h2 class="text-[17px] font-extrabold mt-1">
+                    Lucro total
+                </h2>
+
+                <div
+                    id="monthlyProfit"
+                    class="stat-number text-[37px] md:text-[40px] font-black mt-5 loading-pulse"
+                >
+                    R$ 0,00
+                </div>
+
+                <div
+                    id="monthlyDelta"
+                    class="text-[11px] text-[#7F8A90] mt-2"
+                >
+                    Comparando com o mês anterior...
+                </div>
+
+            </div>
+
+            <div class="border-t border-[#20262A] pt-4 mt-6 space-y-3">
+
+                <div class="flex items-center justify-between text-xs">
+                    <span class="text-[#7F8A90]">Lucro de OS</span>
+                    <strong id="monthlyOs">R$ 0,00</strong>
+                </div>
+
+                <div class="flex items-center justify-between text-xs">
+                    <span class="text-[#7F8A90]">Líquido de vendas</span>
+                    <strong id="monthlySales">R$ 0,00</strong>
+                </div>
+
+                <div class="flex items-center justify-between text-xs pt-2 border-t border-[#20262A]">
+                    <span class="text-[#7F8A90]">Total</span>
+                    <strong id="monthlyTotal" class="text-[#19D37B]">R$ 0,00</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <footer class="mt-6 pt-4 border-t border-[#171D20] flex flex-col md:flex-row justify-between gap-2 text-[10px] text-[#4F595E]">
+        <span>NEKKO APP · Executive Control Center</span>
+        <span>NEKKO OS</span>
+    </footer>
+
+</div>
+
+
+<!-- SISTEMA -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../assets/js/config.js"></script>
+<script src="../../assets/js/supabase.js"></script>
+<script src="../../assets/js/storage.js"></script>
+<script src="../../assets/js/auth.js"></script>
+<script src="../../assets/js/api.js"></script>
+<script src="../../assets/js/roles.js"></script>
+<script src="../../assets/js/bootstrap.js"></script>
+
+<script src="index.js"></script>
+
+<script>
+    if (window.lucide) lucide.createIcons();
+</script>
+
+</body>
+</html>
