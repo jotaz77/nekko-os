@@ -71,46 +71,39 @@ document.addEventListener("DOMContentLoaded", async () => {
 // ======================================================
 
 function setupEvents() {
+    const backButton = document.getElementById("backButton");
+    if (backButton) backButton.addEventListener("click", () => window.history.back());
 
-    document
-        .getElementById("backButton")
-        .addEventListener("click", () => {
-
-            window.location.href = "index.html";
-
-        });
-
-    document
-        .getElementById("editButton")
-        .addEventListener("click", () => {
-
-            window.location.href =
-                `create.html?id=${order.id}`;
-
-        });
-
-
-
-    document
-        .getElementById("whatsappButton")
-        .addEventListener("click", () => {
-
-            openWhatsApp();
-
-        });
-
-
-    document
-    .getElementById("printButton")
-    .addEventListener("click", () => {
-
-        window.open(
-            `print.html?id=${order.id}`,
-            "_blank"
-        );
-
+    const editButton = document.getElementById("editButton");
+    if (editButton) editButton.addEventListener("click", () => {
+        window.location.href = `edit.html?id=${order.id}`;
     });
 
+    const whatsappButton = document.getElementById("whatsappButton");
+    if (whatsappButton) whatsappButton.addEventListener("click", () => {
+        const phone = normalizePhone(order.customer_phone || "");
+        if (!phone) { alert("O cliente não possui um telefone válido cadastrado."); return; }
+        const message = buildWhatsAppMessage();
+        window.open(`https://wa.me/55${phone}?text=${encodeURIComponent(message)}`, "_blank");
+    });
+
+    const printButton = document.getElementById("printButton");
+    if (printButton) printButton.addEventListener("click", () => {
+        window.open(`print.html?id=${order.id}`, "_blank");
+    });
+
+    const guaranteeButton = document.getElementById("guaranteeButton");
+    if (guaranteeButton) {
+        const isReady = String(order.status || "").trim().toLowerCase() === "pronta";
+        if (isReady) {
+            guaranteeButton.classList.remove("hidden");
+            guaranteeButton.addEventListener("click", () => {
+                window.open(`garantia.html?id=${order.id}`, "_blank");
+            });
+        } else {
+            guaranteeButton.classList.add("hidden");
+        }
+    }
 }
 // ======================================================
 // Renderização
