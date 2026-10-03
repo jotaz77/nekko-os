@@ -366,10 +366,17 @@ const Api = {
     },
     
         async createServiceOrder(order) {
+
+            const normalizedOrder = {
+                ...order,
+                ...(order.status === "Entregue" && !order.delivery_date
+                    ? { delivery_date: new Date().toISOString().slice(0, 10) }
+                    : {})
+            };
     
             const { data, error } = await supabaseClient
                 .from("service_orders")
-                .insert(order)
+                .insert(normalizedOrder)
                 .select()
                 .single();
     
@@ -382,9 +389,22 @@ const Api = {
 
     async updateServiceOrder(id, order) {
 
+        const normalizedOrder = {
+            ...order
+        };
+
+        if (normalizedOrder.status === "Entregue" && !normalizedOrder.delivery_date) {
+            normalizedOrder.delivery_date =
+                new Date().toISOString().slice(0, 10);
+        }
+
+        if (normalizedOrder.status !== "Entregue") {
+            normalizedOrder.delivery_date = null;
+        }
+
         const { data, error } = await supabaseClient
             .from("service_orders")
-            .update(order)
+            .update(normalizedOrder)
             .eq("id", id)
             .select()
             .single();
@@ -397,12 +417,18 @@ const Api = {
     },
 
     async updateServiceOrderStatus(id, status) {
+
+        const update = {
+            status: status,
+            delivery_date:
+                status === "Entregue"
+                    ? new Date().toISOString().slice(0, 10)
+                    : null
+        };
     
         const { data, error } = await supabaseClient
             .from("service_orders")
-            .update({
-                status: status
-            })
+            .update(update)
             .eq("id", id)
             .select();
     
@@ -735,6 +761,7 @@ Api.getDashboardData = async (
                 status,
                 price,
                 created_at,
+                delivery_date,
                 store_id
             `)
     
@@ -800,13 +827,26 @@ Api.getDashboardData = async (
     
     // =================================
     // Aplicar filtro
+    // REGRA: OS entra no dashboard pela
+    // data em que foi ENTREGUE.
     // =================================
-    
+    const toLocalDateString = date =>
+        [
+            date.getFullYear(),
+            String(date.getMonth() + 1).padStart(2, "0"),
+            String(date.getDate()).padStart(2, "0")
+        ].join("-");
+
     serviceOrdersQuery =
-        serviceOrdersQuery.gte(
-            "created_at",
-            osStartDate.toISOString()
-        );
+        serviceOrdersQuery
+            .gte(
+                "delivery_date",
+                toLocalDateString(osStartDate)
+            )
+            .lte(
+                "delivery_date",
+                toLocalDateString(osNow)
+            );
 
     // =================================
     // Filtro de loja das OS
