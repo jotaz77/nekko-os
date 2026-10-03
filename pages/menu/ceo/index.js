@@ -1,4 +1,4 @@
-/ ======================================================
+// ======================================================
 // NEKKO OS
 // Menu CEO — Executive Control Center
 // ======================================================
@@ -15,43 +15,43 @@ const MODULES = [
         title: "Dashboard",
         description: "Visão geral da empresa",
         icon: "layout-dashboard",
-        href: "../dashboard/index.html"
+        href: "../../dashboard/index.html"
     },
     {
         title: "Registrar Venda",
         description: "Registrar uma nova venda",
         icon: "shopping-cart",
-        href: "../sales/create.html"
+        href: "../../sales/create.html"
     },
     {
         title: "Nova OS",
         description: "Criar uma ordem de serviço",
         icon: "clipboard-plus",
-        href: "../service-orders/create.html"
+        href: "../../service-orders/create.html"
     },
     {
         title: "OS Clientes",
         description: "Consultar ordens de serviço de clientes",
         icon: "clipboard-list",
-        href: "../service-orders/index.html"
+        href: "../../service-orders/index.html"
     },
     {
         title: "OS Lojistas",
         description: "Ordens de serviço para lojistas",
         icon: "store",
-        href: "../dealer-service-orders/index.html"
+        href: "../../dealer-service-orders/index.html"
     },
     {
         title: "Técnicos",
         description: "Cadastrar e acompanhar produtividade",
         icon: "wrench",
-        href: "../technicians/index.html"
+        href: "../../technicians/index.html"
     },
     {
         title: "Estoque",
         description: "Peças e produtos",
         icon: "package",
-        href: "../inventory/index.html"
+        href: "../../inventory/index.html"
     },
     {
         title: "Trocar Loja",
@@ -63,13 +63,13 @@ const MODULES = [
         title: "Importar OS",
         description: "Migrar ordens de serviço de outro sistema",
         icon: "file-up",
-        href: "../import-service-orders/index.html"
+        href: "../../import-service-orders/index.html"
     },
     {
         title: "Configurações",
         description: "Preferências do sistema",
         icon: "settings",
-        href: "../settings/index.html"
+        href: "../../settings/index.html"
     }
 ];
 
@@ -80,14 +80,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         const result = await Bootstrap.init();
 
         if (result.status !== "READY") {
-            window.location.href = "../login/login.html";
+            window.location.href = "../../login/login.html";
             return;
         }
 
         context = result.context;
 
         if (context.role !== Roles.CEO) {
-            renderNormalMenu();
+            window.location.href = "../index.html";
             return;
         }
 
@@ -286,7 +286,7 @@ async function changeStore() {
 
     if (currentContext?.role === Roles.CEO) {
 
-        window.location.href = "../mode/index.html";
+        window.location.href = "../../mode/index.html";
         return;
 
     }
@@ -296,7 +296,7 @@ async function changeStore() {
     Storage.clear();
     sessionStorage.clear();
 
-    window.location.href = "../login/login.html";
+    window.location.href = "../../login/login.html";
 
 }
 
