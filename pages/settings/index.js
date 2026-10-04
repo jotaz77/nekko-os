@@ -3474,10 +3474,15 @@ async function uploadCompanyLogo(companyId, file) {
     const extension = companyLogoExtension(file);
     const path = `companies/${companyId}/logo.${extension}`;
 
+    // Não usamos upsert:true aqui.
+    // O Storage do projeto rejeita o overwrite por RLS.
+    // Removemos a logo anterior e fazemos um INSERT novo.
+    await deleteCompanyLogoFile(companyId);
+
     const { error: uploadError } = await supabaseClient.storage
         .from(COMPANY_LOGO_BUCKET)
         .upload(path, file, {
-            upsert: true,
+            upsert: false,
             contentType: file.type,
             cacheControl: "3600"
         });
