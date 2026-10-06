@@ -97,14 +97,210 @@ function setupEvents() {
         const isReady = String(order.status || "").trim().toLowerCase() === "pronta";
         if (isReady) {
             guaranteeButton.classList.remove("hidden");
-            guaranteeButton.addEventListener("click", () => {
-                window.open(`garantia.html?id=${order.id}`, "_blank");
-            });
+            guaranteeButton.addEventListener("click", openGuaranteeModal);
         } else {
             guaranteeButton.classList.add("hidden");
         }
     }
+
+    setupGuaranteeModal();
 }
+// ======================================================
+// MODAL DE GARANTIA
+// ======================================================
+
+const WARRANTY_ESTIMATES = {
+    screen: { label: "90 dias", days: 90 },
+    premiumBattery: { label: "1 ano", days: 365 },
+    parallelBattery: { label: "90 dias", days: 90 },
+    board: { label: "Sem garantia", days: 0 },
+    component: { label: "90 dias", days: 90 },
+    default: { label: "90 dias", days: 90 }
+};
+
+function setupGuaranteeModal() {
+    const modal = document.getElementById("guaranteeModal");
+    if (!modal) return;
+
+    document.getElementById("closeGuaranteeModal")?.addEventListener("click", closeGuaranteeModal);
+    document.getElementById("guaranteePrintButton")?.addEventListener("click", printStandardGuarantee);
+    document.getElementById("guaranteeEditButton")?.addEventListener("click", () => {
+        populateGuaranteeModal(true);
+        showGuaranteeStep("edit");
+    });
+    document.getElementById("guaranteeBackButton")?.addEventListener("click", () => showGuaranteeStep("choice"));
+    document.getElementById("guaranteeEditPrintButton")?.addEventListener("click", printEditedGuarantee);
+
+    const checkbox = document.getElementById("guaranteeChangeCheckbox");
+    checkbox?.addEventListener("change", () => {
+        const options = document.getElementById("guaranteeCustomOptions");
+        if (!options) return;
+        options.classList.toggle("hidden", !checkbox.checked);
+        if (checkbox.checked) {
+            const first = document.querySelector('input[name="guaranteeCustomDays"][value="30"]');
+            if (first) first.checked = true;
+        } else {
+            document.querySelectorAll('input[name="guaranteeCustomDays"]').forEach(input => input.checked = false);
+        }
+    });
+
+    modal.addEventListener("click", event => {
+        if (event.target === modal) closeGuaranteeModal();
+    });
+
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape" && !modal.classList.contains("hidden")) closeGuaranteeModal();
+    });
+}
+
+function openGuaranteeModal() {
+    populateGuaranteeModal(false);
+    showGuaranteeStep("choice");
+    const modal = document.getElementById("guaranteeModal");
+    if (!modal) return;
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+    if (window.lucide) lucide.createIcons();
+}
+
+function closeGuaranteeModal() {
+    const modal = document.getElementById("guaranteeModal");
+    if (!modal) return;
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+}
+
+function showGuaranteeStep(step) {
+    const choice = document.getElementById("guaranteeChoiceStep");
+    const edit = document.getElementById("guaranteeEditStep");
+    const title = document.getElementById("guaranteeModalTitle");
+    const subtitle = document.getElementById("guaranteeModalSubtitle");
+    if (!choice || !edit) return;
+
+    const isEdit = step === "edit";
+    choice.classList.toggle("hidden", isEdit);
+    edit.classList.toggle("hidden", !isEdit);
+    title.textContent = isEdit ? "Editar e imprimir garantia" : "Como deseja emitir a garantia?";
+    subtitle.textContent = isEdit
+        ? "Os dados da OS são somente leitura. Você pode alterar apenas o prazo desta nota."
+        : "Escolha o procedimento para esta OS pronta.";
+    if (window.lucide) lucide.createIcons();
+}
+
+function populateGuaranteeModal(editStep = false) {
+    const items = getGuaranteeServiceItems();
+    const summary = buildGuaranteeSummary(items);
+    const orderNumber = formatOsNumber(order?.os_number);
+    const serviceText = summary.serviceText;
+    const valueText = formatCurrencyValue(summary.total);
+    const estimateHtml = summary.estimateHtml;
+
+    setText("guaranteeOrderLabel", `OS #${orderNumber}`);
+    setText("guaranteeChoiceService", serviceText);
+    setText("guaranteeChoiceValue", valueText);
+    const choiceEstimate = document.getElementById("guaranteeChoiceEstimate");
+    if (choiceEstimate) choiceEstimate.innerHTML = estimateHtml;
+
+    setText("guaranteeEditService", serviceText);
+    setText("guaranteeEditValue", valueText);
+    const editEstimate = document.getElementById("guaranteeEditEstimate");
+    if (editEstimate) editEstimate.innerHTML = estimateHtml;
+    const preview = document.getElementById("guaranteeEditPreview");
+    if (preview) preview.innerHTML = summary.previewHtml;
+
+    const checkbox = document.getElementById("guaranteeChangeCheckbox");
+    const options = document.getElementById("guaranteeCustomOptions");
+    if (checkbox) checkbox.checked = false;
+    if (options) options.classList.add("hidden");
+    document.querySelectorAll('input[name="guaranteeCustomDays"]').forEach(input => input.checked = false);
+
+    if (editStep) showGuaranteeStep("edit");
+}
+
+function getGuaranteeServiceItems() {
+    const items = Array.isArray(order?.service_order_items) ? order.service_order_items : [];
+    if (items.length) {
+        return items.map(item => ({
+            name: item.service_name || item.service || item.name || "Serviço",
+            price: Number(item.unit_price ?? item.price ?? 0)
+        }));
+    }
+    if (order?.service) return [{ name: order.service, price: Number(order.price ?? 0) }];
+    return [];
+}
+
+function classifyGuaranteeService(serviceName) {
+    const text = normalizeGuaranteeText(serviceName);
+    const hasBattery = text.includes("bateria");
+    const hasPremium = text.includes("premium");
+    const hasParallel = text.includes("paralela") || text.includes("paralelo");
+    const hasScreen = text.includes("tela") || text.includes("display") || text.includes("lcd");
+    const hasReplacement = text.includes("troca") || text.includes("substituicao") || text.includes("substituir");
+    const hasBoard = text.includes("placa") || text.includes("memoria") || text.includes("cpu");
+    const hasBoardRepair = text.includes("reparo") || text.includes("conserto") || text.includes("manutencao");
+
+    if (hasBattery && hasPremium) return "premiumBattery";
+    if (hasBattery && hasParallel) return "parallelBattery";
+    if (hasScreen && hasReplacement) return "screen";
+    if (hasBoard && hasBoardRepair) return "board";
+    if (hasReplacement) return "component";
+    return "default";
+}
+
+function normalizeGuaranteeText(value) {
+    return String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+}
+
+function getGuaranteeEstimate(serviceName) {
+    return WARRANTY_ESTIMATES[classifyGuaranteeService(serviceName)] || WARRANTY_ESTIMATES.default;
+}
+
+function buildGuaranteeSummary(items) {
+    const safeItems = items.length ? items : [{ name: "Serviço não informado", price: Number(order?.price || 0) }];
+    const total = safeItems.reduce((sum, item) => sum + Number(item.price || 0), 0);
+    const unique = [];
+    safeItems.forEach(item => {
+        const estimate = getGuaranteeEstimate(item.name);
+        const key = `${item.name}|${estimate.label}`;
+        if (!unique.some(x => x.key === key)) unique.push({ key, name: item.name, estimate });
+    });
+
+    const serviceText = safeItems.map(item => item.name).join(" • ");
+    const estimateHtml = unique.map(item => `${escapeHtml(item.name)}: <strong>${escapeHtml(item.estimate.label)}</strong>`).join("<br>");
+    const previewHtml = unique.length === 1
+        ? `O sistema identificou <strong class="text-zinc-300">${escapeHtml(unique[0].name)}</strong> e aplicará <strong class="text-emerald-400">${escapeHtml(unique[0].estimate.label)}</strong> no procedimento padrão.`
+        : unique.map(item => `• ${escapeHtml(item.name)} — <strong class="text-emerald-400">${escapeHtml(item.estimate.label)}</strong>`).join("<br>");
+
+    return { serviceText, total, estimateHtml, previewHtml };
+}
+
+function formatCurrencyValue(value) {
+    return Number(value || 0).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+}
+
+function printStandardGuarantee() {
+    if (!order?.id) return;
+    window.open(`garantia.html?id=${encodeURIComponent(order.id)}`, "_blank");
+    closeGuaranteeModal();
+}
+
+function printEditedGuarantee() {
+    if (!order?.id) return;
+    const checkbox = document.getElementById("guaranteeChangeCheckbox");
+    const selected = document.querySelector('input[name="guaranteeCustomDays"]:checked');
+
+    if (checkbox?.checked && !selected) {
+        alert("Selecione 1 mês ou 2 meses para alterar o prazo de garantia.");
+        return;
+    }
+
+    const params = new URLSearchParams({ id: order.id });
+    if (checkbox?.checked && selected) params.set("warranty_days", selected.value);
+
+    window.open(`garantia.html?${params.toString()}`, "_blank");
+    closeGuaranteeModal();
+}
+
 // ======================================================
 // Renderização
 // ======================================================
