@@ -24,6 +24,534 @@
     <!-- Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
+
+<style>
+/* =========================================================
+   NEKKO OS — SETTINGS / CEO PREMIUM VISUAL LAYER
+   Somente visual. IDs, formulários e funcionalidades intactos.
+   ========================================================= */
+
+:root{
+    --nekko-bg:#070A08;
+    --nekko-surface:#0D120F;
+    --nekko-card:#101612;
+    --nekko-card-2:#121A15;
+    --nekko-border:#202A24;
+    --nekko-border-strong:#2B3930;
+    --nekko-green:#19D37B;
+    --nekko-green-soft:rgba(25,211,123,.10);
+    --nekko-muted:#7F8A84;
+}
+
+/* ---------- BACKGROUND ---------- */
+
+html{
+    background:var(--nekko-bg);
+}
+
+body{
+    position:relative;
+    overflow-x:hidden;
+    background:
+        radial-gradient(700px 380px at 8% -5%, rgba(25,211,123,.085), transparent 62%),
+        radial-gradient(620px 420px at 96% 16%, rgba(25,211,123,.045), transparent 65%),
+        linear-gradient(180deg,#070A08 0%,#090D0A 46%,#070A08 100%) !important;
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+    opacity:.34;
+    background-image:
+        linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+    background-size:42px 42px;
+    mask-image:linear-gradient(to bottom,black 0%,transparent 78%);
+}
+
+body::after{
+    content:"";
+    position:fixed;
+    width:520px;
+    height:520px;
+    right:-240px;
+    bottom:-280px;
+    border-radius:50%;
+    pointer-events:none;
+    background:rgba(25,211,123,.035);
+    filter:blur(80px);
+    z-index:0;
+}
+
+header,
+main,
+#companyModal,
+#storesModal{
+    position:relative;
+    z-index:1;
+}
+
+/* ---------- HEADER ---------- */
+
+body > header{
+    background:rgba(7,10,8,.82) !important;
+    border-color:rgba(43,57,48,.72) !important;
+    box-shadow:
+        0 1px 0 rgba(255,255,255,.015),
+        0 18px 55px rgba(0,0,0,.16);
+}
+
+body > header > div{
+    max-width:1320px !important;
+    padding-top:20px !important;
+    padding-bottom:20px !important;
+}
+
+body > header a[aria-label="Voltar ao menu"]{
+    width:46px !important;
+    height:46px !important;
+    border-radius:15px !important;
+    background:linear-gradient(145deg,#121914,#0C110E) !important;
+    border-color:#28352D !important;
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.025),
+        0 10px 28px rgba(0,0,0,.20);
+}
+
+body > header a[aria-label="Voltar ao menu"]:hover{
+    transform:translateY(-1px);
+    border-color:rgba(25,211,123,.45) !important;
+    box-shadow:0 0 26px rgba(25,211,123,.08);
+}
+
+body > header p{
+    color:var(--nekko-green) !important;
+    font-size:10px !important;
+    font-weight:800 !important;
+    letter-spacing:.24em !important;
+}
+
+body > header h1{
+    font-size:28px !important;
+    font-weight:900 !important;
+    letter-spacing:-.035em !important;
+}
+
+body > header > div > div:last-child{
+    background:rgba(15,21,17,.88) !important;
+    border-color:#27342C !important;
+    border-radius:14px !important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.018);
+}
+
+body > header > div > div:last-child::before{
+    content:"";
+    width:7px;
+    height:7px;
+    display:block;
+    border-radius:50%;
+    background:var(--nekko-green);
+    box-shadow:0 0 12px rgba(25,211,123,.55);
+}
+
+/* ---------- MAIN / HERO ---------- */
+
+main{
+    max-width:1320px !important;
+    padding-top:52px !important;
+    padding-bottom:80px !important;
+}
+
+main > section:first-child{
+    position:relative;
+    margin-bottom:38px !important;
+    padding:34px 38px 36px !important;
+    border:1px solid rgba(42,57,48,.72);
+    border-radius:28px;
+    overflow:hidden;
+    background:
+        linear-gradient(135deg,rgba(18,27,21,.92),rgba(10,15,12,.92));
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.025),
+        0 24px 70px rgba(0,0,0,.20);
+}
+
+main > section:first-child::before{
+    content:"";
+    position:absolute;
+    width:310px;
+    height:310px;
+    top:-190px;
+    right:-90px;
+    border-radius:50%;
+    background:rgba(25,211,123,.08);
+    filter:blur(55px);
+}
+
+main > section:first-child::after{
+    content:"CEO ACCESS  •  CENTRAL DE CONTROLE";
+    position:absolute;
+    right:28px;
+    bottom:24px;
+    color:rgba(25,211,123,.42);
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:.19em;
+}
+
+main > section:first-child p:first-child{
+    color:#7F8A84 !important;
+    font-size:10px !important;
+    font-weight:800 !important;
+    letter-spacing:.20em !important;
+    text-transform:uppercase;
+}
+
+main > section:first-child h2{
+    position:relative;
+    font-size:clamp(32px,4vw,48px) !important;
+    line-height:1.02 !important;
+    font-weight:900 !important;
+    letter-spacing:-.055em !important;
+}
+
+main > section:first-child h2 span{
+    color:var(--nekko-green) !important;
+    text-shadow:0 0 28px rgba(25,211,123,.12);
+}
+
+main > section:first-child p:last-child{
+    color:#77837C !important;
+    max-width:650px !important;
+}
+
+/* ---------- EMPLOYEES / PRIMARY CONTROL ---------- */
+
+main > section:nth-of-type(2){
+    background:linear-gradient(145deg,#101611,#0C110E) !important;
+    border-color:#26342B !important;
+    border-radius:28px !important;
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.025),
+        0 26px 75px rgba(0,0,0,.20);
+}
+
+main > section:nth-of-type(2) > div:first-child{
+    background:linear-gradient(180deg,rgba(255,255,255,.012),transparent);
+    border-color:#202C25 !important;
+}
+
+main > section:nth-of-type(2) h3{
+    font-size:25px !important;
+    font-weight:850 !important;
+    letter-spacing:-.025em;
+}
+
+main > section:nth-of-type(2) > div:first-child > div:first-child > div:first-child{
+    width:58px !important;
+    height:58px !important;
+    border-radius:17px !important;
+    background:linear-gradient(145deg,rgba(25,211,123,.14),rgba(25,211,123,.045)) !important;
+    border-color:rgba(25,211,123,.15) !important;
+    box-shadow:0 0 35px rgba(25,211,123,.055);
+}
+
+#registerEmployeeButton{
+    min-height:48px;
+    border-radius:15px !important;
+    background:linear-gradient(135deg,#19D37B,#12B968) !important;
+    box-shadow:
+        0 12px 30px rgba(25,211,123,.13),
+        inset 0 1px 0 rgba(255,255,255,.18);
+    font-weight:800 !important;
+}
+
+#registerEmployeeButton:hover{
+    transform:translateY(-1px);
+    box-shadow:
+        0 16px 35px rgba(25,211,123,.18),
+        inset 0 1px 0 rgba(255,255,255,.20);
+}
+
+#employeesContainer{
+    background:rgba(0,0,0,.06);
+}
+
+#employeesContainer > div{
+    border-color:#29362E !important;
+    background:
+        radial-gradient(circle at 50% 0%,rgba(25,211,123,.035),transparent 48%),
+        #0B100D !important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.015);
+}
+
+/* ---------- SECTION DIVIDER ---------- */
+
+main > section:nth-of-type(3) > div:first-child{
+    margin-top:44px;
+    margin-bottom:22px !important;
+}
+
+main > section:nth-of-type(3) > div:first-child span{
+    color:#526059 !important;
+    font-size:9px !important;
+    font-weight:800 !important;
+    letter-spacing:.22em !important;
+}
+
+main > section:nth-of-type(3) > div:first-child > div{
+    background:linear-gradient(90deg,transparent,#202C25,transparent) !important;
+}
+
+/* ---------- SETTINGS CARDS ---------- */
+
+main > section:nth-of-type(3) > div:last-child{
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+    gap:14px !important;
+}
+
+main > section:nth-of-type(3) > div:last-child > button,
+main > section:nth-of-type(3) > div:last-child > div{
+    position:relative;
+    min-height:190px;
+    padding:22px !important;
+    border-radius:22px !important;
+    border-color:#202C25 !important;
+    background:
+        linear-gradient(145deg,rgba(17,24,20,.96),rgba(11,16,13,.96)) !important;
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.02),
+        0 14px 38px rgba(0,0,0,.13);
+    overflow:hidden;
+}
+
+main > section:nth-of-type(3) > div:last-child > button::after,
+main > section:nth-of-type(3) > div:last-child > div::after{
+    content:"";
+    position:absolute;
+    width:130px;
+    height:130px;
+    right:-70px;
+    bottom:-75px;
+    border-radius:50%;
+    background:rgba(25,211,123,.045);
+    filter:blur(25px);
+    transition:.25s ease;
+}
+
+main > section:nth-of-type(3) > div:last-child > button:hover{
+    transform:translateY(-3px);
+    border-color:rgba(25,211,123,.42) !important;
+    background:
+        linear-gradient(145deg,rgba(19,29,23,.98),rgba(11,17,14,.98)) !important;
+    box-shadow:
+        0 22px 45px rgba(0,0,0,.22),
+        0 0 35px rgba(25,211,123,.045);
+}
+
+main > section:nth-of-type(3) > div:last-child > button:hover::after{
+    transform:scale(1.35);
+    background:rgba(25,211,123,.075);
+}
+
+main > section:nth-of-type(3) > div:last-child > button > div:first-child,
+main > section:nth-of-type(3) > div:last-child > div > div:first-child{
+    width:48px !important;
+    height:48px !important;
+    margin-bottom:28px !important;
+    border-radius:15px !important;
+    background:#121A15 !important;
+    border-color:#29372E !important;
+    color:#93A098 !important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+}
+
+main > section:nth-of-type(3) > div:last-child > button:hover > div:first-child{
+    color:var(--nekko-green) !important;
+    border-color:rgba(25,211,123,.22) !important;
+    background:rgba(25,211,123,.07) !important;
+}
+
+main > section:nth-of-type(3) h4{
+    position:relative;
+    z-index:1;
+    font-size:18px !important;
+    font-weight:800 !important;
+    letter-spacing:-.02em;
+}
+
+main > section:nth-of-type(3) p{
+    position:relative;
+    z-index:1;
+    color:#69756E !important;
+}
+
+/* Preferências — visual de recurso futuro, sem alterar comportamento */
+main > section:nth-of-type(3) > div:last-child > div{
+    opacity:1 !important;
+    background:
+        linear-gradient(145deg,rgba(16,22,18,.78),rgba(10,14,12,.78)) !important;
+    border-style:dashed !important;
+    border-color:#26332B !important;
+}
+
+main > section:nth-of-type(3) > div:last-child > div::before{
+    content:"EM BREVE";
+    position:absolute;
+    top:20px;
+    right:20px;
+    padding:5px 8px;
+    border-radius:8px;
+    border:1px solid #26332B;
+    color:#56625B;
+    background:#0C110E;
+    font-size:8px;
+    font-weight:800;
+    letter-spacing:.14em;
+}
+
+/* ---------- MODALS ---------- */
+
+#companyModal,
+#storesModal{
+    background:rgba(0,0,0,.78) !important;
+    backdrop-filter:blur(16px) !important;
+}
+
+#companyModal > div,
+#storesModal > div{
+    background:
+        linear-gradient(145deg,#111812,#0B100D) !important;
+    border-color:#2A3930 !important;
+    border-radius:26px !important;
+    box-shadow:
+        0 35px 100px rgba(0,0,0,.55),
+        0 0 60px rgba(25,211,123,.035),
+        inset 0 1px 0 rgba(255,255,255,.025);
+}
+
+#companyModal > div > div:first-child,
+#storesModal > div > div:first-child{
+    background:rgba(14,20,16,.92) !important;
+    border-color:#243129 !important;
+}
+
+#companyModal h3,
+#storesModal h3{
+    font-size:23px !important;
+    font-weight:850 !important;
+    letter-spacing:-.025em;
+}
+
+#companyModal form input,
+#companyModal form textarea,
+#companyModal form select{
+    border-color:#29372E !important;
+    background:#090E0B !important;
+    border-radius:13px !important;
+    transition:.18s ease;
+}
+
+#companyModal form input:focus,
+#companyModal form textarea:focus,
+#companyModal form select:focus{
+    border-color:rgba(25,211,123,.65) !important;
+    box-shadow:0 0 0 3px rgba(25,211,123,.07);
+}
+
+#companyLogoPreview{
+    border-color:#2A3930 !important;
+    background:
+        radial-gradient(circle at 50% 30%,rgba(25,211,123,.08),transparent 58%),
+        #0A0F0C !important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+}
+
+#storesEditContainer > div{
+    border-color:#28362E !important;
+    background:#0C120E !important;
+    border-radius:20px !important;
+}
+
+/* ---------- SCROLLBAR ---------- */
+
+*{
+    scrollbar-width:thin;
+    scrollbar-color:#26342B transparent;
+}
+
+*::-webkit-scrollbar{
+    width:7px;
+    height:7px;
+}
+
+*::-webkit-scrollbar-track{
+    background:transparent;
+}
+
+*::-webkit-scrollbar-thumb{
+    background:#26342B;
+    border-radius:999px;
+}
+
+*::-webkit-scrollbar-thumb:hover{
+    background:#345044;
+}
+
+/* ---------- RESPONSIVE ---------- */
+
+@media (max-width:900px){
+    main > section:first-child{
+        padding:28px 24px 32px !important;
+    }
+
+    main > section:first-child::after{
+        display:none;
+    }
+
+    main > section:nth-of-type(3) > div:last-child{
+        grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    }
+}
+
+@media (max-width:640px){
+    main{
+        padding-left:18px !important;
+        padding-right:18px !important;
+        padding-top:30px !important;
+    }
+
+    main > section:first-child{
+        padding:25px 21px 28px !important;
+        border-radius:23px;
+    }
+
+    main > section:first-child h2{
+        font-size:31px !important;
+    }
+
+    main > section:nth-of-type(3) > div:last-child{
+        grid-template-columns:1fr !important;
+    }
+
+    main > section:nth-of-type(3) > div:last-child > button,
+    main > section:nth-of-type(3) > div:last-child > div{
+        min-height:165px;
+    }
+}
+
+@media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{
+        scroll-behavior:auto !important;
+        transition:none !important;
+        animation:none !important;
+    }
+}
+</style>
+
 </head>
 
 
@@ -186,7 +714,7 @@
                         mb-3
                     "
                 >
-                    Administração da empresa
+                    CENTRAL DE CONTROLE EXECUTIVO
                 </p>
 
                 <h2
@@ -210,9 +738,7 @@
                         leading-relaxed
                     "
                 >
-                    Gerencie funcionários,
-                    lojas, permissões e
-                    configurações da sua empresa.
+                    Gerencie funcionários, lojas, identidade e configurações da sua empresa.
                 </p>
 
             </div>
