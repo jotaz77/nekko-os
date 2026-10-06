@@ -59,7 +59,8 @@ function preencherGarantia(){
 
     const items=getServiceItems();
     renderServiceItems(items);
-    renderWarrantyTerms(items);
+    const warrantyOverrideDays=getWarrantyOverrideDays();
+    renderWarrantyTerms(items,warrantyOverrideDays);
 
     setText("printedAt",formatDateTime(new Date()));
 }
@@ -122,7 +123,7 @@ const WARRANTY_RULES={
     }
 };
 
-function renderWarrantyTerms(items){
+function renderWarrantyTerms(items, overrideDays = null){
     const container=document.getElementById("warrantyTerms");
     if(!container)return;
 
@@ -133,17 +134,35 @@ function renderWarrantyTerms(items){
     });
 
     if(!rules.length){
-        container.innerHTML=`<div class="warranty-item"><div class="warranty-title">GARANTIA — 90 DIAS</div></div>`;
+        const prazo=overrideDays===30?"1 MÊS":overrideDays===60?"2 MESES":"90 DIAS";
+        container.innerHTML=`<div class="warranty-item"><div class="warranty-title">GARANTIA — ${prazo}</div></div>`;
         return;
     }
 
     container.innerHTML=rules.map(key=>{
         const rule=WARRANTY_RULES[key];
+        let title=rule.title;
+        if (overrideDays !== null && key !== "board") {
+            const prazo = overrideDays === 30 ? "1 MÊS" : overrideDays === 60 ? "2 MESES" : `${overrideDays} DIAS`;
+            title = replaceWarrantyDuration(title, prazo);
+        }
         return `<div class="warranty-item">
-            <div class="warranty-title">${escapeHtml(rule.title)}</div>
+            <div class="warranty-title">${escapeHtml(title)}</div>
             ${rule.paragraphs.map(p=>`<p>${escapeHtml(p)}</p>`).join("")}
         </div>`;
     }).join("");
+}
+
+
+function getWarrantyOverrideDays(){
+    const value=Number(new URLSearchParams(window.location.search).get("warranty_days"));
+    return value===30||value===60 ? value : null;
+}
+
+function replaceWarrantyDuration(title, prazo){
+    return String(title)
+        .replace(/90 DIAS DE GARANTIA/gi, `${prazo} DE GARANTIA`)
+        .replace(/1 ANO DE GARANTIA/gi, `${prazo} DE GARANTIA`);
 }
 
 function classifyWarranty(serviceName){
