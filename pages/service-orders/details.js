@@ -76,16 +76,13 @@ function setupEvents() {
 
     const editButton = document.getElementById("editButton");
     if (editButton) editButton.addEventListener("click", () => {
-        window.location.href = `edit.html?id=${order.id}`;
+        window.location.href = `create.html?id=${encodeURIComponent(order.id)}`;
     });
 
     const whatsappButton = document.getElementById("whatsappButton");
-    if (whatsappButton) whatsappButton.addEventListener("click", () => {
-        const phone = normalizePhone(order.customer_phone || "");
-        if (!phone) { alert("O cliente não possui um telefone válido cadastrado."); return; }
-        const message = buildWhatsAppMessage();
-        window.open(`https://wa.me/55${phone}?text=${encodeURIComponent(message)}`, "_blank");
-    });
+    if (whatsappButton) {
+        whatsappButton.addEventListener("click", openWhatsApp);
+    }
 
     const printButton = document.getElementById("printButton");
     if (printButton) printButton.addEventListener("click", () => {
@@ -702,7 +699,17 @@ function openWhatsApp() {
 
     }
 
-    const phone = order.customer_phone.replace(/\D/g, "");
+    let phone = String(order.customer_phone).replace(/\D/g, "");
+
+    // Aceita números salvos com ou sem o código do Brasil.
+    if (phone.startsWith("55") && (phone.length === 12 || phone.length === 13)) {
+        phone = phone.slice(2);
+    }
+
+    if (phone.length !== 10 && phone.length !== 11) {
+        alert("O telefone do cliente precisa ter DDD e número válido.");
+        return;
+    }
 
     const message = `Olá ${order.customer_name}!
 
