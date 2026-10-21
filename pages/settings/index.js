@@ -387,6 +387,12 @@ async function loadEmployees() {
                     ),
                     stores (
                         name
+                    ),
+                    company_member_permissions (
+                        permission_id,
+                        permissions (
+                            code
+                        )
                     )
                 `)
                 .eq(
@@ -1321,6 +1327,17 @@ function openEditEmployeeModal(
 
                 <!-- MENSAGEM -->
 
+                <section class="space-y-3">
+                    <div class="flex items-center justify-between gap-3">
+                        <div>
+                            <h3 class="font-semibold text-white">Permissões de acesso</h3>
+                            <p class="text-sm text-slate-500 mt-1">Defina quais recursos este funcionário poderá utilizar.</p>
+                        </div>
+                        <span id="editPermissionCounter" class="text-xs text-green-400 whitespace-nowrap">0 permissões selecionadas</span>
+                    </div>
+                    <div id="editPermissionsContainer" class="space-y-3"></div>
+                </section>
+
                 <div
                     id="editEmployeeMessage"
                     class="
@@ -1410,6 +1427,14 @@ function openEditEmployeeModal(
     document.body.appendChild(
         modal
     );
+
+
+    const selectedPermissionCodes =
+        (employee.company_member_permissions || [])
+            .map(item => item.permissions?.code)
+            .filter(Boolean);
+
+    populateEditPermissions(selectedPermissionCodes);
 
 
     // ---------------------------------
@@ -1650,9 +1675,15 @@ function openEditEmployeeModal(
                                                 ?.textContent
                                                 .trim() ||
                                             "",
-    
-                                        active
-    
+
+                                        active,
+
+                                        permissions: Array.from(
+                                            document.querySelectorAll(
+                                                "#editPermissionsContainer .edit-permission-checkbox:checked"
+                                            )
+                                        ).map(checkbox => checkbox.value)
+
                                     }
                                 }
                             );
@@ -1825,6 +1856,73 @@ function openEditEmployeeModal(
             }
         );
     }
+
+// =========================================
+// PERMISSÕES — EDIÇÃO DE FUNCIONÁRIO
+// =========================================
+
+function populateEditPermissions(selectedCodes = []) {
+    const container = document.getElementById("editPermissionsContainer");
+    if (!container) return;
+    container.innerHTML = "";
+    const selected = new Set(selectedCodes);
+    const grouped = {};
+
+    permissions.forEach(permission => {
+        if (!grouped[permission.category]) grouped[permission.category] = [];
+        grouped[permission.category].push(permission);
+    });
+
+    Object.entries(grouped).forEach(([category, items]) => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "rounded-2xl border border-[#29322C] bg-[#0D120E] overflow-hidden";
+        wrapper.innerHTML = `
+            <div class="px-4 py-3 border-b border-[#222B25] flex items-center justify-between gap-3">
+                <div><h4 class="font-medium text-slate-200"></h4><p class="text-xs text-slate-600 mt-0.5">${items.length} permissões</p></div>
+                <button type="button" class="edit-select-all-permissions text-xs text-green-400 hover:text-green-300">Selecionar todas</button>
+            </div>
+            <div class="p-3 space-y-1 edit-permission-items"></div>
+        `;
+        wrapper.querySelector("h4").textContent = category;
+        const itemsContainer = wrapper.querySelector(".edit-permission-items");
+
+        items.forEach(permission => {
+            const label = document.createElement("label");
+            label.className = "flex items-center gap-3 p-3 rounded-xl hover:bg-[#141A16] cursor-pointer transition";
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.className = "edit-permission-checkbox accent-green-500 w-4 h-4";
+            checkbox.value = permission.code;
+            checkbox.checked = selected.has(permission.code);
+            const labelText = document.createElement("span");
+            labelText.className = "text-sm text-slate-300";
+            labelText.textContent = permission.name;
+            label.append(checkbox, labelText);
+            itemsContainer.appendChild(label);
+        });
+
+        wrapper.querySelector(".edit-select-all-permissions").addEventListener("click", () => {
+            const checkboxes = Array.from(wrapper.querySelectorAll(".edit-permission-checkbox"));
+            const shouldSelect = checkboxes.some(checkbox => !checkbox.checked);
+            checkboxes.forEach(checkbox => { checkbox.checked = shouldSelect; });
+            updateEditPermissionCounter();
+        });
+        container.appendChild(wrapper);
+    });
+
+    container.addEventListener("change", event => {
+        if (event.target.classList.contains("edit-permission-checkbox")) updateEditPermissionCounter();
+    });
+    updateEditPermissionCounter();
+}
+
+function updateEditPermissionCounter() {
+    const counter = document.getElementById("editPermissionCounter");
+    if (!counter) return;
+    const count = document.querySelectorAll("#editPermissionsContainer .edit-permission-checkbox:checked").length;
+    counter.textContent = `${count} ${count === 1 ? "permissão selecionada" : "permissões selecionadas"}`;
+}
+
 
 // =========================================
 // MENSAGEM — EDIÇÃO
