@@ -35,9 +35,10 @@ function preencherGarantia(){
     const company=context?.company||{};
     const store=context?.store||{};
 
-    setText("companyName",company.name||"EMPRESA");
-    setText("storeName",store.name||"Loja");
-    setText("storePhone",store.phone?`WhatsApp: ${formatPhone(store.phone)}`:"-");
+    // Cabeçalho: exibe somente a unidade e seus dados de contato.
+    setText("storeName",store.name||"UNIDADE");
+    setText("storeAddress",buildStoreAddress(store));
+    setText("storePhone",store.phone?`Contato: ${formatPhone(store.phone)}`:"Contato não informado");
 
     setText("osNumber",order.os_number);
     setText("createdAt",formatDateTime(order.created_at));
@@ -205,6 +206,15 @@ function renderDeviceLock(){
     }
 
     container.innerHTML=`<p class="lock-title">Bloqueio: ${escapeHtml(type)}</p><p class="lock-value">${escapeHtml(String(value))}</p>`;
+}
+
+function buildStoreAddress(store){
+    const streetLine=[store.street,store.number].filter(Boolean).join(", ");
+    const locationLine=[store.neighborhood,[store.city,store.state].filter(Boolean).join("/")].filter(Boolean).join(" • ");
+    const addressParts=[streetLine,locationLine];
+    if(store.zip_code)addressParts.push(`CEP: ${store.zip_code}`);
+    if(store.complement)addressParts.push(`Compl.: ${store.complement}`);
+    return addressParts.filter(Boolean).join(" • ")||"Endereço não informado";
 }
 
 function normalizeText(value){
