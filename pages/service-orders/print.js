@@ -43,16 +43,14 @@ async function init() {
 
 function preencherCupom() {
 
-    // Cabeçalho
-    setText("companyName", context.company?.name);
+    // Cabeçalho: identifica a unidade responsável pela OS.
+    const store = context?.store || {};
 
-    setText("storeName", context.store?.name);
-
+    setText("storeName", store.name || "UNIDADE");
+    setText("storeAddress", buildStoreAddress(store));
     setText(
         "storePhone",
-        context.store?.phone
-            ? `WhatsApp: ${context.store.phone}`
-            : "-"
+        store.phone ? `Contato: ${formatPhone(store.phone)}` : "Contato não informado"
     );
 
     // Ordem de Serviço
@@ -238,6 +236,25 @@ function preencherCupom() {
         )
     );
     
+}
+
+function buildStoreAddress(store) {
+
+    const streetLine = [store.street, store.number]
+        .filter(Boolean)
+        .join(", ");
+
+    const locationLine = [store.neighborhood, [store.city, store.state].filter(Boolean).join("/")]
+        .filter(Boolean)
+        .join(" • ");
+
+    const addressParts = [streetLine, locationLine];
+
+    if (store.zip_code) addressParts.push(`CEP: ${store.zip_code}`);
+    if (store.complement) addressParts.push(`Compl.: ${store.complement}`);
+
+    return addressParts.filter(Boolean).join(" • ") || "Endereço não informado";
+
 }
 
 function setText(id, value) {
