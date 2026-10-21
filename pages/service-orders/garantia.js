@@ -115,12 +115,12 @@ const WARRANTY_RULES={
         paragraphs:["Não garatimos problemas causados por mau uso, incluindo, bateria viciada, inxada, oxidada, entre outros!"]
     },
     board:{
-        title:"REPARO / REPARO DE PLACA / MEMÓRIA / CPU",
-        paragraphs:["Não garantimos problemas futuros, pois o serviço realizado consiste em um reparo e não na troca de um componente."]
+        title:"REPARO / REPARO DE PLACA / MEMÓRIA / CPU — 90 DIAS DE GARANTIA",
+        paragraphs:["Não garantimos problemas futuros causados por mau uso."]
     },
     component:{
         title:"TROCA DE COMPONENTE — 90 DIAS DE GARANTIA",
-        paragraphs:[]
+        paragraphs:["Não garantimos problemas futuros causados por mau uso."]
     }
 };
 
