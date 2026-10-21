@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         alert("Sessão inválida.");
 
-        window.location.href = "../login/index.html";
+        window.location.href = "../login/login.html";
 
         return;
 
@@ -147,11 +147,130 @@ function maskMoney(value) {
 // EVENTOS DAS MÁSCARAS
 // =========================================
 
+let lastCustomerLookupCpf = "";
+
 cpfInput?.addEventListener("input", (e) => {
 
     e.target.value = maskCPF(e.target.value);
 
+    const cpf = onlyNumbers(e.target.value);
+
+    if (cpf.length === 11 && cpf !== lastCustomerLookupCpf) {
+        lastCustomerLookupCpf = cpf;
+        lookupCustomerByCPF(cpf);
+    }
+
+    if (cpf.length < 11) {
+        lastCustomerLookupCpf = "";
+    }
+
 });
+
+cpfInput?.addEventListener("blur", () => {
+
+    const cpf = onlyNumbers(cpfInput.value);
+
+    if (cpf.length === 11) {
+        lookupCustomerByCPF(cpf);
+    }
+
+});
+
+// =========================================
+// CLIENTES SALVOS POR CPF
+// =========================================
+
+function formatCPF(cpf) {
+
+    const digits = onlyNumbers(cpf);
+
+    if (digits.length !== 11) return digits;
+
+    return digits.replace(
+        /^(\d{3})(\d{3})(\d{3})(\d{2})$/,
+        "$1.$2.$3-$4"
+    );
+
+}
+
+function fillCustomerFields(customer) {
+
+    if (!customer) return;
+
+    document.getElementById("customerName").value =
+        customer.name || "";
+
+    document.getElementById("customerPhone").value =
+        customer.phone || customer.whatsapp || "";
+
+    document.getElementById("customerCpf").value =
+        formatCPF(customer.cpf || "");
+
+    document.getElementById("customerCep").value =
+        maskCEP(customer.cep || "");
+
+    document.getElementById("customerAddress").value =
+        customer.address || "";
+
+    document.getElementById("customerNumber").value =
+        customer.address_number || "";
+
+    document.getElementById("customerNeighborhood").value =
+        customer.neighborhood || "";
+
+    document.getElementById("customerCity").value =
+        customer.city || "";
+
+    document.getElementById("customerState").value =
+        customer.state || "";
+
+    document.getElementById("customerComplement").value =
+        customer.complement || "";
+
+}
+
+async function lookupCustomerByCPF(cpfValue) {
+
+    const cpf = onlyNumbers(cpfValue);
+
+    if (cpf.length !== 11 || !context?.company?.id) {
+        return null;
+    }
+
+    try {
+
+        const formattedCpf = formatCPF(cpf);
+
+        const { data, error } = await supabaseClient
+            .from("customers")
+            .select("*")
+            .eq("company_id", context.company.id)
+            .in("cpf", [cpf, formattedCpf])
+            .limit(1)
+            .maybeSingle();
+
+        if (error) throw error;
+
+        // Não substitui os campos caso o usuário já tenha mudado o CPF.
+        if (onlyNumbers(cpfInput.value) !== cpf) {
+            return null;
+        }
+
+        if (data) {
+            fillCustomerFields(data);
+            console.info("Cliente localizado pelo CPF.");
+        }
+
+        return data || null;
+
+    } catch (error) {
+
+        console.error("Erro ao consultar cliente pelo CPF:", error);
+        return null;
+
+    }
+
+}
 
 cepInput?.addEventListener("input", async (e) => {
 
@@ -1395,6 +1514,77 @@ function resetButton(buttonId) {
 
 }
 
+async function saveCustomerFromOrder(user) {
+
+    const cpf = onlyNumbers(
+        document.getElementById("customerCpf").value
+    );
+
+    // CPF é a chave de localização. Sem CPF completo, não criamos
+    // registros que não poderão ser recuperados de forma confiável.
+    if (cpf.length !== 11) {
+        return { saved: false, skipped: true };
+    }
+
+    const companyId = context?.company?.id;
+
+    if (!companyId) {
+        throw new Error("Empresa não encontrada ao salvar o cliente.");
+    }
+
+    const formattedCpf = formatCPF(cpf);
+    const cpfVariants = [cpf, formattedCpf];
+
+    const { data: existing, error: findError } = await supabaseClient
+        .from("customers")
+        .select("id")
+        .eq("company_id", companyId)
+        .in("cpf", cpfVariants)
+        .limit(1)
+        .maybeSingle();
+
+    if (findError) throw findError;
+
+    const customer = {
+        user_id: user.id,
+        company_id: companyId,
+        name: document.getElementById("customerName").value.trim(),
+        cpf,
+        phone: document.getElementById("customerPhone").value.trim() || null,
+        whatsapp: document.getElementById("customerPhone").value.trim() || null,
+        cep: onlyNumbers(document.getElementById("customerCep").value) || null,
+        address: document.getElementById("customerAddress").value.trim() || null,
+        address_number: document.getElementById("customerNumber").value.trim() || null,
+        neighborhood: document.getElementById("customerNeighborhood").value.trim() || null,
+        city: document.getElementById("customerCity").value.trim() || null,
+        state: document.getElementById("customerState").value.trim() || null,
+        complement: document.getElementById("customerComplement").value.trim() || null,
+        updated_at: new Date().toISOString()
+    };
+
+    if (existing?.id) {
+
+        const { error } = await supabaseClient
+            .from("customers")
+            .update(customer)
+            .eq("id", existing.id);
+
+        if (error) throw error;
+
+    } else {
+
+        const { error } = await supabaseClient
+            .from("customers")
+            .insert(customer);
+
+        if (error) throw error;
+
+    }
+
+    return { saved: true, updated: !!existing?.id };
+
+}
+
 form.addEventListener("submit", async (e) => {
 
     e.preventDefault();
@@ -1433,7 +1623,7 @@ form.addEventListener("submit", async (e) => {
 
         if (!user) {
 
-            window.location.href = "../login/index.html";
+            window.location.href = "../login/login.html";
             return;
 
         }
@@ -1542,6 +1732,27 @@ form.addEventListener("submit", async (e) => {
      }
 
         // =====================================
+        // SALVAR / ATUALIZAR CADASTRO DO CLIENTE
+        // =====================================
+
+        let customerSaveWarning = false;
+
+        try {
+
+            await saveCustomerFromOrder(user);
+
+        } catch (customerError) {
+
+            customerSaveWarning = true;
+
+            console.error(
+                "A OS foi salva, mas houve falha ao salvar o cadastro do cliente:",
+                customerError
+            );
+
+        }
+
+        // =====================================
         // SUCESSO
         // =====================================
 
@@ -1556,6 +1767,15 @@ form.addEventListener("submit", async (e) => {
             "success"
 
         );
+
+        if (customerSaveWarning) {
+            setTimeout(() => {
+                alert(
+                    "A OS foi salva, mas não foi possível atualizar o cadastro do cliente. " +
+                    "Confira as políticas RLS e a migração SQL de clientes."
+                );
+            }, 150);
+        }
 
         clearForm();
 
