@@ -26,6 +26,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         }
 
+        // Funcionários só podem consultar OS quando a permissão os.view está ativa.
+        if (result.context.role !== Roles.CEO && !(result.context.permissions || []).includes("os.view")) {
+            document.body.innerHTML = `
+                <main class="min-h-screen bg-[#080D09] text-white flex items-center justify-center p-6">
+                    <section class="max-w-lg text-center">
+                        <h1 class="text-2xl font-bold mb-3">Acesso não permitido</h1>
+                        <p class="text-slate-400">Sua conta não tem a permissão necessária para visualizar ordens de serviço de lojistas. Peça ao CEO para habilitar “Visualizar OS” nas permissões do funcionário.</p>
+                        <a class="inline-block mt-6 rounded-xl bg-green-500 px-5 py-3 font-semibold text-black" href="../menu/index.html">Voltar ao menu</a>
+                    </section>
+                </main>`;
+            return;
+        }
+
         // ---------------------------------
         // Carregar OS
         // ---------------------------------
