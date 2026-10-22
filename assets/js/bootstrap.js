@@ -51,6 +51,24 @@ const Bootstrap = {
         }
 
         // ---------------------------------
+        // Permissões específicas do funcionário
+        // ---------------------------------
+
+        const { data: permissionAssignments, error: permissionsError } =
+            await supabaseClient
+                .from("company_member_permissions")
+                .select("permissions(code)")
+                .eq("member_id", membership.id);
+
+        if (permissionsError) {
+            throw permissionsError;
+        }
+
+        const permissions = (permissionAssignments || [])
+            .map(item => item.permissions?.code)
+            .filter(Boolean);
+
+        // ---------------------------------
         // Empresa
         // ---------------------------------
 
@@ -138,6 +156,8 @@ const Bootstrap = {
                 company,
         
                 membership,
+
+                permissions,
         
                 store:
                     employeeStore,
@@ -229,6 +249,7 @@ const Bootstrap = {
             user,
             company,
             membership,
+            permissions,
             store,
             role: context.role
 
