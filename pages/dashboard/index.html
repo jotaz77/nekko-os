@@ -65,7 +65,7 @@
                 </h1>
     
                 <p class="text-slate-500 mt-2">
-                    Visão geral da sua operação.
+                    Indicadores financeiros e operacionais para acompanhar o desempenho da empresa.
                 </p>
     
             </div>
@@ -298,9 +298,9 @@
     
     <!-- CARDS PRINCIPAIS -->
 
-    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+    <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 mb-8">
     
-        <!-- LUCRO BRUTO DE OS -->
+        <!-- FATURAMENTO DE OS ENTREGUES -->
     
         <div
             class="
@@ -320,7 +320,7 @@
                 <div>
     
                     <p class="text-sm text-slate-500">
-                        Lucro bruto de OS
+                        Faturamento de OS
                     </p>
     
                     <h2
@@ -360,6 +360,34 @@
                 0 OS entregues
             </p>
     
+        </div>
+
+        <!-- GASTOS COM PEÇAS -->
+        <div class="bg-[#141A16] border border-amber-500/20 rounded-3xl p-6 transition hover:border-amber-400/50">
+            <div class="flex items-center justify-between mb-5">
+                <div>
+                    <p class="text-sm text-slate-400">Gastos com peças</p>
+                    <h2 id="partsCostRevenue" class="text-3xl font-bold mt-2">R$ 0,00</h2>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center">
+                    <i data-lucide="package" class="w-6 h-6 text-amber-400"></i>
+                </div>
+            </div>
+            <p class="text-sm text-slate-500">Custos informados no período selecionado, mesmo em OS ainda não entregues.</p>
+        </div>
+
+        <!-- FATURAMENTO LÍQUIDO DE OS -->
+        <div class="bg-[#141A16] border border-green-500/20 rounded-3xl p-6 transition hover:border-green-400/50">
+            <div class="flex items-center justify-between mb-5">
+                <div>
+                    <p class="text-sm text-slate-400">Faturamento líquido de OS</p>
+                    <h2 id="osNetRevenue" class="text-3xl font-bold mt-2 text-green-400">R$ 0,00</h2>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-green-500/10 flex items-center justify-center">
+                    <i data-lucide="chart-no-axes-combined" class="w-6 h-6 text-green-400"></i>
+                </div>
+            </div>
+            <p id="osNetCaption" class="text-sm text-slate-500">Faturamento das OS menos gastos com peças no período</p>
         </div>
     
     
