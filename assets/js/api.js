@@ -760,6 +760,7 @@ Api.getDashboardData = async (
                 technician,
                 status,
                 price,
+                parts_cost,
                 created_at,
                 delivery_date,
                 store_id
@@ -872,15 +873,41 @@ Api.getDashboardData = async (
     } = await serviceOrdersQuery;
     
     
-        if (ordersError)
-            throw ordersError;
+    if (ordersError)
+        throw ordersError;
 
+    // =================================
+    // Gastos com peças: independentes do
+    // status da OS, contabilizados quando
+    // o custo é informado/alterado.
+    // =================================
+    let partsCostQuery = supabaseClient
+        .from("service_orders")
+        .select("id, parts_cost, parts_cost_recorded_at, store_id")
+        .eq("company_id", context.company.id)
+        .not("parts_cost", "is", null)
+        .gte("parts_cost_recorded_at", osStartDate.toISOString())
+        .lte("parts_cost_recorded_at", osNow.toISOString());
+
+    if (storeId !== "all") {
+        partsCostQuery = partsCostQuery.eq("store_id", storeId);
+    }
+
+    const { data: partsCostOrders, error: partsCostError } = await partsCostQuery;
+    if (partsCostError) throw partsCostError;
+
+    const partsCost = (partsCostOrders || []).reduce(
+        (total, order) => total + Number(order.parts_cost || 0),
+        0
+    );
 
     // =================================
     // Valores das OS
     // =================================
 
     let osRevenue = 0;
+
+    let osPartsCostDelivered = 0;
 
     let deliveredOrders = 0;
 
@@ -912,6 +939,12 @@ Api.getDashboardData = async (
 
             osRevenue += Number(
                 order.price || 0
+            );
+
+            // Para o resultado das OS entregues, subtrair o custo
+            // vinculado a cada OS, mesmo se ele foi informado em mês anterior.
+            osPartsCostDelivered += Number(
+                order.parts_cost || 0
             );
 
             deliveredOrders++;
@@ -1284,6 +1317,12 @@ const salesMarginPercent =
     return {
 
         osRevenue,
+
+        partsCost,
+
+        osPartsCostDelivered,
+
+        osNetRevenue: osRevenue - osPartsCostDelivered,
 
         deliveredOrders,
 
