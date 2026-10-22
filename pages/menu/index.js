@@ -44,7 +44,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             user,
             company,
             store,
-            role
+            role,
+            permissions = []
         } = result.context;
 
         // Compatibilidade para as páginas que ainda usam
@@ -105,6 +106,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 description: "Registrar uma nova venda",
                 icon: "shopping-cart",
                 href: "../sales/create.html",
+                permission: "sales.create",
                 roles: [Roles.CEO, Roles.MANAGER]
             },
 
@@ -113,6 +115,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 description: "Criar uma ordem de serviço",
                 icon: "clipboard-plus",
                 href: "../service-orders/create.html",
+                permission: "os.create",
                 roles: [
                     Roles.CEO,
                     Roles.MANAGER,
@@ -126,6 +129,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 description: "Consultar ordens de serviço de clientes",
                 icon: "clipboard-list",
                 href: "../service-orders/index.html",
+                permission: "os.view",
                 roles: [
                     Roles.CEO,
                     Roles.MANAGER,
@@ -139,6 +143,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 description: "Ordens de serviço para lojistas",
                 icon: "store",
                 href: "../dealer-service-orders/index.html",
+                permission: "os.view",
                 roles: [
                     Roles.CEO,
                     Roles.MANAGER,
@@ -162,6 +167,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 description: "Peças e produtos",
                 icon: "package",
                 href: "../inventory/index.html",
+                permission: "inventory.view",
                 roles: [
                     Roles.CEO,
                     Roles.MANAGER,
@@ -210,6 +216,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         modules
             .filter(module => module.roles.includes(role))
+            .filter(module => role === Roles.CEO || !module.permission || permissions.includes(module.permission))
             .forEach(module => {
 
                 grid.innerHTML += `
