@@ -64,9 +64,29 @@ const Bootstrap = {
             throw permissionsError;
         }
 
-        const permissions = (permissionAssignments || [])
+        let permissions = (permissionAssignments || [])
             .map(item => item.permissions?.code)
             .filter(Boolean);
+
+        // O proprietário/CEO pode entrar em uma filial no modo operacional
+        // MANAGER. Não deve ficar limitado às permissões individuais da
+        // associação CEO, que pode não ter atribuições cadastradas.
+        // Funcionários comuns continuam restritos às próprias permissões.
+        if (membership.role === Roles.CEO) {
+            const { data: activePermissions, error: activePermissionsError } =
+                await supabaseClient
+                    .from("permissions")
+                    .select("code")
+                    .eq("active", true);
+
+            if (activePermissionsError) {
+                throw activePermissionsError;
+            }
+
+            permissions = (activePermissions || [])
+                .map(permission => permission.code)
+                .filter(Boolean);
+        }
 
         // ---------------------------------
         // Empresa
