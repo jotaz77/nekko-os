@@ -460,6 +460,31 @@
 
 </section>
 
+        <!-- CUSTOS INTERNOS: NÃO É EXIBIDO NOS DOCUMENTOS IMPRESSOS -->
+
+        <section class="bg-[#141A16] border border-amber-500/20 rounded-3xl p-8">
+
+            <div class="flex items-start gap-3 mb-5">
+                <div class="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center shrink-0">
+                    <i data-lucide="package" class="w-5 h-5 text-amber-400"></i>
+                </div>
+                <div>
+                    <h2 class="text-xl font-semibold">Custos internos</h2>
+                    <p class="text-sm text-slate-400 mt-1">Informação financeira interna — não aparece na OS impressa, no termo de conscientização ou na garantia.</p>
+                </div>
+            </div>
+
+            <div class="max-w-sm">
+                <label for="partsCost" class="block text-sm font-medium text-slate-300 mb-2">Custo total das peças (opcional)</label>
+                <div class="relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">R$</span>
+                    <input id="partsCost" type="text" inputmode="decimal" placeholder="Ainda não informado" class="w-full bg-[#0F1411] border border-[#29322C] rounded-xl pl-11 pr-3 py-3 outline-none focus:border-amber-500 transition">
+                </div>
+                <p class="text-xs text-slate-500 mt-2">Você pode deixar em branco e preencher depois ao editar a OS, quando comprar a peça.</p>
+            </div>
+
+        </section>
+
         <!-- DIAGNÓSTICO -->
 
         <section class="bg-[#141A16] border border-[#29322C] rounded-3xl p-8">
