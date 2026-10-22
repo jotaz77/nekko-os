@@ -382,6 +382,7 @@ async function loadEmployees() {
                     active,
                     store_id,
                     category,
+                    created_at,
                     profiles (
                         full_name
                     ),
@@ -415,9 +416,16 @@ async function loadEmployees() {
             throw error;
 
 
-        employees =
-            data || [];
-
+        employees = (data || []).map(employee => {
+            const profile = Array.isArray(employee.profiles)
+                ? employee.profiles[0]
+                : employee.profiles;
+            return {
+                ...employee,
+                profiles: profile || { full_name: employee.full_name || "" },
+                stores: Array.isArray(employee.stores) ? employee.stores[0] : employee.stores
+            };
+        });
 
         renderEmployees();
 
@@ -582,9 +590,10 @@ function renderEmployees() {
 
 
             const fullName =
-                employee.profiles
-                    ?.full_name ||
-                "Usuário";
+                employee.profiles?.full_name ||
+                employee.full_name ||
+                employee.name ||
+                "Nome não disponível";
 
 
             const storeName =
@@ -851,6 +860,7 @@ function renderEmployees() {
 
                     <div
                         class="
+                            relative
                             flex
                             items-center
                             gap-2
@@ -959,6 +969,75 @@ function renderEmployees() {
             }
         );
 
+    // ---------------------------------
+    // Menu de ações (três pontos)
+    // ---------------------------------
+    container.querySelectorAll('[data-action="menu"]').forEach(button => {
+        button.addEventListener("click", event => {
+            event.stopPropagation();
+            const wrapper = button.parentElement;
+            const existing = wrapper.querySelector("[data-employee-actions-menu]");
+            document.querySelectorAll("[data-employee-actions-menu]").forEach(menu => {
+                if (menu !== existing) menu.remove();
+            });
+            if (existing) {
+                existing.remove();
+                return;
+            }
+
+            const member = employees.find(item => item.id === button.dataset.memberId);
+            if (!member) return;
+            const menu = document.createElement("div");
+            menu.setAttribute("data-employee-actions-menu", "true");
+            menu.className = "absolute right-0 top-full mt-2 w-52 rounded-xl border border-[#29322C] bg-[#101510] p-1.5 shadow-2xl z-50";
+            menu.innerHTML = `
+                <button type="button" data-menu-action="edit" class="w-full rounded-lg px-3 py-2.5 text-left text-sm text-slate-200 hover:bg-[#1B241D] hover:text-white">Editar funcionário</button>
+                <button type="button" data-menu-action="toggle" class="w-full rounded-lg px-3 py-2.5 text-left text-sm ${member.active ? 'text-red-300 hover:bg-red-500/10' : 'text-green-300 hover:bg-green-500/10'}">${member.active ? 'Desativar funcionário' : 'Ativar funcionário'}</button>
+            `;
+            wrapper.appendChild(menu);
+
+            menu.querySelector('[data-menu-action="edit"]').addEventListener("click", () => {
+                menu.remove();
+                openEditEmployeeModal(member.id);
+            });
+            menu.querySelector('[data-menu-action="toggle"]').addEventListener("click", async () => {
+                menu.remove();
+                const nextActive = !member.active;
+                const verb = nextActive ? "ativar" : "desativar";
+                if (!confirm(`Deseja realmente ${verb} ${member.profiles?.full_name || "este funcionário"}?`)) return;
+                try {
+                    const permissionCodes = (member.company_member_permissions || [])
+                        .map(item => item.permissions?.code)
+                        .filter(Boolean);
+                    const { data, error } = await supabaseClient.functions.invoke("update-employee", {
+                        body: {
+                            member_id: member.id,
+                            full_name: member.profiles?.full_name || member.full_name || member.name || "",
+                            store_id: member.store_id,
+                            role: member.role,
+                            category: member.category || ({ MANAGER: "Gerente", EMPLOYEE: "Funcionário", TECHNICIAN: "Técnico" }[member.role] || "Funcionário"),
+                            active: nextActive,
+                            permissions: permissionCodes
+                        }
+                    });
+                    if (error) throw error;
+                    if (!data?.success) throw new Error(data?.error || "Não foi possível alterar o status.");
+                    member.active = nextActive;
+                    renderEmployees();
+                } catch (err) {
+                    console.error("Erro ao alterar status do funcionário:", err);
+                    alert(err?.message || "Não foi possível alterar o status do funcionário.");
+                }
+            });
+        });
+    });
+
+    document.addEventListener("click", function closeEmployeeActionMenus(event) {
+        if (!event.target.closest('[data-action="menu"]') && !event.target.closest('[data-employee-actions-menu]')) {
+            document.querySelectorAll("[data-employee-actions-menu]").forEach(menu => menu.remove());
+        }
+    }, { once: true });
+
 }
 
 // =========================================
@@ -1022,8 +1101,9 @@ function openEditEmployeeModal(
 
 
     const fullName =
-        employee.profiles
-            ?.full_name ||
+        employee.profiles?.full_name ||
+        employee.full_name ||
+        employee.name ||
         "";
 
 
