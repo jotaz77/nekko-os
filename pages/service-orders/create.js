@@ -1127,9 +1127,27 @@ function validateForm() {
 
 function buildServiceOrder() {
 
+    const partsCostInput = document.getElementById("partsCost");
+    const partsCostRaw = partsCostInput?.value?.trim() || "";
+    const partsCost = partsCostRaw === "" ? null : parseServicePrice(partsCostRaw);
+    const previousPartsCost = editingOrder?.parts_cost == null
+        ? null
+        : Number(editingOrder.parts_cost);
+    const partsCostChanged = !isEditing || partsCost !== previousPartsCost;
+    const partsCostRecordedAt = partsCost === null
+        ? null
+        : (partsCostChanged
+            ? new Date().toISOString()
+            : (editingOrder?.parts_cost_recorded_at || new Date().toISOString()));
+
     return {
 
         company_id: context.company.id,
+
+        // Custo interno opcional. A data registra quando o custo foi
+        // informado/alterado, sem depender do status de entrega da OS.
+        parts_cost: partsCost,
+        parts_cost_recorded_at: partsCostRecordedAt,
 
         store_id:
 
@@ -1387,6 +1405,16 @@ renderServiceItems();
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
         });
+
+    const partsCostInput = document.getElementById("partsCost");
+    if (partsCostInput) {
+        partsCostInput.value = order.parts_cost == null
+            ? ""
+            : Number(order.parts_cost).toLocaleString("pt-BR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+    }
     
     document.getElementById("problem").value = order.problem ?? "";
     document.getElementById("notes").value = order.notes ?? "";
