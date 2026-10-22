@@ -1,1230 +1,1197 @@
-// =========================================
-// NEKKO OS
-// Dashboard
-// =========================================
+<!DOCTYPE html>
+<html lang="pt-BR">
 
-let context = null;
+<head>
 
-let salesPeriod = "today";
-let osPeriod = "today";
-let storeId = "all";
+    <link
+        rel="icon"
+        type="image/png"
+        href="../../assets/img/nekkoOS.png"
+    >
 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-// =========================================
-// Formatar moeda
-// =========================================
+    <title>Dashboard • NEKKO OS</title>
 
-function formatCurrency(value) {
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
 
-    return Number(value || 0).toLocaleString("pt-BR", {
-        style: "currency",
-        currency: "BRL"
-    });
+</head>
 
-}
+<body class="bg-[#0B0F0C] text-white min-h-screen">
 
-// =========================================
-// Filtro de vendas
-// =========================================
+<div class="max-w-7xl mx-auto px-8 py-10">
 
-function setSalesPeriod(period) {
+    <!-- HEADER -->
 
-    salesPeriod = period;
-
-    updateSalesFilterButtons();
-
-    loadDashboard();
-
-}
-
-
-// =========================================
-// Atualizar botões do filtro
-// =========================================
-
-function updateSalesFilterButtons() {
-
-    const buttons = {
-
-        today:
-            document.getElementById("salesToday"),
-
-        week:
-            document.getElementById("salesWeek"),
-
-        month:
-            document.getElementById("salesMonth")
-
-    };
-
-
-    Object.entries(buttons).forEach(
-        ([key, button]) => {
-
-            if (!button)
-                return;
-
-
-            if (key === salesPeriod) {
-
-                button.className = `
-                    px-4
-                    py-2
-                    rounded-xl
-                    text-sm
-                    font-medium
-                    bg-green-500
-                    text-black
-                    transition
-                `;
-
-            }
-
-            else {
-
-                button.className = `
-                    px-4
-                    py-2
-                    rounded-xl
-                    text-sm
-                    font-medium
-                    bg-[#0F1411]
-                    text-slate-400
-                    border
-                    border-[#29322C]
-                    transition
-                    hover:text-white
-                `;
-
-            }
-
-        }
-    );
-
-}
-
-// =========================================
-// FILTRO DE OS
-// =========================================
-
-function setOsPeriod(period) {
-
-    osPeriod = period;
-
-    updateOsFilterButtons();
-
-    loadDashboard();
-
-}
-
-
-// =========================================
-// ATUALIZAR BOTÕES DO FILTRO DE OS
-// =========================================
-
-function updateOsFilterButtons() {
-
-    const buttons = {
-
-        today:
-            document.getElementById("osToday"),
-
-        week:
-            document.getElementById("osWeek"),
-
-        month:
-            document.getElementById("osMonth")
-
-    };
-
-
-    Object.entries(buttons).forEach(
-        ([key, button]) => {
-
-            if (!button)
-                return;
-
-
-            if (key === osPeriod) {
-
-                button.className = `
-                    px-4
-                    py-2
-                    rounded-xl
-                    text-sm
-                    font-medium
-                    bg-green-500
-                    text-black
-                    transition
-                `;
-
-            }
-
-            else {
-
-                button.className = `
-                    px-4
-                    py-2
-                    rounded-xl
-                    text-sm
-                    font-medium
-                    bg-[#0F1411]
-                    text-slate-400
-                    border
-                    border-[#29322C]
-                    transition
-                    hover:text-white
-                `;
-
-            }
-
-        }
-    );
-
-}
-
-// =========================================
-// CARREGAR LOJAS
-// =========================================
-
-async function loadStores() {
-
-    const select =
-        document.getElementById(
-            "storeFilter"
-        );
-
-
-    if (!select)
-        return;
-
-
-    const stores =
-        await Api.getStores(
-            context.company.id
-        );
-
-
-    select.innerHTML = `
-
-        <option value="all">
-            Todas as lojas
-        </option>
-
-    `;
-
-
-    stores.forEach(store => {
-
-        select.innerHTML += `
-
-            <option value="${store.id}">
-                ${store.name}
-            </option>
-
-        `;
-
-    });
-
-}
-
-// =========================================
-// Carregar Dashboard
-// =========================================
-
-async function loadDashboard() {
-
-    try {
-
-        const data =
-            await Api.getDashboardData(
-                context,
-                salesPeriod,
-                osPeriod,
-                storeId
-            );
-
-        window.dashboardData =
-            data;
-
-        renderDashboard(data);
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Erro ao carregar dashboard:",
-            error
-        );
-
-        alert(error.message);
-
-    }
-
-}
-
-
-// =========================================
-// Renderizar Dashboard
-// =========================================
-
-function renderDashboard(data) {
-
-    // -----------------------------
-    // Faturamento de OS entregue
-    // -----------------------------
-
-    document.getElementById("osRevenue").textContent =
-        formatCurrency(data.osRevenue);
-
-    const partsCostElement = document.getElementById("partsCostRevenue");
-    if (partsCostElement) {
-        partsCostElement.textContent = formatCurrency(data.partsCost);
-    }
-
-    const osNetRevenueElement = document.getElementById("osNetRevenue");
-    if (osNetRevenueElement) {
-        osNetRevenueElement.textContent = formatCurrency(data.osNetRevenue);
-    }
-
-    const osNetCaption = document.getElementById("osNetCaption");
-    if (osNetCaption) {
-        osNetCaption.textContent = data.osNetRevenue < 0
-            ? "O custo das peças supera o faturamento das OS entregues"
-            : "Faturamento das OS entregues menos o custo das peças dessas OS";
-    }
-
-    document.getElementById("deliveredOrders").textContent =
-        `${data.deliveredOrders} OS entregues`;
-
-    // -----------------------------
-    // Vendas
-    // -----------------------------
+    <header class="mb-10">
     
-    document.getElementById("salesRevenue").textContent =
-        formatCurrency(data.salesRevenue);
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
     
+            <div>
     
-    document.getElementById("salesCost").textContent =
-        formatCurrency(data.salesCost);
-    
-    
-    document.getElementById("salesNetRevenue").textContent =
-        formatCurrency(data.salesNetRevenue);
-    
-    
-    document.getElementById("salesMargin").textContent =
-        `${Number(data.salesMarginPercent || 0).toFixed(1)}% de margem`;
-    
-    
-    document.getElementById("salesCount").textContent =
-        `${data.salesCount} vendas registradas`;
-
-
-    // -----------------------------
-    // Lista de vendas
-    // -----------------------------
-
-    const salesContainer =
-        document.getElementById("salesTable");
-
-
-    salesContainer.innerHTML = "";
-
-
-    if (!data.sales.length) {
-
-        salesContainer.innerHTML = `
-            <div class="
-                text-center
-                text-slate-500
-                py-8
-            ">
-                Nenhuma venda encontrada neste período.
-            </div>
-        `;
-
-    }
-
-    else {
-
-        data.sales.forEach(sale => {
-
-               salesContainer.innerHTML += `
-
-                    <div class="
-                        flex
+                <a
+                    href="../menu/index.html"
+                    class="
+                        inline-flex
                         items-center
-                        justify-between
-                        gap-4
-                        bg-[#0F1411]
-                        border
-                        border-[#29322C]
-                        rounded-2xl
-                        px-5
-                        py-4
-                    ">
-                
-                        <!-- INFORMAÇÕES DA VENDA -->
-                
-                        <div class="min-w-0">
-
-                            ${
-                                sale.items && sale.items.length > 0
-                        
-                                    ? sale.items.map(
-                                        item => `
-                                            <p
-                                                class="
-                                                    font-semibold
-                                                    text-white
-                                                    truncate
-                                                "
-                                            >
-                                                ${item.product_name}
-                                            </p>
-                                        `
-                                    ).join("")
-                        
-                                    : `
-                                        <p
-                                            class="
-                                                font-semibold
-                                                text-white
-                                                truncate
-                                            "
-                                        >
-                                            Venda sem produtos
-                                        </p>
-                                    `
-                            }
-                        
-                        </div>
-                
-                
-                            <p class="
-                                text-xs
-                                text-slate-500
-                                mt-1
-                            ">
-                
-                                ${new Date(
-                                    sale.created_at
-                                ).toLocaleString(
-                                    "pt-BR"
-                                )}
-                
-                            </p>
-                
-                        </div>
-                
-                
-                        <!-- AÇÕES + VALOR -->
-
-                        <div class="
-                            flex
-                            items-center
-                            gap-2
-                            shrink-0
-                        ">
-                        
-                            <!-- IMPRIMIR -->
-                        
-                            <button
-                                type="button"
-                                onclick="printSale('${sale.id}')"
-                                class="
-                                    inline-flex
-                                    items-center
-                                    justify-center
-                                    w-9
-                                    h-9
-                                    rounded-xl
-                                    border
-                                    border-[#29322C]
-                                    bg-[#141A16]
-                                    text-slate-400
-                                    hover:text-white
-                                    hover:border-slate-500
-                                    transition
-                                "
-                                title="Imprimir venda"
-                            >
-                        
-                                <i
-                                    data-lucide="printer"
-                                    class="w-4 h-4"
-                                ></i>
-                        
-                            </button>
-                        
-                        
-                            <!-- EXCLUIR -->
-                        
-                            <button
-                                type="button"
-                                onclick="deleteSale('${sale.id}')"
-                                class="
-                                    inline-flex
-                                    items-center
-                                    justify-center
-                                    w-9
-                                    h-9
-                                    rounded-xl
-                                    border
-                                    border-[#29322C]
-                                    bg-[#141A16]
-                                    text-slate-400
-                                    hover:text-red-400
-                                    hover:border-red-400/40
-                                    transition
-                                "
-                                title="Excluir venda"
-                            >
-                        
-                                <i
-                                    data-lucide="trash-2"
-                                    class="w-4 h-4"
-                                ></i>
-                        
-                            </button>
-                        
-                        
-                            <!-- VALOR -->
-                        
-                            <p class="
-                                font-semibold
-                                text-purple-400
-                                ml-2
-                                whitespace-nowrap
-                            ">
-                        
-                                ${formatCurrency(
-                                    sale.total_price
-                                )}
-                        
-                            </p>
-                        
-                        </div>
-                
-                    </div>
-                
-                `;
-
-        });
-
-    }
-
-    // ATUALIZAR ÍCONES
-    lucide.createIcons();
-
-    }
-
-// =========================================
-// MODAL — VENDAS POR PAGAMENTO
-// =========================================
-
-function openSalesPaymentModal() {
-
-    const modal =
-        document.getElementById(
-            "salesPaymentModal"
-        );
-
-
-    if (!modal)
-        return;
-
-
-    const data =
-        window.dashboardData;
-
-
-    if (!data)
-        return;
-
-
-    const payments =
-        data.salesByPayment || {};
-
-
-    // -----------------------------
-    // Valores
-    // -----------------------------
-
-    document.getElementById(
-        "salesPaymentPix"
-    ).textContent =
-        formatCurrency(
-            payments.pix || 0
-        );
-
-
-    document.getElementById(
-        "salesPaymentDebit"
-    ).textContent =
-        formatCurrency(
-            payments.debit || 0
-        );
-
-
-    document.getElementById(
-        "salesPaymentCash"
-    ).textContent =
-        formatCurrency(
-            payments.cash || 0
-        );
-
-
-    document.getElementById(
-        "salesPaymentCreditCash"
-    ).textContent =
-        formatCurrency(
-            payments.credit_cash || 0
-        );
-
-
-    document.getElementById(
-        "salesPaymentCreditInstallments"
-    ).textContent =
-        formatCurrency(
-            payments.credit_installments || 0
-        );
-
-
-    // -----------------------------
-    // Total
-    // -----------------------------
-
-    document.getElementById(
-        "salesPaymentTotal"
-    ).textContent =
-        formatCurrency(
-            data.salesRevenue || 0
-        );
-
-
-    // -----------------------------
-    // Mostrar modal
-    // -----------------------------
-
-    modal.classList.remove(
-        "hidden"
-    );
-
-
-    lucide.createIcons();
-
-}
-
-
-// =========================================
-// FECHAR MODAL
-// =========================================
-
-function closeSalesPaymentModal() {
-
-    const modal =
-        document.getElementById(
-            "salesPaymentModal"
-        );
-
-
-    if (!modal)
-        return;
-
-
-    modal.classList.add(
-        "hidden"
-    );
-
-}
-
-// =========================================
-// MODAL — OS ENTREGUES
-// =========================================
-
-function openOsDeliveredModal() {
-
-    const modal =
-        document.getElementById(
-            "osDeliveredModal"
-        );
-
-
-    if (!modal)
-        return;
-
-
-    const data =
-        window.dashboardData;
-
-
-    if (!data)
-        return;
-
-
-    const orders =
-        data.deliveredOrdersList || [];
-
-
-    const list =
-        document.getElementById(
-            "osDeliveredList"
-        );
-
-
-    const count =
-        document.getElementById(
-            "osDeliveredCount"
-        );
-
-
-    const total =
-        document.getElementById(
-            "osDeliveredTotal"
-        );
-
-
-    if (!list || !count || !total)
-        return;
-
-
-    // ---------------------------------
-    // Atualizar período
-    // ---------------------------------
-
-    const periodLabel = {
-
-        today: "Hoje",
-
-        week: "Esta semana",
-
-        month: "Este mês"
-
-    };
-
-
-    document.getElementById(
-        "osDeliveredModalPeriod"
-    ).textContent =
-        periodLabel[osPeriod] ||
-        "Período selecionado";
-
-
-    // ---------------------------------
-    // Total
-    // ---------------------------------
-
-    const totalValue =
-        orders.reduce(
-            (sum, order) => {
-
-                return sum +
-                    Number(
-                        order.price || 0
-                    );
-
-            },
-            0
-        );
-
-
-    count.textContent =
-        `${orders.length} OS entregues`;
-
-
-    total.textContent =
-        formatCurrency(
-            totalValue
-        );
-
-
-    // ---------------------------------
-    // Lista vazia
-    // ---------------------------------
-
-    if (!orders.length) {
-
-        list.innerHTML = `
-
+                        gap-2
+                        text-slate-500
+                        hover:text-green-400
+                        transition
+                        mb-5
+                    "
+                >
+    
+                    <i
+                        data-lucide="arrow-left"
+                        class="w-4 h-4"
+                    ></i>
+    
+                    Voltar
+    
+                </a>
+    
+                <h1
+                    class="
+                        text-4xl
+                        md:text-5xl
+                        font-bold
+                        tracking-tight
+                    "
+                >
+                    Dashboard
+                </h1>
+    
+                <p class="text-slate-500 mt-2">
+                    Indicadores financeiros e operacionais para acompanhar o desempenho da empresa.
+                </p>
+    
+            </div>
+    
             <div
                 class="
-                    text-center
+                    hidden
+                    md:flex
+                    items-center
+                    gap-2
+                    px-4
+                    py-2
+                    rounded-2xl
+                    bg-[#0F1411]
+                    border
+                    border-[#29322C]
+                    text-xs
                     text-slate-500
-                    py-10
                 "
             >
-
-                <i
-                    data-lucide="clipboard-x"
+    
+                <span
                     class="
-                        w-8
-                        h-8
-                        mx-auto
-                        mb-3
-                        opacity-50
+                        w-2
+                        h-2
+                        rounded-full
+                        bg-green-400
+                        shadow-[0_0_10px_rgba(74,222,128,0.5)]
                     "
-                ></i>
+                ></span>
+    
+                Sistema operacional
+    
+            </div>
+    
+        </div>
+    
+    </header>
 
-                <p>
-                    Nenhuma OS entregue neste período.
+    <!-- FILTRO DE LOJA -->
+
+    <div
+        class="
+            flex
+            flex-col
+            md:flex-row
+            md:items-center
+            md:justify-between
+            gap-5
+            mb-8
+            p-5
+            rounded-3xl
+            bg-[#101511]
+            border
+            border-[#29322C]
+        "
+    >
+    
+        <div class="flex items-center gap-4">
+    
+            <div
+                class="
+                    w-11
+                    h-11
+                    rounded-2xl
+                    bg-green-500/10
+                    flex
+                    items-center
+                    justify-center
+                    shrink-0
+                "
+            >
+    
+                <i
+                    data-lucide="store"
+                    class="w-5 h-5 text-green-400"
+                ></i>
+    
+            </div>
+    
+            <div>
+    
+                <h2 class="text-base font-semibold">
+                    Loja
+                </h2>
+    
+                <p class="text-sm text-slate-500 mt-0.5">
+                    Visualizando os indicadores da loja selecionada.
+                </p>
+    
+            </div>
+    
+        </div>
+    
+    
+        <div class="w-full md:w-auto">
+    
+            <select
+                id="storeFilter"
+                class="
+                    w-full
+                    md:min-w-[240px]
+                    px-4
+                    py-3
+                    rounded-2xl
+                    bg-[#0B0F0C]
+                    border
+                    border-[#29322C]
+                    text-white
+                    text-sm
+                    outline-none
+                    transition
+                    cursor-pointer
+                    focus:border-green-500
+                    hover:border-[#3A463D]
+                "
+            >
+    
+                <option value="all">
+                    Todas as lojas
+                </option>
+    
+            </select>
+    
+        </div>
+    
+    </div>
+
+    <!-- ORDENS DE SERVIÇO -->
+
+    <div
+        class="
+            flex
+            flex-col
+            xl:flex-row
+            xl:items-center
+            xl:justify-between
+            gap-5
+            mb-5
+            p-5
+            rounded-3xl
+            bg-[#101511]
+            border
+            border-[#29322C]
+        "
+    >
+    
+        <!-- TÍTULO -->
+    
+        <div class="flex items-center gap-4">
+    
+            <div
+                class="
+                    w-11
+                    h-11
+                    rounded-2xl
+                    bg-green-500/10
+                    flex
+                    items-center
+                    justify-center
+                    shrink-0
+                "
+            >
+    
+                <i
+                    data-lucide="wrench"
+                    class="w-5 h-5 text-green-400"
+                ></i>
+    
+            </div>
+    
+    
+            <div>
+    
+                <h2 class="text-base font-semibold">
+                    Ordens de serviço
+                </h2>
+    
+                <p class="text-sm text-slate-500 mt-1">
+                    Indicadores de OS e produção técnica.
+                </p>
+    
+            </div>
+    
+        </div>
+    
+    
+        <!-- FILTROS -->
+    
+        <div
+            class="
+                flex
+                flex-wrap
+                items-center
+                gap-2
+                p-1
+                rounded-2xl
+                bg-[#0B0F0C]
+                border
+                border-[#29322C]
+            "
+        >
+    
+            <button
+                id="osToday"
+                type="button"
+            >
+                Hoje
+            </button>
+    
+    
+            <button
+                id="osWeek"
+                type="button"
+            >
+                Esta semana
+            </button>
+    
+    
+            <button
+                id="osMonth"
+                type="button"
+            >
+                Este mês
+            </button>
+    
+        </div>
+    
+    </div>
+    
+    <!-- CARDS PRINCIPAIS -->
+
+    <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 mb-8">
+    
+        <!-- FATURAMENTO DE OS ENTREGUES -->
+    
+        <div
+            class="
+                bg-[#141A16]
+                border
+                border-[#29322C]
+                rounded-3xl
+                p-6
+                cursor-pointer
+                hover:border-green-400/40
+                transition
+            "
+        >
+    
+            <div class="flex items-center justify-between mb-5">
+    
+                <div>
+    
+                    <p class="text-sm text-slate-500">
+                        Faturamento de OS
+                    </p>
+    
+                    <h2
+                        id="osRevenue"
+                        class="text-3xl font-bold mt-2"
+                    >
+                        R$ 0,00
+                    </h2>
+    
+                </div>
+    
+                <div
+                    class="
+                        w-12
+                        h-12
+                        rounded-2xl
+                        bg-green-500/10
+                        flex
+                        items-center
+                        justify-center
+                    "
+                >
+    
+                    <i
+                        data-lucide="wrench"
+                        class="w-6 h-6 text-green-400"
+                    ></i>
+    
+                </div>
+    
+            </div>
+    
+            <p
+                id="deliveredOrders"
+                class="text-sm text-slate-500"
+            >
+                0 OS entregues
+            </p>
+    
+        </div>
+
+        <!-- GASTOS COM PEÇAS -->
+        <div class="bg-[#141A16] border border-amber-500/20 rounded-3xl p-6 transition hover:border-amber-400/50">
+            <div class="flex items-center justify-between mb-5">
+                <div>
+                    <p class="text-sm text-slate-400">Gastos com peças</p>
+                    <h2 id="partsCostRevenue" class="text-3xl font-bold mt-2">R$ 0,00</h2>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center">
+                    <i data-lucide="package" class="w-6 h-6 text-amber-400"></i>
+                </div>
+            </div>
+            <p class="text-sm text-slate-500">Custos informados no período selecionado, mesmo em OS ainda não entregues.</p>
+        </div>
+
+        <!-- FATURAMENTO LÍQUIDO DE OS -->
+        <div class="bg-[#141A16] border border-green-500/20 rounded-3xl p-6 transition hover:border-green-400/50">
+            <div class="flex items-center justify-between mb-5">
+                <div>
+                    <p class="text-sm text-slate-400">Faturamento líquido de OS</p>
+                    <h2 id="osNetRevenue" class="text-3xl font-bold mt-2 text-green-400">R$ 0,00</h2>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-green-500/10 flex items-center justify-center">
+                    <i data-lucide="chart-no-axes-combined" class="w-6 h-6 text-green-400"></i>
+                </div>
+            </div>
+            <p id="osNetCaption" class="text-sm text-slate-500">Faturamento das OS menos gastos com peças no período</p>
+        </div>
+    
+    
+        <!-- FATURAMENTO BRUTO -->
+    
+        <div
+            class="
+                bg-[#141A16]
+                border
+                border-[#29322C]
+                rounded-3xl
+                p-6
+                cursor-pointer
+                hover:border-purple-400/40
+                transition
+            "
+        >
+    
+            <div class="flex items-center justify-between mb-5">
+    
+                <div>
+    
+                    <p class="text-sm text-slate-500">
+                        Faturamento bruto
+                    </p>
+    
+                    <h2
+                        id="salesRevenue"
+                        class="text-3xl font-bold mt-2"
+                    >
+                        R$ 0,00
+                    </h2>
+    
+                </div>
+    
+                <div
+                    class="
+                        w-12
+                        h-12
+                        rounded-2xl
+                        bg-purple-500/10
+                        flex
+                        items-center
+                        justify-center
+                    "
+                >
+    
+                    <i
+                        data-lucide="shopping-cart"
+                        class="w-6 h-6 text-purple-400"
+                    ></i>
+    
+                </div>
+    
+            </div>
+    
+            <p
+                id="salesCount"
+                class="text-sm text-slate-500"
+            >
+                0 vendas registradas
+            </p>
+    
+        </div>
+    
+    
+        <!-- CUSTO DOS PRODUTOS -->
+    
+        <div
+            class="
+                bg-[#141A16]
+                border
+                border-[#29322C]
+                rounded-3xl
+                p-6
+                transition
+                hover:border-orange-400/40
+            "
+        >
+    
+            <div class="flex items-center justify-between mb-5">
+    
+                <div>
+    
+                    <p class="text-sm text-slate-500">
+                        Custo dos produtos
+                    </p>
+    
+                    <h2
+                        id="salesCost"
+                        class="text-3xl font-bold mt-2"
+                    >
+                        R$ 0,00
+                    </h2>
+    
+                </div>
+    
+                <div
+                    class="
+                        w-12
+                        h-12
+                        rounded-2xl
+                        bg-orange-500/10
+                        flex
+                        items-center
+                        justify-center
+                    "
+                >
+    
+                    <i
+                        data-lucide="package"
+                        class="w-6 h-6 text-orange-400"
+                    ></i>
+    
+                </div>
+    
+            </div>
+    
+            <p class="text-sm text-slate-500">
+                Custo de aquisição dos produtos vendidos
+            </p>
+    
+        </div>
+    
+    
+        <!-- FATURAMENTO LÍQUIDO -->
+    
+        <div
+            class="
+                bg-[#141A16]
+                border
+                border-green-500/20
+                rounded-3xl
+                p-6
+                transition
+                hover:border-green-400/50
+            "
+        >
+    
+            <div class="flex items-center justify-between mb-5">
+    
+                <div>
+    
+                    <p class="text-sm text-slate-500">
+                        Faturamento líquido de vendas
+                    </p>
+    
+                    <h2
+                        id="salesNetRevenue"
+                        class="text-3xl font-bold mt-2 text-green-400"
+                    >
+                        R$ 0,00
+                    </h2>
+    
+                </div>
+    
+                <div
+                    class="
+                        w-12
+                        h-12
+                        rounded-2xl
+                        bg-green-500/10
+                        flex
+                        items-center
+                        justify-center
+                    "
+                >
+    
+                    <i
+                        data-lucide="trending-up"
+                        class="w-6 h-6 text-green-400"
+                    ></i>
+    
+                </div>
+    
+            </div>
+    
+            <p
+                id="salesMargin"
+                class="text-sm text-slate-500"
+            >
+                0.0% de margem
+            </p>
+    
+        </div>
+    
+    </section>
+
+    <!-- VENDAS -->
+
+    <section
+        class="
+            bg-[#141A16]
+            border
+            border-[#29322C]
+            rounded-3xl
+            p-6
+            mt-8
+        "
+    >
+    
+        <!-- CABEÇALHO -->
+    
+        <div
+            class="
+                flex
+                flex-col
+                xl:flex-row
+                xl:items-center
+                xl:justify-between
+                gap-5
+                mb-6
+            "
+        >
+    
+            <!-- TÍTULO -->
+    
+            <div class="flex items-center gap-4">
+    
+                <div
+                    class="
+                        w-11
+                        h-11
+                        rounded-2xl
+                        bg-purple-500/10
+                        flex
+                        items-center
+                        justify-center
+                        shrink-0
+                    "
+                >
+    
+                    <i
+                        data-lucide="shopping-cart"
+                        class="w-5 h-5 text-purple-400"
+                    ></i>
+    
+                </div>
+    
+    
+                <div>
+    
+                    <h2 class="text-base font-semibold">
+                        Vendas
+                    </h2>
+    
+                    <p class="text-sm text-slate-500 mt-1">
+                        Produtos e valores registrados.
+                    </p>
+    
+                </div>
+    
+            </div>
+    
+    
+            <!-- FILTROS -->
+    
+            <div
+                class="
+                    flex
+                    flex-wrap
+                    items-center
+                    gap-2
+                    p-1
+                    rounded-2xl
+                    bg-[#0B0F0C]
+                    border
+                    border-[#29322C]
+                "
+            >
+    
+                <button
+                    id="salesToday"
+                    type="button"
+                >
+                    Hoje
+                </button>
+    
+    
+                <button
+                    id="salesWeek"
+                    type="button"
+                >
+                    Esta semana
+                </button>
+    
+    
+                <button
+                    id="salesMonth"
+                    type="button"
+                >
+                    Este mês
+                </button>
+    
+            </div>
+    
+        </div>
+    
+    
+        <div
+            id="salesTable"
+            class="space-y-3"
+        >
+    
+            <!-- JS -->
+    
+        </div>
+    
+    </section>
+
+    <!-- MODAL — DETALHES DAS VENDAS -->
+
+<div
+    id="salesPaymentModal"
+    class="
+        hidden
+        fixed
+        inset-0
+        z-50
+        flex
+        items-center
+        justify-center
+        bg-black/70
+        backdrop-blur-sm
+        px-4
+    "
+>
+
+    <div
+        class="
+            w-full
+            max-w-lg
+            bg-[#141A16]
+            border
+            border-[#29322C]
+            rounded-3xl
+            shadow-2xl
+            p-6
+        "
+    >
+
+        <!-- CABEÇALHO -->
+
+        <div
+            class="
+                flex
+                items-center
+                justify-between
+                mb-6
+            "
+        >
+
+            <div>
+
+                <h2
+                    class="
+                        text-xl
+                        font-semibold
+                        text-white
+                    "
+                >
+                    Vendas por pagamento
+                </h2>
+
+                <p
+                    id="salesPaymentModalPeriod"
+                    class="
+                        text-sm
+                        text-slate-500
+                        mt-1
+                    "
+                >
+                    Hoje
                 </p>
 
             </div>
 
-        `;
 
-        modal.classList.remove("hidden");
+            <button
+                type="button"
+                id="closeSalesPaymentModal"
+                class="
+                    w-9
+                    h-9
+                    rounded-xl
+                    border
+                    border-[#29322C]
+                    bg-[#0F1411]
+                    text-slate-400
+                    hover:text-white
+                    transition
+                    flex
+                    items-center
+                    justify-center
+                "
+            >
 
-        lucide.createIcons();
+                <i
+                    data-lucide="x"
+                    class="w-4 h-4"
+                ></i>
 
-        return;
+            </button>
 
-    }
-
-    // =========================================
-    // FECHAR MODAL DE OS
-    // =========================================
-    
-    function closeOsDeliveredModal() {
-    
-        const modal =
-            document.getElementById(
-                "osDeliveredModal"
-            );
-    
-    
-        if (!modal)
-            return;
-    
-    
-        modal.classList.add(
-            "hidden"
-        );
-    
-    }
+        </div>
 
 
-    // ---------------------------------
-    // Renderizar OS
-    // ---------------------------------
+        <!-- FORMAS DE PAGAMENTO -->
 
-    list.innerHTML = "";
+        <div class="space-y-3">
+
+            <div
+                class="
+                    flex
+                    items-center
+                    justify-between
+                    bg-[#0F1411]
+                    border
+                    border-[#29322C]
+                    rounded-2xl
+                    px-4
+                    py-4
+                "
+            >
+
+                <span class="text-slate-300">
+                    PIX
+                </span>
+
+                <strong
+                    id="salesPaymentPix"
+                    class="text-white"
+                >
+                    R$ 0,00
+                </strong>
+
+            </div>
 
 
-    orders.forEach(
-        order => {
+            <div
+                class="
+                    flex
+                    items-center
+                    justify-between
+                    bg-[#0F1411]
+                    border
+                    border-[#29322C]
+                    rounded-2xl
+                    px-4
+                    py-4
+                "
+            >
 
-            const orderPrice =
-                Number(
-                    order.price || 0
-                );
+                <span class="text-slate-300">
+                    Débito
+                </span>
+
+                <strong
+                    id="salesPaymentDebit"
+                    class="text-white"
+                >
+                    R$ 0,00
+                </strong>
+
+            </div>
 
 
-            list.innerHTML += `
+            <div
+                class="
+                    flex
+                    items-center
+                    justify-between
+                    bg-[#0F1411]
+                    border
+                    border-[#29322C]
+                    rounded-2xl
+                    px-4
+                    py-4
+                "
+            >
 
-                <div
+                <span class="text-slate-300">
+                    Dinheiro
+                </span>
+
+                <strong
+                    id="salesPaymentCash"
+                    class="text-white"
+                >
+                    R$ 0,00
+                </strong>
+
+            </div>
+
+
+            <div
+                class="
+                    flex
+                    items-center
+                    justify-between
+                    bg-[#0F1411]
+                    border
+                    border-[#29322C]
+                    rounded-2xl
+                    px-4
+                    py-4
+                "
+            >
+
+                <span class="text-slate-300">
+                    Crédito à vista
+                </span>
+
+                <strong
+                    id="salesPaymentCreditCash"
+                    class="text-white"
+                >
+                    R$ 0,00
+                </strong>
+
+            </div>
+
+
+            <div
+                class="
+                    flex
+                    items-center
+                    justify-between
+                    bg-[#0F1411]
+                    border
+                    border-[#29322C]
+                    rounded-2xl
+                    px-4
+                    py-4
+                "
+            >
+
+                <span class="text-slate-300">
+                    Crédito parcelado
+                </span>
+
+                <strong
+                    id="salesPaymentCreditInstallments"
+                    class="text-white"
+                >
+                    R$ 0,00
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- TOTAL -->
+
+        <div
+            class="
+                flex
+                items-center
+                justify-between
+                mt-6
+                pt-5
+                border-t
+                border-[#29322C]
+            "
+        >
+
+            <span
+                class="
+                    text-sm
+                    font-medium
+                    text-slate-400
+                "
+            >
+                Total
+            </span>
+
+            <strong
+                id="salesPaymentTotal"
+                class="
+                    text-2xl
+                    font-bold
+                    text-purple-400
+            "
+            >
+                R$ 0,00
+            </strong>
+
+        </div>
+
+    </div>
+
+</div>
+
+    <!-- MODAL — OS ENTREGUES -->
+
+<div
+    id="osDeliveredModal"
+    onclick="if(event.target === this) this.classList.add('hidden')"
+    class="
+        hidden
+        fixed
+        inset-0
+        z-50
+        flex
+        items-center
+        justify-center
+        bg-black/70
+        backdrop-blur-sm
+        px-4
+    "
+>
+
+    <div
+        class="
+            w-full
+            max-w-2xl
+            max-h-[85vh]
+            overflow-hidden
+            bg-[#141A16]
+            border
+            border-[#29322C]
+            rounded-3xl
+            shadow-2xl
+        "
+    >
+
+        <!-- CABEÇALHO -->
+
+        <div
+            class="
+                flex
+                items-center
+                justify-between
+                p-6
+                border-b
+                border-[#29322C]
+            "
+        >
+
+            <div>
+
+                <h2
                     class="
-                        bg-[#0F1411]
-                        border
-                        border-[#29322C]
-                        rounded-2xl
-                        px-4
-                        py-4
+                        text-xl
+                        font-semibold
+                        text-white
                     "
                 >
+                    OS entregues
+                </h2>
+
+                <p
+                    id="osDeliveredModalPeriod"
+                    class="
+                        text-sm
+                        text-slate-500
+                        mt-1
+                    "
+                >
+                    Hoje
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="closeOsDeliveredModal"
+                onclick="document.getElementById('osDeliveredModal').classList.add('hidden')"
+                class="
+                    w-9
+                    h-9
+                    rounded-xl
+                    border
+                    border-[#29322C]
+                    bg-[#0F1411]
+                    text-slate-400
+                    hover:text-white
+                    transition
+                    flex
+                    items-center
+                    justify-center
+                "
+            >
+
+                <i
+                    data-lucide="x"
+                    class="w-4 h-4"
+                ></i>
+
+            </button>
 
-                    <div
-                        class="
-                            flex
-                            items-start
-                            justify-between
-                            gap-4
-                        "
-                    >
+        </div>
 
-                        <div class="min-w-0">
 
-                            <p
-                                class="
-                                    font-semibold
-                                    text-white
-                                "
-                            >
-                                OS #${String(
-                                    order.os_number || 0
-                                ).padStart(6, "0")}    
-                            </p>
+        <!-- LISTA -->
 
+        <div
+            id="osDeliveredList"
+            class="
+                p-6
+                space-y-3
+                overflow-y-auto
+                max-h-[55vh]
+            "
+        >
 
-                            <p
-                                class="
-                                    text-sm
-                                    text-slate-400
-                                    mt-1
-                                "
-                            >
-                                ${
-                                    order.delivery_date
-                                        ? `Entregue em ${new Date(
-                                            `${order.delivery_date}T00:00:00`
-                                        ).toLocaleDateString(
-                                            "pt-BR"
-                                        )}`
-                                        : ""
-                                }
-                            </p>
+            <!-- JS -->
 
-                        </div>
+        </div>
 
 
-                        <strong
-                            class="
-                                text-green-400
-                                whitespace-nowrap
-                            "
-                        >
-                            ${formatCurrency(
-                                orderPrice
-                            )}
-                        </strong>
+        <!-- TOTAL -->
 
-                    </div>
+        <div
+            class="
+                flex
+                items-center
+                justify-between
+                p-6
+                border-t
+                border-[#29322C]
+            "
+        >
 
-                </div>
+            <div>
 
-            `;
+                <span
+                    class="
+                        text-sm
+                        font-medium
+                        text-slate-400
+                    "
+                >
+                    Total das OS entregues
+                </span>
 
-        }
-    );
+                <p
+                    id="osDeliveredCount"
+                    class="
+                        text-xs
+                        text-slate-500
+                        mt-1
+                    "
+                >
+                    0 OS entregues
+                </p>
 
+            </div>
 
-    modal.classList.remove(
-        "hidden"
-    );
 
+            <strong
+                id="osDeliveredTotal"
+                class="
+                    text-2xl
+                    font-bold
+                    text-green-400
+            "
+            >
+                R$ 0,00
+            </strong>
 
-    lucide.createIcons();
+        </div>
 
-}
+    </div>
 
-// =========================================
-// IMPRIMIR VENDA
-// =========================================
+</div>
 
-function printSale(id) {
+    <!-- LOADING -->
 
-    if (!id) {
+    <div
+        id="dashboardLoading"
+        class="text-center text-slate-500 mt-8">
 
-        alert(
-            "Venda não encontrada."
-        );
+        Carregando dashboard...
 
-        return;
+    </div>
 
-    }
 
+</div>
 
-    window.open(
-        `../sales/print.html?id=${encodeURIComponent(id)}`,
-        "_blank"
-    );
 
-}
+<!-- SUPABASE -->
 
-// =========================================
-// EXCLUIR VENDA
-// =========================================
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-async function deleteSale(id) {
+<!-- CONFIG -->
 
-    if (!id) {
+<script src="../../assets/js/config.js"></script>
 
-        alert(
-            "Venda não encontrada."
-        );
+<!-- CORE -->
 
-        return;
+<script src="../../assets/js/supabase.js"></script>
+<script src="../../assets/js/storage.js"></script>
+<script src="../../assets/js/auth.js"></script>
+<script src="../../assets/js/api.js"></script>
+<script src="../../assets/js/bootstrap.js"></script>
+<script src="../../assets/js/roles.js"></script>
 
-    }
+<!-- PÁGINA -->
 
+<script src="./index.js"></script>
 
-    const confirmed =
-        confirm(
-            "Tem certeza que deseja excluir esta venda?"
-        );
+</body>
 
-
-    if (!confirmed)
-        return;
-
-
-    try {
-
-        await Api.deleteSale(id);
-
-
-        alert(
-            "Venda excluída com sucesso."
-        );
-
-
-        await loadDashboard();
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Erro ao excluir venda:",
-            error
-        );
-
-
-        alert(
-            "Erro ao excluir a venda."
-        );
-
-    }
-
-}
-
-// =========================================
-// Inicialização
-// =========================================
-
-document.addEventListener(
-    "DOMContentLoaded",
-    async () => {
-
-        try {
-
-            const result =
-                await Bootstrap.init();
-
-
-            if (result.status !== "READY") {
-
-                window.location.href =
-                    "../login/login.html";
-
-                return;
-
-            }
-
-
-            context = result.context;
-
-            await loadStores();
-            
-            await loadDashboard();
-
-
-            const loading =
-                document.getElementById(
-                    "dashboardLoading"
-                );
-
-            if (loading) {
-
-                loading.remove();
-
-            }
-
-            document
-                .getElementById("salesToday")
-                .addEventListener(
-                    "click",
-                    () => setSalesPeriod("today")
-                );
-            
-            
-            document
-                .getElementById("salesWeek")
-                .addEventListener(
-                    "click",
-                    () => setSalesPeriod("week")
-                );
-            
-            
-            document
-                .getElementById("salesMonth")
-                .addEventListener(
-                    "click",
-                    () => setSalesPeriod("month")
-                );
-            
-            
-            updateSalesFilterButtons();
-
-            // =========================================
-            // FILTROS DE OS
-            // =========================================
-            
-            document
-                .getElementById("osToday")
-                .addEventListener(
-                    "click",
-                    () => setOsPeriod("today")
-                );
-            
-            
-            document
-                .getElementById("osWeek")
-                .addEventListener(
-                    "click",
-                    () => setOsPeriod("week")
-                );
-            
-            
-            document
-                .getElementById("osMonth")
-                .addEventListener(
-                    "click",
-                    () => setOsPeriod("month")
-                );
-
-            // =========================================
-            // FILTRO DE LOJA
-            // =========================================
-            
-            document
-                .getElementById("storeFilter")
-                .addEventListener(
-                    "change",
-                    (event) => {
-            
-                        storeId =
-                            event.target.value;
-            
-                        loadDashboard();
-            
-                    }
-                );
-            
-            updateOsFilterButtons();
-
-            // =========================================
-            // CLIQUE — TOTAL DE VENDAS
-            // =========================================
-            
-            const salesCard =
-                document.getElementById(
-                    "salesRevenue"
-                )?.closest(
-                    "div.cursor-pointer"
-                );
-            
-            
-            if (salesCard) {
-            
-                salesCard.addEventListener(
-                    "click",
-                    openSalesPaymentModal
-                );
-            
-            }
-
-            // =========================================
-            // CLIQUE — FATURAMENTO BRUTO DE OS
-            // =========================================
-            
-            const osCard =
-                document.getElementById(
-                    "osRevenue"
-                )?.closest(
-                    "div.cursor-pointer"
-                );
-            
-            
-            if (osCard) {
-            
-                osCard.addEventListener(
-                    "click",
-                    openOsDeliveredModal
-                );
-            
-            }
-
-            // =========================================
-            // FECHAR MODAL
-            // =========================================
-            
-            document
-                .getElementById(
-                    "closeSalesPaymentModal"
-                )
-                ?.addEventListener(
-                    "click",
-                    closeSalesPaymentModal
-                );
-
-            document
-                .getElementById(
-                    "closeOsDeliveredModal"
-                )
-                ?.addEventListener(
-                    "click",
-                    closeOsDeliveredModal
-                );
-
-            document
-                .getElementById(
-                    "osDeliveredModal"
-                )
-                ?.addEventListener(
-                    "click",
-                    (event) => {
-            
-                        if (
-                            event.target ===
-                            event.currentTarget
-                        ) {
-            
-                            closeOsDeliveredModal();
-            
-                        }
-            
-                    }
-                );
-
-            document
-                .getElementById(
-                    "salesPaymentModal"
-                )
-                ?.addEventListener(
-                    "click",
-                    (event) => {
-            
-                        if (
-                            event.target.id ===
-                            "salesPaymentModal"
-                        ) {
-            
-                            closeSalesPaymentModal();
-            
-                        }
-            
-                    }
-                );
-
-
-            lucide.createIcons();
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "Erro ao iniciar dashboard:",
-                error
-            );
-
-            alert(error.message);
-
-        }
-
-    }
-);
+</html>
