@@ -272,12 +272,28 @@ async function loadDashboard() {
 function renderDashboard(data) {
 
     // -----------------------------
-    // Lucro bruto de OS
+    // Faturamento de OS entregue
     // -----------------------------
 
     document.getElementById("osRevenue").textContent =
         formatCurrency(data.osRevenue);
 
+    const partsCostElement = document.getElementById("partsCostRevenue");
+    if (partsCostElement) {
+        partsCostElement.textContent = formatCurrency(data.partsCost);
+    }
+
+    const osNetRevenueElement = document.getElementById("osNetRevenue");
+    if (osNetRevenueElement) {
+        osNetRevenueElement.textContent = formatCurrency(data.osNetRevenue);
+    }
+
+    const osNetCaption = document.getElementById("osNetCaption");
+    if (osNetCaption) {
+        osNetCaption.textContent = data.osNetRevenue < 0
+            ? "O custo das peças supera o faturamento das OS entregues"
+            : "Faturamento das OS entregues menos o custo das peças dessas OS";
+    }
 
     document.getElementById("deliveredOrders").textContent =
         `${data.deliveredOrders} OS entregues`;
