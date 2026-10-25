@@ -370,7 +370,7 @@ const Api = {
             const normalizedOrder = {
                 ...order,
                 ...(order.status === "Entregue" && !order.delivery_date
-                    ? { delivery_date: new Date().toISOString().slice(0, 10) }
+                    ? { delivery_date: new Date().toLocaleDateString("en-CA") }
                     : {})
             };
     
@@ -395,7 +395,7 @@ const Api = {
 
         if (normalizedOrder.status === "Entregue" && !normalizedOrder.delivery_date) {
             normalizedOrder.delivery_date =
-                new Date().toISOString().slice(0, 10);
+                new Date().toLocaleDateString("en-CA");
         }
 
         if (normalizedOrder.status !== "Entregue") {
@@ -422,7 +422,7 @@ const Api = {
             status: status,
             delivery_date:
                 status === "Entregue"
-                    ? new Date().toISOString().slice(0, 10)
+                    ? new Date().toLocaleDateString("en-CA")
                     : null
         };
     
