@@ -1658,6 +1658,118 @@ form.addEventListener(
 );
 
 
+
+// =========================================
+// VENDAS DE HOJE
+// =========================================
+
+const openTodaySalesButton = document.getElementById("openTodaySales");
+const todaySalesModal = document.getElementById("todaySalesModal");
+const closeTodaySalesButton = document.getElementById("closeTodaySales");
+const todaySalesList = document.getElementById("todaySalesList");
+const todaySalesSubtitle = document.getElementById("todaySalesSubtitle");
+const todaySalesTotal = document.getElementById("todaySalesTotal");
+
+function formatSaleDateTime(value) {
+    return new Date(value).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" });
+}
+
+function formatTodaySalesMoney(value) {
+    return Number(value || 0).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+}
+
+function getLocalDayRange() {
+    const now = new Date();
+    const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const end = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+    return { start: start.toISOString(), end: end.toISOString() };
+}
+
+function closeTodaySalesModal() {
+    todaySalesModal.classList.add("hidden");
+    todaySalesModal.classList.remove("flex");
+}
+
+async function showTodaySales() {
+    if (!context?.company?.id) return;
+    todaySalesModal.classList.remove("hidden");
+    todaySalesModal.classList.add("flex");
+    todaySalesSubtitle.textContent = "Carregando vendas...";
+    todaySalesList.replaceChildren();
+    todaySalesTotal.textContent = formatTodaySalesMoney(0);
+
+    try {
+        const { start, end } = getLocalDayRange();
+        let query = supabaseClient
+            .from("sales")
+            .select("id, store_id, product_name, total_price, sale_price, payment_method, customer_name, created_at, stores(name)")
+            .eq("company_id", context.company.id)
+            .gte("created_at", start)
+            .lt("created_at", end)
+            .order("created_at", { ascending: false });
+
+        const selectedStoreId = storeSelect?.value || context.store?.id;
+        if (selectedStoreId) query = query.eq("store_id", selectedStoreId);
+
+        const { data, error } = await query;
+        if (error) throw error;
+        const sales = data || [];
+        const total = sales.reduce((sum, sale) => sum + Number(sale.total_price ?? sale.sale_price ?? 0), 0);
+        todaySalesTotal.textContent = formatTodaySalesMoney(total);
+        todaySalesSubtitle.textContent = `${sales.length} ${sales.length === 1 ? "venda registrada" : "vendas registradas"}`;
+
+        if (!sales.length) {
+            const empty = document.createElement("p");
+            empty.className = "rounded-xl border border-[#29322C] p-6 text-center text-sm text-slate-400";
+            empty.textContent = "Nenhuma venda registrada hoje para esta loja.";
+            todaySalesList.appendChild(empty);
+            return;
+        }
+
+        for (const sale of sales) {
+            const card = document.createElement("div");
+            card.className = "flex flex-col gap-3 rounded-xl border border-[#29322C] bg-[#0F1411] p-4 sm:flex-row sm:items-center sm:justify-between";
+            const info = document.createElement("div");
+            info.className = "min-w-0";
+            const name = document.createElement("p");
+            name.className = "truncate font-semibold text-white";
+            name.textContent = sale.customer_name || sale.product_name || "Venda sem descrição";
+            const meta = document.createElement("p");
+            meta.className = "mt-1 text-xs text-slate-400";
+            meta.textContent = `${formatSaleDateTime(sale.created_at)}${sale.stores?.name ? ` • ${sale.stores.name}` : ""}${sale.payment_method ? ` • ${sale.payment_method}` : ""}`;
+            const amount = document.createElement("p");
+            amount.className = "mt-2 font-bold text-green-300 sm:mt-1";
+            amount.textContent = formatTodaySalesMoney(sale.total_price ?? sale.sale_price);
+            info.append(name, meta, amount);
+            const printButton = document.createElement("button");
+            printButton.type = "button";
+            printButton.className = "inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-green-500 px-4 py-2 text-sm font-semibold text-black transition hover:bg-green-400";
+            printButton.innerHTML = '<i data-lucide="printer" class="h-4 w-4"></i><span>Imprimir nota</span>';
+            printButton.addEventListener("click", () => {
+                window.open(`print.html?id=${encodeURIComponent(sale.id)}`, "_blank", "noopener");
+            });
+            card.append(info, printButton);
+            todaySalesList.appendChild(card);
+        }
+        if (window.lucide) lucide.createIcons();
+    } catch (error) {
+        console.error("Erro ao carregar vendas de hoje:", error);
+        todaySalesSubtitle.textContent = "Não foi possível carregar as vendas.";
+        const errorMessage = document.createElement("p");
+        errorMessage.className = "rounded-xl border border-red-500/30 p-4 text-sm text-red-300";
+        errorMessage.textContent = error.message || "Erro ao consultar as vendas do dia.";
+        todaySalesList.appendChild(errorMessage);
+    }
+}
+
+openTodaySalesButton?.addEventListener("click", showTodaySales);
+closeTodaySalesButton?.addEventListener("click", closeTodaySalesModal);
+todaySalesModal?.addEventListener("click", event => { if (event.target === todaySalesModal) closeTodaySalesModal(); });
+document.addEventListener("keydown", event => { if (event.key === "Escape") closeTodaySalesModal(); });
+storeSelect?.addEventListener("change", () => {
+    if (todaySalesModal && !todaySalesModal.classList.contains("hidden")) showTodaySales();
+});
+
 // =========================================
 // Inicialização
 // =========================================
