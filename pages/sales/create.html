@@ -98,6 +98,15 @@
 
             </p>
 
+            <button
+                type="button"
+                id="openTodaySales"
+                class="mt-5 inline-flex items-center justify-center gap-2 rounded-xl border border-green-500/30 bg-green-500/10 px-4 py-3 font-semibold text-green-300 transition hover:bg-green-500/20"
+            >
+                <i data-lucide="receipt-text" class="h-5 w-5"></i>
+                Vendas de hoje
+            </button>
+
         </header>
 
 
@@ -723,6 +732,29 @@
 
     </main>
 
+
+
+    <!-- MODAL: VENDAS DE HOJE -->
+    <div id="todaySalesModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/75 p-4" role="dialog" aria-modal="true" aria-labelledby="todaySalesTitle">
+        <div class="max-h-[85vh] w-full max-w-2xl overflow-hidden rounded-2xl border border-[#29322C] bg-[#141A16] shadow-2xl">
+            <div class="flex items-center justify-between border-b border-[#29322C] px-5 py-4 sm:px-6">
+                <div>
+                    <h2 id="todaySalesTitle" class="text-lg font-bold">Vendas de hoje</h2>
+                    <p id="todaySalesSubtitle" class="mt-1 text-sm text-slate-400">Carregando vendas...</p>
+                </div>
+                <button type="button" id="closeTodaySales" class="rounded-lg p-2 text-slate-400 transition hover:bg-white/10 hover:text-white" aria-label="Fechar">
+                    <i data-lucide="x" class="h-5 w-5"></i>
+                </button>
+            </div>
+            <div id="todaySalesList" class="max-h-[60vh] space-y-3 overflow-y-auto p-4 sm:p-6">
+                <p class="text-sm text-slate-400">Carregando vendas...</p>
+            </div>
+            <div class="flex items-center justify-between border-t border-[#29322C] px-5 py-4 sm:px-6">
+                <span class="text-sm text-slate-400">Total do dia</span>
+                <strong id="todaySalesTotal" class="text-lg text-green-300">R$ 0,00</strong>
+            </div>
+        </div>
+    </div>
 
     <!-- SUPABASE -->
 
