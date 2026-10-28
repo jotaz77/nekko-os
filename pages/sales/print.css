@@ -144,6 +144,42 @@ h2 {
 
 
 /* =========================================
+   ITENS DA VENDA
+   ========================================= */
+
+.sale-items-list {
+    width: 100%;
+}
+
+.receipt-item {
+    padding: 1.5mm 0;
+    border-bottom: 1px dotted #777;
+    break-inside: avoid;
+}
+
+.receipt-item-name {
+    font-size: 9px;
+    font-weight: bold;
+    overflow-wrap: anywhere;
+}
+
+.receipt-item-details {
+    margin-top: 0.5mm;
+    font-size: 7.5px;
+}
+
+.receipt-item-value {
+    margin-top: 0.5mm;
+    text-align: right;
+    font-weight: bold;
+}
+
+.payment-method {
+    margin-top: 2mm;
+    font-size: 8px;
+}
+
+/* =========================================
    TOTAL
    ========================================= */
 
