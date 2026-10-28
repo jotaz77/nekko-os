@@ -1650,6 +1650,8 @@ Api.getSale = async (id) => {
             store_id,
             product_name,
             sale_price,
+            total_price,
+            payment_method,
             created_by,
             created_at,
             customer_name,
@@ -1684,8 +1686,12 @@ Api.getSale = async (id) => {
     if (error)
         throw error;
 
+    const items = await Api.getSaleItems(id);
 
-    return data;
+    return {
+        ...data,
+        items
+    };
 
 };
 
