@@ -336,35 +336,49 @@ function preencherNota() {
     }
 
     // =====================================
-    // PRODUTO
+    // TODOS OS ITENS DA VENDA
     // =====================================
 
-    setText(
-        "productName",
-        sale.product_name
-    );
+    const itemsContainer = document.getElementById("saleItemsList");
+    const items = Array.isArray(sale.items) ? sale.items : [];
 
+    if (itemsContainer) {
+        itemsContainer.replaceChildren();
+        if (items.length) {
+            items.forEach(item => {
+                const row = document.createElement("div");
+                row.className = "receipt-item";
+                const name = document.createElement("div");
+                name.className = "receipt-item-name";
+                name.textContent = item.product_name || "Produto";
+                const details = document.createElement("div");
+                details.className = "receipt-item-details";
+                const quantity = Number(item.quantity || 1);
+                const unitPrice = Number(item.unit_price || 0);
+                const subtotal = Number(item.subtotal ?? (quantity * unitPrice));
+                details.textContent = `${quantity} x ${formatMoney(unitPrice)}`;
+                const value = document.createElement("div");
+                value.className = "receipt-item-value";
+                value.textContent = formatMoney(subtotal);
+                row.append(name, details, value);
+                itemsContainer.appendChild(row);
+            });
+        } else {
+            const fallback = document.createElement("p");
+            fallback.id = "productName";
+            fallback.textContent = sale.product_name || "Itens não detalhados";
+            itemsContainer.appendChild(fallback);
+        }
+    }
+
+    setText("paymentMethod", sale.payment_method ? `Pagamento: ${sale.payment_method}` : "");
 
     // =====================================
-    // VALOR
+    // VALOR TOTAL DA VENDA
     // =====================================
 
-    const saleValue =
-        formatMoney(
-            sale.sale_price
-        );
-
-
-    setText(
-        "salePrice",
-        saleValue
-    );
-
-
-    setText(
-        "saleTotal",
-        saleValue
-    );
+    const saleValue = formatMoney(sale.total_price ?? sale.sale_price);
+    setText("saleTotal", saleValue);
 
 
     // =====================================
