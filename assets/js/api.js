@@ -178,7 +178,9 @@ const Api = {
     async getServiceOrders(
         context,
         status = null,
-        search = ""
+        search = "",
+        offset = 0,
+        limit = 20
     ) {
     
         let query = supabaseClient
@@ -196,7 +198,7 @@ const Api = {
                     unit_price,
                     created_at
                 )
-            `)
+            `, { count: "exact" })
             .eq("company_id", context.company.id);
         query = query.eq(
             "order_type",
@@ -247,15 +249,16 @@ const Api = {
     
         }
     
-        const { data, error } = await query
+        const { data, error, count } = await query
             .order("created_at", {
                 ascending: false
-            });
+            })
+            .range(offset, offset + limit - 1);
     
         if (error)
             throw error;
     
-        return data;
+        return { data: data || [], total: count ?? 0 };
     
     },
 
