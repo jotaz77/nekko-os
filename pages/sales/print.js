@@ -371,7 +371,32 @@ function preencherNota() {
         }
     }
 
-    setText("paymentMethod", sale.payment_method ? `Pagamento: ${sale.payment_method}` : "");
+    function formatPaymentMethod(value) {
+        if (!value) return "";
+        const normalized = String(value).trim().toLowerCase().replace(/[\s-]+/g, "_");
+        const labels = {
+            pix: "PIX",
+            debit: "Débito",
+            debit_card: "Cartão de débito",
+            debitcard: "Cartão de débito",
+            cash: "Dinheiro",
+            money: "Dinheiro",
+            credit: "Crédito",
+            credit_card: "Cartão de crédito",
+            creditcard: "Cartão de crédito",
+            credit_cash: "Crédito à vista",
+            credit_installments: "Crédito parcelado",
+            installments: "Crédito parcelado",
+            bank_transfer: "Transferência bancária",
+            transfer: "Transferência bancária",
+            boleto: "Boleto",
+            debit_card_payment: "Cartão de débito"
+        };
+        return labels[normalized] || String(value);
+    }
+
+    const paymentMethodLabel = formatPaymentMethod(sale.payment_method);
+    setText("paymentMethod", paymentMethodLabel ? `Pagamento: ${paymentMethodLabel}` : "");
 
     // =====================================
     // VALOR TOTAL DA VENDA
