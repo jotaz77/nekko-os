@@ -107,7 +107,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                 icon: "shopping-cart",
                 href: "../sales/create.html",
                 permission: "sales.create",
-                roles: [Roles.CEO, Roles.MANAGER]
+                // Todos os perfis operacionais podem ver o módulo quando
+                // recebem explicitamente a permissão sales.create.
+                roles: [
+                    Roles.CEO,
+                    Roles.MANAGER,
+                    Roles.EMPLOYEE,
+                    Roles.TECHNICIAN
+                ]
             },
 
             {
