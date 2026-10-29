@@ -8,6 +8,13 @@ let appContext = null;
 let orderToDelete = null;
 let orderToChangeStatus = null;
 let searchTimeout = null;
+const SERVICE_ORDERS_PAGE_SIZE = 20;
+let serviceOrdersOffset = 0;
+let serviceOrdersTotal = 0;
+let serviceOrdersHasMore = false;
+let serviceOrdersLoading = false;
+let currentOrdersStatus = "ativas";
+let currentOrdersSearch = "";
 
 document.addEventListener("DOMContentLoaded", async () => {
 
@@ -144,6 +151,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
             );
 
+        document.getElementById("loadMoreOrdersButton")?.addEventListener("click", () => {
+            loadServiceOrders(appContext, currentOrdersStatus, currentOrdersSearch, true);
+        });
+
     }
 
     catch (error) {
@@ -163,30 +174,68 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function loadServiceOrders(
     context,
     status = null,
-    search = ""
+    search = "",
+    loadMore = false
 ) {
+    if (serviceOrdersLoading) return;
 
     try {
+        serviceOrdersLoading = true;
+        currentOrdersStatus = status;
+        currentOrdersSearch = search;
 
-        serviceOrders =
-            await Api.getServiceOrders(
-                context,
-                status,
-                search
-            );
-        
+        if (!loadMore) {
+            serviceOrdersOffset = 0;
+            serviceOrders = [];
+            serviceOrdersTotal = 0;
+            serviceOrdersHasMore = false;
+            renderOrders([]);
+        }
+
+        const result = await Api.getServiceOrders(
+            context,
+            status,
+            search,
+            serviceOrdersOffset,
+            SERVICE_ORDERS_PAGE_SIZE
+        );
+
+        const fetchedOrders = result.data || [];
+        serviceOrders = loadMore
+            ? serviceOrders.concat(fetchedOrders)
+            : fetchedOrders;
+        serviceOrdersOffset += fetchedOrders.length;
+        serviceOrdersTotal = result.total || 0;
+        serviceOrdersHasMore = serviceOrdersOffset < serviceOrdersTotal;
+
         renderOrders(serviceOrders);
-
     }
-
     catch (error) {
-
         console.error(error);
-
         alert(error.message);
-
     }
+    finally {
+        serviceOrdersLoading = false;
+        updateLoadMoreButton();
+    }
+}
 
+function updateLoadMoreButton() {
+    const button = document.getElementById("loadMoreOrdersButton");
+    const info = document.getElementById("ordersPaginationInfo");
+    if (info) {
+        info.textContent = serviceOrdersTotal
+            ? `Exibindo ${serviceOrders.length} de ${serviceOrdersTotal} ordens`
+            : "";
+    }
+    if (button) {
+        button.classList.toggle("hidden", !serviceOrdersHasMore);
+        button.disabled = serviceOrdersLoading;
+        button.innerHTML = serviceOrdersLoading
+            ? '<i data-lucide="loader-circle" class="w-4 h-4 animate-spin"></i> Carregando...'
+            : '<i data-lucide="plus" class="w-4 h-4"></i> Carregar mais';
+        if (window.lucide) lucide.createIcons();
+    }
 }
 
 // =========================================
