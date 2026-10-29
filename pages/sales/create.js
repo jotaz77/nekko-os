@@ -1678,6 +1678,30 @@ function formatTodaySalesMoney(value) {
     return Number(value || 0).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 }
 
+function formatSalePaymentMethod(value) {
+    if (!value) return "";
+    const normalized = String(value).trim().toLowerCase().replace(/[\s-]+/g, "_");
+    const labels = {
+        pix: "PIX",
+        debit: "Débito",
+        debit_card: "Cartão de débito",
+        debitcard: "Cartão de débito",
+        cash: "Dinheiro",
+        money: "Dinheiro",
+        credit: "Crédito",
+        credit_card: "Cartão de crédito",
+        creditcard: "Cartão de crédito",
+        credit_cash: "Crédito à vista",
+        credit_installments: "Crédito parcelado",
+        installments: "Crédito parcelado",
+        bank_transfer: "Transferência bancária",
+        transfer: "Transferência bancária",
+        boleto: "Boleto",
+        debit_card_payment: "Cartão de débito"
+    };
+    return labels[normalized] || String(value);
+}
+
 function getLocalDayRange() {
     const now = new Date();
     const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -1736,7 +1760,8 @@ async function showTodaySales() {
             name.textContent = sale.customer_name || sale.product_name || "Venda sem descrição";
             const meta = document.createElement("p");
             meta.className = "mt-1 text-xs text-slate-400";
-            meta.textContent = `${formatSaleDateTime(sale.created_at)}${sale.stores?.name ? ` • ${sale.stores.name}` : ""}${sale.payment_method ? ` • ${sale.payment_method}` : ""}`;
+            const paymentMethodLabel = formatSalePaymentMethod(sale.payment_method);
+            meta.textContent = `${formatSaleDateTime(sale.created_at)}${sale.stores?.name ? ` • ${sale.stores.name}` : ""}${paymentMethodLabel ? ` • ${paymentMethodLabel}` : ""}`;
             const amount = document.createElement("p");
             amount.className = "mt-2 font-bold text-green-300 sm:mt-1";
             amount.textContent = formatTodaySalesMoney(sale.total_price ?? sale.sale_price);
