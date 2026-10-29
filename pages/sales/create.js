@@ -1599,7 +1599,11 @@ form.addEventListener(
             }
             
             
-            // Limpar formulário
+            // Limpar formulário sem perder a loja da venda anterior.
+            // Após resetar, recarregar o estoque para a próxima venda
+            // poder pesquisar produtos sem atualizar a página.
+
+            const registeredStoreId = storeSelect.value;
 
             form.reset();
 
@@ -1610,14 +1614,25 @@ form.addEventListener(
             customerFields.classList.add(
                 "hidden"
             );
-            
+
             selectedInventoryProduct = null;
-            
-            inventoryProducts = [];
-            
+
             hideProductSuggestions();
-            
+
             loadStores();
+
+            if (
+                registeredStoreId &&
+                Array.from(storeSelect.options).some(
+                    option => option.value === registeredStoreId
+                )
+            ) {
+                storeSelect.value = registeredStoreId;
+            }
+
+            await loadInventoryProducts();
+
+            productNameInput.focus();
 
 
         }
