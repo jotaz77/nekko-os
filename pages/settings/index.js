@@ -4303,3 +4303,55 @@ function closeStoresModal() {
     );
 
 }
+
+
+// =========================================
+// PREFERÊNCIAS — TEMA
+// =========================================
+document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById("preferencesModal");
+    const openButton = document.getElementById("openPreferencesButton");
+    const closeButton = document.getElementById("closePreferencesButton");
+
+    const open = () => {
+        if (!modal) return;
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+        updateThemeChoices();
+        if (window.lucide) lucide.createIcons();
+    };
+    const close = () => {
+        if (!modal) return;
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+    };
+
+    openButton?.addEventListener("click", open);
+    closeButton?.addEventListener("click", close);
+    modal?.addEventListener("click", event => {
+        if (event.target === modal) close();
+    });
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape") close();
+    });
+
+    modal?.querySelectorAll("[data-theme-choice]").forEach(button => {
+        button.addEventListener("click", () => {
+            const theme = button.dataset.themeChoice;
+            window.NekkoThemePreferences?.set(theme);
+            updateThemeChoices();
+        });
+    });
+
+    function updateThemeChoices() {
+        const current = window.NekkoThemePreferences?.get() || "default";
+        modal?.querySelectorAll("[data-theme-choice]").forEach(button => {
+            const active = button.dataset.themeChoice === current;
+            button.classList.toggle("ring-2", active);
+            button.classList.toggle("ring-green-400", active && current === "default");
+            button.classList.toggle("ring-red-500", active && current === "dark");
+            button.classList.toggle("ring-teal-600", active && current === "light");
+            button.setAttribute("aria-pressed", String(active));
+        });
+    }
+});
