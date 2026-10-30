@@ -55,7 +55,7 @@ body{
     background:
         radial-gradient(700px 380px at 8% -5%, rgba(25,211,123,.085), transparent 62%),
         radial-gradient(620px 420px at 96% 16%, rgba(25,211,123,.045), transparent 65%),
-        linear-gradient(180deg,#070A08 0%,#090D0A 46%,#070A08 100%) !important;
+        linear-gradient(180deg,#070A08 0%,#090D0A 46%,#070A08 100%);
 }
 
 body::before{
@@ -552,7 +552,7 @@ main > section:nth-of-type(3) > div:last-child > div::before{
 }
 </style>
 
-</head>
+    <link rel="stylesheet" href="../../assets/css/theme-preferences.css">\n</head>
 
 
 <body class="min-h-screen bg-[#0B0F0C] text-white">
@@ -1145,6 +1145,22 @@ main > section:nth-of-type(3) > div:last-child > div::before{
 
                 </button>
 
+                <!-- Preferências -->
+                <button
+                    id="openPreferencesButton"
+                    type="button"
+                    class="w-full text-left bg-[#101510] border border-[#222B25] rounded-3xl p-6 hover:border-green-500/40 hover:bg-[#141A16] transition group"
+                >
+                    <div class="w-12 h-12 rounded-2xl bg-[#141A16] border border-[#29322C] flex items-center justify-center text-slate-400 mb-5">
+                        <i data-lucide="sliders-horizontal" class="w-5 h-5"></i>
+                    </div>
+                    <h4 class="text-lg font-semibold">Preferências</h4>
+                    <p class="text-sm text-slate-500 mt-2 leading-relaxed">
+                        Personalize a aparência e as preferências do NEKKO OS.
+                    </p>
+                </button>
+
+
 
                 <!-- Preferências -->
 
@@ -1639,6 +1655,52 @@ main > section:nth-of-type(3) > div:last-child > div::before{
     </div>
 
 
+
+    <!-- MODAL DE PREFERÊNCIAS -->
+    <div id="preferencesModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+        <div class="w-full max-w-xl rounded-3xl border border-[#29322C] bg-[#0D120F] shadow-2xl overflow-hidden">
+            <div class="flex items-center justify-between border-b border-[#202A24] px-6 py-5">
+                <div>
+                    <p class="text-xs uppercase tracking-[.18em] text-green-400 font-bold">Personalização</p>
+                    <h3 class="text-xl font-bold mt-1">Preferências do sistema</h3>
+                </div>
+                <button id="closePreferencesButton" type="button" class="rounded-xl border border-[#29322C] p-2 text-slate-400 hover:text-white" aria-label="Fechar preferências">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="p-6 space-y-5">
+                <div>
+                    <h4 class="font-semibold text-white">Tema</h4>
+                    <p class="text-sm text-slate-400 mt-1">Escolha a aparência do NEKKO OS. A alteração é aplicada imediatamente.</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <button type="button" data-theme-choice="default" class="theme-choice rounded-2xl border border-[#354238] bg-[#111813] p-4 text-left">
+                        <div class="h-16 rounded-xl border border-[#344238] bg-gradient-to-br from-[#080D09] to-[#1A241D] mb-3 flex items-center justify-center">
+                            <span class="text-green-400 text-2xl">●</span>
+                        </div>
+                        <strong class="block text-sm text-white">Padrão</strong>
+                        <span class="block text-xs text-slate-400 mt-1">Escuro com verde</span>
+                    </button>
+                    <button type="button" data-theme-choice="dark" class="theme-choice rounded-2xl border border-[#354238] bg-[#111813] p-4 text-left">
+                        <div class="h-16 rounded-xl border border-[#344238] bg-gradient-to-br from-[#080D09] to-[#1A241D] mb-3 flex items-center justify-center">
+                            <span class="text-red-500 text-2xl">●</span>
+                        </div>
+                        <strong class="block text-sm text-white">Escuro</strong>
+                        <span class="block text-xs text-slate-400 mt-1">Escuro com vermelho</span>
+                    </button>
+                    <button type="button" data-theme-choice="light" class="theme-choice rounded-2xl border border-[#354238] bg-[#111813] p-4 text-left">
+                        <div class="h-16 rounded-xl border border-slate-200 bg-gradient-to-br from-white to-[#E9EEF2] mb-3 flex items-center justify-center">
+                            <span class="text-teal-700 text-2xl">●</span>
+                        </div>
+                        <strong class="block text-sm text-white">Claro</strong>
+                        <span class="block text-xs text-slate-400 mt-1">Claro com azul-petróleo</span>
+                    </button>
+                </div>
+                <p class="text-xs text-slate-500">Sua escolha fica salva neste navegador e será aplicada nas páginas do sistema neste dispositivo.</p>
+            </div>
+        </div>
+    </div>
+
     <!-- ========================================= -->
     <!-- SCRIPTS -->
     <!-- ========================================= -->
@@ -1653,7 +1715,7 @@ main > section:nth-of-type(3) > div:last-child > div::before{
     <script src="../../assets/js/bootstrap.js"></script>
     <script src="../../assets/js/roles.js"></script>
     
-    <script src="./index.js"></script>
+    <script src="../../assets/js/theme-preferences.js"></script>\n    <script src="./index.js"></script>
     
     <script>
         lucide.createIcons();
