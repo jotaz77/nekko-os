@@ -33,8 +33,9 @@ form.addEventListener("submit", async (event) => {
         
         await Auth.login(email, password);
         
-        // Limpa o contexto da sessão anterior
+        // Limpa qualquer contexto anterior antes de inicializar a conta atual.
         Storage.clear();
+        sessionStorage.clear();
         
         // ---------------------------------
         // Bootstrap
