@@ -1442,6 +1442,19 @@ form.addEventListener(
             
                     inventoryProduct.quantity =
                         newQuantity;
+
+                    //------
+                    // LOGS DE TESTE
+                    //------
+
+                    console.log("DEBUG RLS VENDA", {
+                      authUserId: (await supabase.auth.getUser()).data.user?.id,
+                      company_id: movement.company_id,
+                      store_id: movement.store_id,
+                      created_by: movement.created_by,
+                      product_id: movement.product_id,
+                      sale_id: movement.sale_id,
+                    });
             
             
                     // -----------------------------
