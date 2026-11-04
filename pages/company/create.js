@@ -54,7 +54,10 @@ form.addEventListener("submit", async (e) => {
 
         if (memberError) throw memberError;
 
-        // Salva o contexto da empresa na sessão
+        // Remove qualquer contexto antigo e registra somente a empresa recém-criada.
+        Storage.clear();
+        sessionStorage.clear();
+
         localStorage.setItem("company_id", data.id);
         localStorage.setItem("company_name", data.name);
 
