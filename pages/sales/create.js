@@ -1443,59 +1443,42 @@ form.addEventListener(
                     inventoryProduct.quantity =
                         newQuantity;
 
-                    //------
-                    // LOGS DE TESTE
-                    //------
+                    // ---------------------------------
+                    // DEBUG RLS VENDA
+                    // ---------------------------------
+
+                    const movementData = {
+                        company_id: context.company.id,
+                        store_id: storeId,
+                        product_id: item.product_id,
+                        movement_type: "sale",
+                        quantity: quantityToRemove,
+                        unit_cost: Number(item.unit_cost || 0),
+                        sale_price: Number(item.unit_price || 0),
+                        sale_id: saleId,
+                        created_by: context.user?.id || null
+                    };
+
+                    const { data: authData, error: authError } =
+                        await supabaseClient.auth.getUser();
 
                     console.log("DEBUG RLS VENDA", {
-                      authUserId: (await supabase.auth.getUser()).data.user?.id,
-                      company_id: movement.company_id,
-                      store_id: movement.store_id,
-                      created_by: movement.created_by,
-                      product_id: movement.product_id,
-                      sale_id: movement.sale_id,
+                        authUserId: authData?.user?.id ?? null,
+                        authEmail: authData?.user?.email ?? null,
+                        authError: authError?.message ?? null,
+                        company_id: movementData.company_id,
+                        store_id: movementData.store_id,
+                        created_by: movementData.created_by,
+                        product_id: movementData.product_id,
+                        sale_id: movementData.sale_id
                     });
-            
-            
-                    // -----------------------------
+
+                    // ---------------------------------
                     // Registrar movimentação
-                    // -----------------------------
-            
+                    // ---------------------------------
+
                     const movement =
-                        await Api.createInventoryMovement({
-            
-                            company_id:
-                                context.company.id,
-            
-                            store_id:
-                                storeId,
-            
-                            product_id:
-                                item.product_id,
-            
-                            movement_type:
-                                "sale",
-            
-                            quantity:
-                                quantityToRemove,
-            
-                            unit_cost:
-                                Number(
-                                    item.unit_cost || 0
-                                ),
-            
-                            sale_price:
-                                Number(
-                                    item.unit_price || 0
-                                ),
-            
-                            sale_id:
-                                saleId,
-            
-                            created_by:
-                                context.user?.id || null
-            
-                        });
+                        await Api.createInventoryMovement(movementData);
             
             
                     createdMovements.push(
