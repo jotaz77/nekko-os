@@ -1175,7 +1175,18 @@ form.addEventListener(
 
 
             const storeId =
-                storeSelect.value;
+                context.role !== Roles.CEO
+                    ? context.membership?.store_id || context.store?.id
+                    : storeSelect.value;
+
+            if (
+                context.role !== Roles.CEO &&
+                storeId !== context.store?.id
+            ) {
+                throw new Error(
+                    "A unidade da venda não corresponde à unidade vinculada ao seu usuário."
+                );
+            }
 
             const paymentMethod =
                 paymentMethodInput.value;
@@ -1346,6 +1357,16 @@ form.addEventListener(
                             `Produto não encontrado no estoque: ${item.product_name}`
                         );
             
+                    }
+
+                    // Validar empresa e unidade do produto antes de alterar estoque.
+                    if (
+                        inventoryProduct.company_id !== context.company.id ||
+                        inventoryProduct.store_id !== storeId
+                    ) {
+                        throw new Error(
+                            `O produto ${item.product_name} não pertence à unidade selecionada.`
+                        );
                     }
             
             
