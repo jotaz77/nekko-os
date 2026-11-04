@@ -163,8 +163,18 @@ const Storage = {
             "company",
             "store",
             "role",
-            "token"
+            "token",
+            "company_id",
+            "company_name",
+            "store_id",
+            "store_name"
         ].forEach(key => localStorage.removeItem(key));
+
+        // O contexto de modos é específico da sessão autenticada.
+        // Nunca deve sobreviver a logout/troca de conta.
+        if (typeof sessionStorage !== "undefined") {
+            sessionStorage.removeItem("nekko_mode_context");
+        }
 
     }
 
