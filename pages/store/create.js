@@ -95,17 +95,58 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (error) throw error;
 
-            // Salva contexto da loja
-            localStorage.setItem("store_id", data.id);
-            localStorage.setItem("store_name", data.name);
+            // A criação da loja invalida qualquer contexto antigo de outra conta.
+            // A tela de modos será reconstruída usando a sessão autenticada atual.
+            Storage.clear();
+            sessionStorage.clear();
 
             showMessage("Loja criada com sucesso!", "success");
 
-            setTimeout(() => {
+            setTimeout(async () => {
 
-                window.location.href = "../mode/index.html";
+                try {
+                    const result = await Bootstrap.init();
 
-            }, 1000);
+                    if (result.status === "MODE_SELECT") {
+                        sessionStorage.setItem(
+                            "nekko_mode_context",
+                            JSON.stringify({
+                                user: result.user,
+                                company: result.company,
+                                membership: result.membership,
+                                stores: result.stores
+                            })
+                        );
+
+                        window.location.href = "../mode/index.html";
+                        return;
+                    }
+
+                    if (result.status === "READY") {
+                        window.location.href = "../menu/index.html";
+                        return;
+                    }
+
+                    if (result.status === "COMPANY") {
+                        window.location.href = "../company/create.html";
+                        return;
+                    }
+
+                    if (result.status === "STORE") {
+                        window.location.href = "../store/create.html";
+                        return;
+                    }
+
+                    throw new Error("Não foi possível carregar os modos da conta atual.");
+
+                } catch (bootstrapError) {
+                    console.error("Erro ao reconstruir o contexto após criar loja:", bootstrapError);
+                    showMessage(
+                        bootstrapError.message || "Loja criada, mas não foi possível carregar os modos."
+                    );
+                }
+
+            }, 500);
 
         } catch (err) {
 
