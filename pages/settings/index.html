@@ -1243,6 +1243,25 @@ main > section:nth-of-type(3) > div:last-child > div:not(#subscriptionCard)::bef
                         Carregando informações de cobrança...
                     </p>
                     <p id="subscriptionNotice" class="text-xs text-slate-500 mt-3 leading-relaxed"></p>
+
+                    <div class="flex flex-wrap gap-2 mt-5 pt-4 border-t border-[#26332B]">
+                        <a
+                            id="manageSubscriptionPlansButton"
+                            href="../subscription/index.html"
+                            class="inline-flex items-center justify-center gap-2 rounded-xl border border-green-500/25 bg-green-500/10 px-4 py-2.5 text-xs font-bold text-green-300 transition hover:bg-green-500/15 hover:border-green-400/40"
+                        >
+                            <i data-lucide="layers" class="w-4 h-4"></i>
+                            Ver planos disponíveis
+                        </a>
+                        <button
+                            id="reconcileSubscriptionButton"
+                            type="button"
+                            class="hidden inline-flex items-center justify-center gap-2 rounded-xl border border-[#354238] bg-[#151D17] px-4 py-2.5 text-xs font-bold text-slate-200 transition hover:border-green-500/40 hover:text-green-300 disabled:opacity-50 disabled:cursor-wait"
+                        >
+                            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                            <span data-button-label>Sincronizar assinatura</span>
+                        </button>
+                    </div>    
                 </div>
 
             </div>
