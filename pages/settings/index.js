@@ -94,6 +94,11 @@ document.addEventListener(
             // ---------------------------------
             await loadCompanySubscription();
 
+            const reconcileSubscriptionButton = document.getElementById("reconcileSubscriptionButton");
+            if (reconcileSubscriptionButton) {
+                reconcileSubscriptionButton.addEventListener("click", reconcileCompanySubscription);
+            }
+
 
             // ---------------------------------
             // Carregar permissões
@@ -4165,6 +4170,13 @@ async function loadCompanySubscription() {
         const badge = document.getElementById("subscriptionEnvironment");
         if (badge) badge.classList.toggle("hidden", !testEnvironment);
 
+        const reconcileButton = document.getElementById("reconcileSubscriptionButton");
+        const canReconcile = testEnvironment && ["pending", "active", "past_due"].includes(status);
+        if (reconcileButton) {
+            reconcileButton.classList.toggle("hidden", !canReconcile);
+            reconcileButton.dataset.subscriptionId = subscription.id;
+        }
+
         if (testEnvironment) {
             setText("subscriptionNotice", "Registro de ambiente de testes. Esta confirmação não representa uma cobrança real.");
         } else if (subscription.cancel_at_period_end) {
@@ -4184,5 +4196,62 @@ async function loadCompanySubscription() {
         setText("subscriptionNextPayment", "—");
         setText("subscriptionBillingMethod", "Não foi possível carregar os dados de cobrança.");
         setText("subscriptionNotice", "Nenhum dado da assinatura foi alterado.");
+    }
+}
+
+
+/* Sincroniza a assinatura de teste consultando o estado real no Mercado Pago. */
+async function reconcileCompanySubscription() {
+    const button = document.getElementById("reconcileSubscriptionButton");
+    const label = button?.querySelector("[data-button-label]");
+    if (!button || !appContext?.company?.id) return;
+
+    const originalLabel = label?.textContent || "Sincronizar assinatura";
+    button.disabled = true;
+    if (label) label.textContent = "Consultando Mercado Pago...";
+
+    try {
+        const { data, error } = await supabaseClient.functions.invoke(
+            "reconcile-test-subscription",
+            {
+                body: {
+                    company_id: appContext.company.id,
+                    subscription_id: button.dataset.subscriptionId
+                }
+            }
+        );
+
+        if (error) {
+            let message = error.message || "Não foi possível sincronizar a assinatura.";
+            if (error.context && typeof error.context.json === "function") {
+                try {
+                    const details = await error.context.json();
+                    message = details.error || details.message || message;
+                } catch (_) {}
+            }
+            throw new Error(message);
+        }
+
+        if (!data?.success) {
+            throw new Error(data?.error || "O Mercado Pago não confirmou a sincronização.");
+        }
+
+        await loadCompanySubscription();
+        const statusLabels = {
+            active: "ativa",
+            pending: "pendente",
+            past_due: "com pagamento pendente",
+            canceled: "cancelada"
+        };
+        window.alert(
+            `Assinatura consultada com sucesso. Status atual: ${statusLabels[data.status] || data.status || "atualizado"}.`
+        );
+    } catch (error) {
+        console.error("[NEKKO OS] Erro ao sincronizar assinatura:", error);
+        window.alert(error.message || "Não foi possível sincronizar a assinatura. Tente novamente.");
+    } finally {
+        button.disabled = false;
+        if (label) label.textContent = originalLabel;
+        if (window.lucide) window.lucide.createIcons();
     }
 }
