@@ -87,12 +87,36 @@ body::after{
 }
 
 header,
-main,
-#companyModal,
-#storesModal{
+main{
     position:relative;
     z-index:1;
 }
+
+/* Modais ficam presos à viewport, nunca ao fluxo da página. */
+#companyModal,
+#storesModal{
+    position:fixed !important;
+    inset:0 !important;
+    z-index:200 !important;
+    width:100%;
+    min-height:100vh;
+    align-items:center;
+    justify-content:center;
+    overflow-y:auto;
+}
+
+#companyModal > div,
+#storesModal > div{
+    margin:auto;
+    animation:nekkoModalIn .24s cubic-bezier(.2,.8,.2,1) both;
+    transform-origin:center;
+}
+
+@keyframes nekkoModalIn{
+    from{opacity:0;transform:translateY(14px) scale(.97)}
+    to{opacity:1;transform:translateY(0) scale(1)}
+}
+
 
 /* ---------- HEADER ---------- */
 
