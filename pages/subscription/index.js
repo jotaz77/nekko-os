@@ -62,7 +62,7 @@
     async function loadSubscription() {
         const { data, error } = await supabaseClient
             .from("company_subscriptions")
-            .select("id, plan_id, status, amount, currency, billing_interval, created_at, next_payment_at, cancel_at_period_end")
+            .select("id, plan_id, status, amount, currency, created_at, next_payment_at, cancel_at_period_end")
             .eq("company_id", appContext.company.id)
             .order("created_at", { ascending: false })
             .limit(20);
