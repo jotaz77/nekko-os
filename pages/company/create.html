@@ -2,155 +2,214 @@
 <html lang="pt-BR">
 
 <head>
-
-    <link
-        rel="icon"
-        type="image/png"
-        href="../../assets/img/nekkoOS.png"
-    >
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Criar Empresa • Nekko OS</title>
+    <meta name="theme-color" content="#070b09">
+    <meta name="description" content="Configure sua empresa no NEKKO OS e prepare sua operação para começar.">
+    <link rel="icon" type="image/png" href="../../assets/img/nekkoOS.png">
+    <title>Criar empresa • NEKKO OS</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
-
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
+    <style>
+        :root {
+            color-scheme: dark;
+            --nekko-green: #19d68b;
+            --nekko-green-soft: rgba(25, 214, 139, .12);
+            --nekko-border: rgba(148, 163, 184, .14);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(ellipse at 18% 12%, rgba(18, 155, 99, .14), transparent 38%),
+                radial-gradient(ellipse at 88% 82%, rgba(18, 115, 76, .10), transparent 34%),
+                #070b09;
+        }
+
+        .glass-panel {
+            background: linear-gradient(145deg, rgba(17, 26, 22, .96), rgba(10, 15, 13, .98));
+            border: 1px solid var(--nekko-border);
+            box-shadow: 0 28px 90px rgba(0, 0, 0, .42), inset 0 1px rgba(255,255,255,.025);
+        }
+
+        .field {
+            width: 100%;
+            min-height: 52px;
+            border: 1px solid rgba(148, 163, 184, .18);
+            border-radius: 13px;
+            background: rgba(3, 8, 6, .58);
+            color: #f8fafc;
+            padding: 13px 15px;
+            outline: none;
+            transition: border-color .2s, box-shadow .2s, background .2s;
+        }
+
+        .field::placeholder { color: #64748b; }
+
+        .field:focus {
+            border-color: rgba(25, 214, 139, .75);
+            background: rgba(3, 8, 6, .82);
+            box-shadow: 0 0 0 4px rgba(25, 214, 139, .10);
+        }
+
+        .field-label {
+            display: block;
+            margin-bottom: 9px;
+            color: #d1d5db;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: .01em;
+        }
+
+        .primary-button {
+            min-height: 54px;
+            background: linear-gradient(105deg, #19d68b, #0dbb79);
+            color: #04120c;
+            box-shadow: 0 10px 28px rgba(13, 187, 121, .16);
+            transition: transform .2s, filter .2s, box-shadow .2s;
+        }
+
+        .primary-button:hover:not(:disabled) {
+            filter: brightness(1.08);
+            transform: translateY(-1px);
+            box-shadow: 0 14px 32px rgba(13, 187, 121, .23);
+        }
+
+        .primary-button:disabled { opacity: .65; cursor: wait; }
+
+        .message-success {
+            border: 1px solid rgba(25, 214, 139, .35);
+            background: rgba(25, 214, 139, .09);
+            color: #8df0c4;
+        }
+
+        .message-error {
+            border: 1px solid rgba(248, 113, 113, .38);
+            background: rgba(127, 29, 29, .16);
+            color: #fca5a5;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { transition-duration: .01ms !important; }
+        }
+    </style>
 </head>
 
-<body class="bg-[#0F1115] text-white min-h-screen flex items-center justify-center p-6">
-
-    <div class="w-full max-w-xl bg-[#1F242D] rounded-3xl shadow-2xl p-10 transition-all duration-300">
-
-        <div class="text-center mb-10">
-
-            <div class="text-6xl mb-4">
-                🏢
+<body class="flex min-h-screen items-center justify-center px-4 py-10 text-white sm:px-6">
+    <main class="w-full max-w-6xl">
+        <div class="mb-7 flex items-center justify-center gap-3 sm:justify-start">
+            <div class="flex h-11 w-11 items-center justify-center rounded-2xl border border-emerald-400/20 bg-emerald-400/10">
+                <img src="../../assets/img/nekkoOS.png" alt="" class="h-7 w-7 object-contain">
             </div>
-
-            <h1 class="text-3xl font-bold">
-                Bem-vindo ao Nekko OS
-            </h1>
-
-            <p class="text-slate-400 mt-2">
-                Antes de começar, vamos cadastrar sua empresa.
-            </p>
-
+            <div>
+                <p class="text-xs font-black tracking-[.24em] text-emerald-400">NEKKO SYSTEMS</p>
+                <p class="text-sm font-semibold tracking-wide text-slate-300">NEKKO OS</p>
+            </div>
         </div>
 
-        <!-- Mensagens -->
-        <div
-            id="message"
-            class="hidden rounded-xl p-4 mb-6 text-sm font-medium transition-all duration-300">
-        </div>
+        <section class="grid overflow-hidden rounded-[28px] glass-panel lg:grid-cols-[.88fr_1.12fr]">
+            <aside class="relative hidden flex-col justify-between overflow-hidden border-r border-white/[.07] bg-emerald-400/[.035] p-10 lg:flex xl:p-12">
+                <div class="absolute -left-24 top-28 h-72 w-72 rounded-full bg-emerald-400/[.07] blur-3xl"></div>
+                <div class="relative">
+                    <span class="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/[.07] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.18em] text-emerald-300">
+                        <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+                        Configuração inicial
+                    </span>
+                    <h1 class="mt-8 max-w-md text-4xl font-black leading-[1.12] tracking-tight xl:text-5xl">
+                        Sua operação começa <span class="text-emerald-400">por aqui.</span>
+                    </h1>
+                    <p class="mt-5 max-w-md text-sm leading-7 text-slate-400">
+                        Cadastre os dados da sua assistência técnica. Em seguida, vamos configurar sua primeira loja para deixar tudo pronto para operar.
+                    </p>
+                </div>
 
-        <form
-            id="companyForm"
-            class="space-y-6"
-            novalidate>
+                <div class="relative mt-14 space-y-5">
+                    <div class="flex items-center gap-4">
+                        <span class="flex h-9 w-9 items-center justify-center rounded-xl border border-emerald-400/30 bg-emerald-400/10 text-sm font-bold text-emerald-300">1</span>
+                        <div>
+                            <p class="text-sm font-semibold text-white">Dados da empresa</p>
+                            <p class="mt-0.5 text-xs text-slate-500">Identificação e contato</p>
+                        </div>
+                    </div>
+                    <div class="ml-4 h-6 border-l border-dashed border-slate-700"></div>
+                    <div class="flex items-center gap-4">
+                        <span class="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[.04] text-sm font-bold text-slate-500">2</span>
+                        <div>
+                            <p class="text-sm font-semibold text-slate-300">Primeira loja</p>
+                            <p class="mt-0.5 text-xs text-slate-500">Configuração da unidade</p>
+                        </div>
+                    </div>
+                </div>
 
-            <div>
+                <p class="relative mt-12 text-[11px] tracking-wide text-slate-600">GESTÃO INTELIGENTE. OPERAÇÃO SIMPLIFICADA.</p>
+            </aside>
 
-                <label
-                    for="name"
-                    class="block mb-2 text-sm text-slate-300">
+            <div class="p-6 sm:p-9 lg:p-10 xl:p-12">
+                <div class="mb-8 lg:hidden">
+                    <span class="text-[10px] font-black uppercase tracking-[.2em] text-emerald-400">Configuração inicial</span>
+                    <h1 class="mt-2 text-3xl font-black tracking-tight">Bem-vindo ao <span class="text-emerald-400">NEKKO OS</span></h1>
+                    <p class="mt-2 text-sm leading-6 text-slate-400">Vamos cadastrar sua empresa para preparar seu ambiente.</p>
+                </div>
 
-                    Nome da Empresa *
+                <div class="mb-8 hidden lg:block">
+                    <p class="text-xs font-bold uppercase tracking-[.18em] text-emerald-400">Etapa 01 / 02</p>
+                    <h2 class="mt-3 text-2xl font-bold tracking-tight">Cadastre sua empresa</h2>
+                    <p class="mt-2 text-sm leading-6 text-slate-400">Preencha as informações abaixo. Os campos marcados com * são obrigatórios.</p>
+                </div>
 
-                </label>
+                <div id="message" role="status" aria-live="polite" class="hidden mb-6 rounded-xl px-4 py-3 text-sm font-medium"></div>
 
-                <input
-                    id="name"
-                    type="text"
-                    required
-                    maxlength="120"
-                    autocomplete="organization"
-                    placeholder="Ex.: Assistência Catatau"
-                    class="w-full rounded-xl bg-[#2B313C] border border-[#3A414C] px-4 py-3 outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-500/30">
+                <form id="companyForm" class="space-y-5" novalidate>
+                    <div>
+                        <label for="name" class="field-label">Nome da empresa <span class="text-emerald-400">*</span></label>
+                        <input id="name" name="name" type="text" required maxlength="120" autocomplete="organization"
+                            placeholder="Ex.: JAYPHONES" class="field">
+                    </div>
 
+                    <div>
+                        <label for="document" class="field-label">CNPJ <span class="font-normal text-slate-500">(opcional)</span></label>
+                        <input id="document" name="document" type="text" maxlength="18" autocomplete="off"
+                            placeholder="00.000.000/0001-00" class="field">
+                    </div>
+
+                    <div>
+                        <label for="phone" class="field-label">Telefone comercial <span class="font-normal text-slate-500">(opcional)</span></label>
+                        <input id="phone" name="phone" type="tel" maxlength="20" autocomplete="tel"
+                            placeholder="(11) 99999-9999" class="field">
+                    </div>
+
+                    <div>
+                        <label for="email" class="field-label">E-mail da empresa <span class="font-normal text-slate-500">(opcional)</span></label>
+                        <input id="email" name="email" type="email" maxlength="120" autocomplete="email"
+                            placeholder="contato@empresa.com" class="field">
+                    </div>
+
+                    <div class="pt-3">
+                        <button id="btnCreate" type="submit" class="primary-button flex w-full items-center justify-center gap-2 rounded-xl px-5 text-sm font-extrabold">
+                            Criar empresa e continuar
+                            <svg aria-hidden="true" viewBox="0 0 20 20" fill="none" class="h-4 w-4">
+                                <path d="M4 10h12m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        <p class="mt-4 text-center text-[11px] leading-5 text-slate-500">
+                            Seus dados serão vinculados à sua conta autenticada no NEKKO OS.
+                        </p>
+                    </div>
+                </form>
             </div>
+        </section>
 
-            <div>
-
-                <label
-                    for="document"
-                    class="block mb-2 text-sm text-slate-300">
-
-                    CNPJ (Opcional)
-
-                </label>
-
-                <input
-                    id="document"
-                    type="text"
-                    maxlength="18"
-                    autocomplete="off"
-                    placeholder="00.000.000/0001-00"
-                    class="w-full rounded-xl bg-[#2B313C] border border-[#3A414C] px-4 py-3 outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-500/30">
-
-            </div>
-
-            <div>
-
-                <label
-                    for="phone"
-                    class="block mb-2 text-sm text-slate-300">
-
-                    Telefone
-
-                </label>
-
-                <input
-                    id="phone"
-                    type="tel"
-                    maxlength="20"
-                    autocomplete="tel"
-                    placeholder="(81) 99999-9999"
-                    class="w-full rounded-xl bg-[#2B313C] border border-[#3A414C] px-4 py-3 outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-500/30">
-
-            </div>
-
-            <div>
-
-                <label
-                    for="email"
-                    class="block mb-2 text-sm text-slate-300">
-
-                    E-mail
-
-                </label>    
-
-                <input
-                    id="email"
-                    type="email"
-                    maxlength="120"
-                    autocomplete="email"
-                    placeholder="contato@empresa.com"
-                    class="w-full rounded-xl bg-[#2B313C] border border-[#3A414C] px-4 py-3 outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-500/30">
-
-            </div>
-
-            <button
-                id="btnCreate"
-                type="submit"
-                class="w-full py-4 rounded-xl bg-green-500 hover:bg-green-600 transition-all duration-200 font-semibold text-lg disabled:opacity-60 disabled:cursor-not-allowed">
-
-                Criar Empresa
-
-            </button>
-
-        </form>
-
-    </div>
+        <p class="mt-6 text-center text-[10px] tracking-wide text-slate-600">NEKKO SYSTEMS <span class="mx-1 text-slate-700">•</span> CONTROLE TOTAL DA SUA ASSISTÊNCIA</p>
+    </main>
 
     <script src="../../assets/js/config.js"></script>
     <script src="../../assets/js/supabase.js"></script>
     <script src="../../assets/js/ui.js"></script>
     <script src="../../assets/js/roles.js"></script>
     <script src="create.js"></script>
-
 </body>
-
 </html>
