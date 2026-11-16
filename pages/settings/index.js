@@ -89,6 +89,11 @@ document.addEventListener(
                     appContext.company.id
                 );
 
+            // ---------------------------------
+            // Assinatura da empresa
+            // ---------------------------------
+            await loadCompanySubscription();
+
 
             // ---------------------------------
             // Carregar permissões
@@ -4355,3 +4360,114 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
+
+/* Assinatura da empresa: consulta somente leitura, respeitando RLS. */
+async function loadCompanySubscription() {
+    const setText = (id, value) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = value;
+    };
+    const statusEl = document.getElementById("subscriptionStatus");
+    const dateLabel = value => {
+        if (!value) return "Não informado";
+        const date = new Date(value);
+        return Number.isNaN(date.getTime()) ? "Não informado" :
+            new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "short", year: "numeric" }).format(date);
+    };
+    const moneyLabel = (value, currency = "BRL") => {
+        const amount = Number(value);
+        return Number.isFinite(amount) ?
+            new Intl.NumberFormat("pt-BR", { style: "currency", currency }).format(amount) :
+            "Valor não informado";
+    };
+    const statuses = {
+        active: "Ativa", pending: "Pendente", past_due: "Pagamento pendente",
+        trialing: "Em avaliação", canceled: "Cancelada", cancelled: "Cancelada",
+        incomplete: "Incompleta", unpaid: "Não paga", paused: "Pausada"
+    };
+    const methods = {
+        credit_card: "Cartão de crédito", pix: "Pix",
+        boleto: "Boleto", manual: "Cobrança manual"
+    };
+
+    try {
+        if (!appContext?.company?.id || typeof supabaseClient === "undefined") {
+            throw new Error("Contexto da empresa indisponível.");
+        }
+
+        const { data, error } = await supabaseClient
+            .from("company_subscriptions")
+            .select("id, plan_id, status, billing_provider, billing_method, amount, currency, next_payment_at, last_paid_at, cancel_at_period_end, created_at, metadata")
+            .eq("company_id", appContext.company.id)
+            .order("created_at", { ascending: false })
+            .limit(20);
+        if (error) throw error;
+
+        const rows = data || [];
+        const subscription =
+            rows.find(row => String(row.status || "").toLowerCase() === "active") ||
+            rows.find(row => ["pending", "past_due", "trialing", "incomplete", "unpaid", "paused"].includes(String(row.status || "").toLowerCase())) ||
+            rows[0];
+
+        if (!subscription) {
+            setText("subscriptionStatus", "Sem assinatura online");
+            if (statusEl) statusEl.dataset.state = "unavailable";
+            setText("subscriptionPlanName", "Plano não vinculado");
+            setText("subscriptionPrice", "Consulte o atendimento NEKKO");
+            setText("subscriptionLastPayment", "—");
+            setText("subscriptionNextPayment", "—");
+            setText("subscriptionBillingMethod", "Nenhuma cobrança online encontrada para esta empresa.");
+            setText("subscriptionNotice", "Acordos de cobrança manual ou legados não são alterados por esta tela.");
+            return;
+        }
+
+        let plan = null;
+        if (subscription.plan_id) {
+            const result = await supabaseClient
+                .from("subscription_plans")
+                .select("name, code, amount, currency, billing_interval")
+                .eq("id", subscription.plan_id)
+                .maybeSingle();
+            if (result.error) console.warn("[NEKKO OS] Erro ao consultar plano:", result.error);
+            else plan = result.data;
+        }
+
+        const status = String(subscription.status || "").toLowerCase();
+        setText("subscriptionStatus", statuses[status] || status || "Indefinido");
+        if (statusEl) statusEl.dataset.state = status;
+        setText("subscriptionPlanName", plan?.name || "Plano contratado");
+        setText("subscriptionPrice", `${moneyLabel(subscription.amount, subscription.currency)} / ${plan?.billing_interval === "year" ? "ano" : "mês"}`);
+        setText("subscriptionLastPayment", dateLabel(subscription.last_paid_at));
+        setText("subscriptionNextPayment", dateLabel(subscription.next_payment_at));
+
+        const method = methods[subscription.billing_method] || subscription.billing_method || "Não informado";
+        const provider = subscription.billing_provider === "mercadopago" ? "Mercado Pago" : (subscription.billing_provider || "Provedor não informado");
+        setText("subscriptionBillingMethod", `${method} • ${provider}`);
+
+        const metadata = subscription.metadata && typeof subscription.metadata === "object" ? subscription.metadata : {};
+        const testEnvironment = metadata.environment === "test";
+        const badge = document.getElementById("subscriptionEnvironment");
+        if (badge) badge.classList.toggle("hidden", !testEnvironment);
+
+        if (testEnvironment) {
+            setText("subscriptionNotice", "Registro de ambiente de testes. Esta confirmação não representa uma cobrança real.");
+        } else if (subscription.cancel_at_period_end) {
+            setText("subscriptionNotice", "O cancelamento está programado para o fim do período vigente.");
+        } else if (status === "active") {
+            setText("subscriptionNotice", "Assinatura ativa. Os dados são exibidos conforme o cadastro de cobrança.");
+        } else {
+            setText("subscriptionNotice", "Para alterar sua assinatura ou resolver pendências, entre em contato com o atendimento NEKKO.");
+        }
+    } catch (error) {
+        console.error("[NEKKO OS] Erro ao carregar assinatura:", error);
+        setText("subscriptionStatus", "Indisponível");
+        if (statusEl) statusEl.dataset.state = "unavailable";
+        setText("subscriptionPlanName", "Não foi possível consultar");
+        setText("subscriptionPrice", "Tente novamente mais tarde");
+        setText("subscriptionLastPayment", "—");
+        setText("subscriptionNextPayment", "—");
+        setText("subscriptionBillingMethod", "Não foi possível carregar os dados de cobrança.");
+        setText("subscriptionNotice", "Nenhum dado da assinatura foi alterado.");
+    }
+}
