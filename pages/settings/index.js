@@ -3560,8 +3560,8 @@ function openCompanyModal() {
         return;
 
     modal.classList.remove("hidden");
-
     modal.classList.add("flex");
+    document.body.classList.add("overflow-hidden");
 
 }
 
@@ -3722,8 +3722,8 @@ function closeCompanyModal() {
         return;
 
     modal.classList.add("hidden");
-
     modal.classList.remove("flex");
+    document.body.classList.remove("overflow-hidden");
 
 }
 
@@ -3885,13 +3885,9 @@ function openStoresModal() {
 
     renderStores();
 
-    modal.classList.remove(
-        "hidden"
-    );
-
-    modal.classList.add(
-        "flex"
-    );
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+    document.body.classList.add("overflow-hidden");
 
 }
 
@@ -3900,374 +3896,97 @@ function openStoresModal() {
 // =========================================
 
 function renderStores() {
+    const container = document.getElementById("storesEditContainer");
+    if (!container) return;
 
-    const container =
-        document.getElementById(
-            "storesEditContainer"
-        );
-
-    if (!container) {
-        return;
-    }
-
-    if (
-        !stores ||
-        stores.length === 0
-    ) {
-
+    if (!Array.isArray(stores) || stores.length === 0) {
         container.innerHTML = `
-            <div
-                class="
-                    rounded-2xl
-                    border
-                    border-dashed
-                    border-[#29322C]
-                    bg-[#0D120E]
-                    p-8
-                    text-center
-                "
-            >
-
-                <div
-                    class="
-                        mx-auto
-                        mb-4
-                        flex
-                        h-14
-                        w-14
-                        items-center
-                        justify-center
-                        rounded-2xl
-                        border
-                        border-[#29322C]
-                        bg-[#141A16]
-                        text-slate-500
-                    "
-                >
-                    <i
-                        data-lucide="store"
-                        class="h-6 w-6"
-                    ></i>
+            <div class="rounded-2xl border border-dashed border-[#29322C] bg-[#0D120E] p-8 text-center">
+                <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-[#29322C] bg-[#141A16] text-slate-500">
+                    <i data-lucide="store" class="h-6 w-6"></i>
                 </div>
-
-                <h4
-                    class="
-                        text-lg
-                        font-semibold
-                        text-white
-                    "
-                >
-                    Nenhuma loja encontrada
-                </h4>
-
-                <p
-                    class="
-                        mt-2
-                        text-sm
-                        text-slate-500
-                    "
-                >
-                    Nenhuma loja foi cadastrada para esta empresa.
-                </p>
-
-            </div>
-        `;
-
-        lucide.createIcons();
-
+                <h4 class="text-lg font-semibold text-white">Nenhuma loja encontrada</h4>
+                <p class="mt-2 text-sm text-slate-500">Nenhuma loja foi cadastrada para esta empresa.</p>
+            </div>`;
+        if (window.lucide) lucide.createIcons();
         return;
-
     }
 
-    container.innerHTML = stores
-        .map((store, index) => {
-
-            const storeName =
-                store.name ||
-                store.nome ||
-                `Loja ${index + 1}`;
-
-            const storeDocument =
-                store.document ||
-                store.cnpj ||
-                "";
-
-            const storePhone =
-                store.phone ||
-                store.telephone ||
-                "";
-
-            const storeEmail =
-                store.email ||
-                "";
-
-            const storeAddress =
-                store.address ||
-                store.address_line ||
-                store.endereco ||
-                "";
-
-            return `
-                <div
-                    class="
-                        rounded-2xl
-                        border
-                        border-[#29322C]
-                        bg-[#0D120E]
-                        p-5
-                    "
-                >
-
-                    <div
-                        class="
-                            flex
-                            items-start
-                            justify-between
-                            gap-4
-                        "
-                    >
-
-                        <div
-                            class="
-                                flex
-                                min-w-0
-                                items-center
-                                gap-3
-                            "
-                        >
-
-                            <div
-                                class="
-                                    flex
-                                    h-11
-                                    w-11
-                                    shrink-0
-                                    items-center
-                                    justify-center
-                                    rounded-xl
-                                    border
-                                    border-[#29322C]
-                                    bg-[#141A16]
-                                    text-green-400
-                                "
-                            >
-                                <i
-                                    data-lucide="store"
-                                    class="h-5 w-5"
-                                ></i>
-                            </div>
-
-                            <div
-                                class="min-w-0"
-                            >
-
-                                <h4
-                                    class="
-                                        truncate
-                                        text-lg
-                                        font-semibold
-                                        text-white
-                                    "
-                                >
-                                    ${escapeHtml(storeName)}
-                                </h4>
-
-                                <p
-                                    class="
-                                        mt-1
-                                        text-xs
-                                        text-slate-500
-                                    "
-                                >
-                                    Loja ${index + 1}
-                                </p>
-
-                            </div>
-
-                        </div>
-
-                        <span
-                            class="
-                                shrink-0
-                                rounded-full
-                                border
-                                border-green-500/20
-                                bg-green-500/10
-                                px-3
-                                py-1
-                                text-xs
-                                font-medium
-                                text-green-400
-                            "
-                        >
-                            Cadastrada
-                        </span>
-
-                    </div>
-
-                    <div
-                        class="
-                            mt-5
-                            grid
-                            gap-3
-                            md:grid-cols-2
-                        "
-                    >
-
-                        <div
-                            class="
-                                rounded-xl
-                                border
-                                border-[#222B25]
-                                bg-[#101510]
-                                p-3
-                            "
-                        >
-
-                            <p
-                                class="
-                                    text-xs
-                                    text-slate-500
-                                "
-                            >
-                                CNPJ / Documento
-                            </p>
-
-                            <p
-                                class="
-                                    mt-1
-                                    break-words
-                                    text-sm
-                                    text-slate-200
-                                "
-                            >
-                                ${
-                                    escapeHtml(
-                                        storeDocument || "Não informado"
-                                    )
-                                }
-                            </p>
-
-                        </div>
-
-                        <div
-                            class="
-                                rounded-xl
-                                border
-                                border-[#222B25]
-                                bg-[#101510]
-                                p-3
-                            "
-                        >
-
-                            <p
-                                class="
-                                    text-xs
-                                    text-slate-500
-                                "
-                            >
-                                Telefone
-                            </p>
-
-                            <p
-                                class="
-                                    mt-1
-                                    break-words
-                                    text-sm
-                                    text-slate-200
-                                "
-                            >
-                                ${
-                                    escapeHtml(
-                                        storePhone || "Não informado"
-                                    )
-                                }
-                            </p>
-
-                        </div>
-
-                        <div
-                            class="
-                                rounded-xl
-                                border
-                                border-[#222B25]
-                                bg-[#101510]
-                                p-3
-                            "
-                        >
-
-                            <p
-                                class="
-                                    text-xs
-                                    text-slate-500
-                                "
-                            >
-                                E-mail
-                            </p>
-
-                            <p
-                                class="
-                                    mt-1
-                                    break-words
-                                    text-sm
-                                    text-slate-200
-                                "
-                            >
-                                ${
-                                    escapeHtml(
-                                        storeEmail || "Não informado"
-                                    )
-                                }
-                            </p>
-
-                        </div>
-
-                        <div
-                            class="
-                                rounded-xl
-                                border
-                                border-[#222B25]
-                                bg-[#101510]
-                                p-3
-                            "
-                        >
-
-                            <p
-                                class="
-                                    text-xs
-                                    text-slate-500
-                                "
-                            >
-                                Endereço
-                            </p>
-
-                            <p
-                                class="
-                                    mt-1
-                                    break-words
-                                    text-sm
-                                    text-slate-200
-                                "
-                            >
-                                ${
-                                    escapeHtml(
-                                        storeAddress || "Não informado"
-                                    )
-                                }
-                            </p>
-
-                        </div>
-
-                    </div>
-
+    container.innerHTML = stores.map((store, index) => `
+        <form class="store-edit-form rounded-2xl border border-[#29322C] bg-[#0D120E] p-5 space-y-4" data-store-id="${escapeHtml(store.id)}">
+            <div class="flex items-center justify-between gap-3 border-b border-[#222B25] pb-4">
+                <div class="flex items-center gap-3 min-w-0">
+                    <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#29322C] bg-[#141A16] text-green-400"><i data-lucide="store" class="h-5 w-5"></i></div>
+                    <div class="min-w-0"><h4 class="truncate text-lg font-semibold text-white">${escapeHtml(store.name || `Loja ${index + 1}`)}</h4><p class="mt-1 text-xs text-slate-500">Editar informações da unidade</p></div>
                 </div>
-            `;
+                <span class="rounded-full border border-green-500/20 bg-green-500/10 px-3 py-1 text-xs font-medium text-green-400">Ativa</span>
+            </div>
+            <div class="grid gap-4 md:grid-cols-2">
+                <label class="block"><span class="mb-2 block text-xs font-medium text-slate-400">Nome da loja</span><input name="name" required maxlength="120" value="${escapeHtml(store.name || '')}" class="w-full rounded-xl border border-[#29372E] bg-[#090E0B] px-4 py-3 text-sm text-white outline-none focus:border-green-500"></label>
+                <label class="block"><span class="mb-2 block text-xs font-medium text-slate-400">Telefone</span><input name="phone" value="${escapeHtml(store.phone || '')}" class="w-full rounded-xl border border-[#29372E] bg-[#090E0B] px-4 py-3 text-sm text-white outline-none focus:border-green-500"></label>
+                <label class="block"><span class="mb-2 block text-xs font-medium text-slate-400">E-mail</span><input name="email" type="email" value="${escapeHtml(store.email || '')}" class="w-full rounded-xl border border-[#29372E] bg-[#090E0B] px-4 py-3 text-sm text-white outline-none focus:border-green-500"></label>
+                <label class="block"><span class="mb-2 block text-xs font-medium text-slate-400">CEP</span><input name="zip_code" value="${escapeHtml(store.zip_code || '')}" class="w-full rounded-xl border border-[#29372E] bg-[#090E0B] px-4 py-3 text-sm text-white outline-none focus:border-green-500"></label>
+                <label class="block"><span class="mb-2 block text-xs font-medium text-slate-400">Estado (UF)</span><input name="state" maxlength="2" value="${escapeHtml(store.state || '')}" class="w-full rounded-xl border border-[#29372E] bg-[#090E0B] px-4 py-3 text-sm text-white uppercase outline-none focus:border-green-500"></label>
+                <label class="block"><span class="mb-2 block text-xs font-medium text-slate-400">Cidade</span><input name="city" value="${escapeHtml(store.city || '')}" class="w-full rounded-xl border border-[#29372E] bg-[#090E0B] px-4 py-3 text-sm text-white outline-none focus:border-green-500"></label>
+                <label class="block"><span class="mb-2 block text-xs font-medium text-slate-400">Bairro</span><input name="neighborhood" value="${escapeHtml(store.neighborhood || '')}" class="w-full rounded-xl border border-[#29372E] bg-[#090E0B] px-4 py-3 text-sm text-white outline-none focus:border-green-500"></label>
+                <label class="block"><span class="mb-2 block text-xs font-medium text-slate-400">Rua / Logradouro</span><input name="street" value="${escapeHtml(store.street || '')}" class="w-full rounded-xl border border-[#29372E] bg-[#090E0B] px-4 py-3 text-sm text-white outline-none focus:border-green-500"></label>
+                <label class="block"><span class="mb-2 block text-xs font-medium text-slate-400">Número</span><input name="number" value="${escapeHtml(store.number || '')}" class="w-full rounded-xl border border-[#29372E] bg-[#090E0B] px-4 py-3 text-sm text-white outline-none focus:border-green-500"></label>
+                <label class="block md:col-span-2"><span class="mb-2 block text-xs font-medium text-slate-400">Complemento</span><input name="complement" value="${escapeHtml(store.complement || '')}" class="w-full rounded-xl border border-[#29372E] bg-[#090E0B] px-4 py-3 text-sm text-white outline-none focus:border-green-500"></label>
+            </div>
+            <div class="flex justify-end border-t border-[#222B25] pt-4">
+                <button type="submit" class="inline-flex items-center gap-2 rounded-xl bg-green-500 px-5 py-3 text-sm font-semibold text-black transition hover:bg-green-400 disabled:cursor-wait disabled:opacity-60"><i data-lucide="save" class="h-4 w-4"></i> Salvar alterações</button>
+            </div>
+        </form>`).join("");
 
-        })
-        .join("");
+    container.querySelectorAll(".store-edit-form").forEach(form => {
+        form.addEventListener("submit", saveStoreChanges);
+    });
+    if (window.lucide) lucide.createIcons();
+}
 
-    lucide.createIcons();
+async function saveStoreChanges(event) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const storeId = form.dataset.storeId;
+    const submitButton = form.querySelector('button[type="submit"]');
+    const formData = new FormData(form);
+    const payload = {
+        name: String(formData.get("name") || "").trim(),
+        phone: String(formData.get("phone") || "").trim() || null,
+        email: String(formData.get("email") || "").trim() || null,
+        zip_code: String(formData.get("zip_code") || "").trim() || null,
+        state: String(formData.get("state") || "").trim().toUpperCase() || null,
+        city: String(formData.get("city") || "").trim() || null,
+        neighborhood: String(formData.get("neighborhood") || "").trim() || null,
+        street: String(formData.get("street") || "").trim() || null,
+        number: String(formData.get("number") || "").trim() || null,
+        complement: String(formData.get("complement") || "").trim() || null
+    };
 
+    if (!payload.name) {
+        alert("Informe o nome da loja.");
+        return;
+    }
+
+    try {
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.dataset.originalText = submitButton.innerHTML;
+            submitButton.textContent = "Salvando...";
+        }
+
+        const updatedStore = await Api.updateStore(storeId, payload);
+        stores = stores.map(item => item.id === storeId ? { ...item, ...updatedStore } : item);
+        renderStores();
+        alert("Dados da loja atualizados com sucesso!");
+    } catch (error) {
+        console.error("Erro ao atualizar loja:", error);
+        alert(error?.message || "Não foi possível atualizar os dados da loja.");
+        if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.innerHTML = submitButton.dataset.originalText || "Salvar alterações";
+        }
+    }
 }
 
 // =========================================
@@ -4299,13 +4018,9 @@ function closeStoresModal() {
     if (!modal)
         return;
 
-    modal.classList.add(
-        "hidden"
-    );
-
-    modal.classList.remove(
-        "flex"
-    );
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+    document.body.classList.remove("overflow-hidden");
 
 }
 
