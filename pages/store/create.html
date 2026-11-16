@@ -1,240 +1,117 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-
-    <link
-        rel="icon"
-        type="image/png"
-        href="../../assets/img/nekkoOS.png"
-    >
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Criar Loja • Nekko OS</title>
-
+    <meta name="theme-color" content="#070b09">
+    <meta name="description" content="Configure sua primeira unidade no NEKKO OS.">
+    <link rel="icon" type="image/png" href="../../assets/img/nekkoOS.png">
+    <title>Criar loja • NEKKO OS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-
+    <style>
+        :root{color-scheme:dark;--green:#19d68b;--line:rgba(148,163,184,.14)}
+        *{box-sizing:border-box}
+        body{min-height:100vh;background:radial-gradient(ellipse at 16% 10%,rgba(18,155,99,.15),transparent 38%),radial-gradient(ellipse at 90% 88%,rgba(18,115,76,.10),transparent 34%),#070b09}
+        .glass-panel{background:linear-gradient(145deg,rgba(17,26,22,.97),rgba(10,15,13,.99));border:1px solid var(--line);box-shadow:0 28px 90px rgba(0,0,0,.42),inset 0 1px rgba(255,255,255,.025)}
+        .field{width:100%;min-height:50px;border:1px solid rgba(148,163,184,.18);border-radius:13px;background:rgba(3,8,6,.58);color:#f8fafc;padding:12px 14px;outline:none;transition:border-color .2s,box-shadow .2s,background .2s}
+        .field::placeholder{color:#64748b}.field:focus{border-color:rgba(25,214,139,.75);background:rgba(3,8,6,.82);box-shadow:0 0 0 4px rgba(25,214,139,.10)}
+        .field-label{display:block;margin-bottom:8px;color:#d1d5db;font-size:12px;font-weight:650;letter-spacing:.01em}
+        .primary-button{min-height:54px;background:linear-gradient(105deg,#19d68b,#0dbb79);color:#04120c;box-shadow:0 10px 28px rgba(13,187,121,.16);transition:transform .2s,filter .2s,box-shadow .2s}
+        .primary-button:hover:not(:disabled){filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 14px 32px rgba(13,187,121,.23)}
+        .primary-button:disabled{opacity:.65;cursor:wait}
+        .message-success{border:1px solid rgba(25,214,139,.35);background:rgba(25,214,139,.09);color:#8df0c4}
+        .message-error{border:1px solid rgba(248,113,113,.38);background:rgba(127,29,29,.16);color:#fca5a5}
+        @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important}}
+    </style>
 </head>
-
-<body class="bg-[#0F1115] text-white min-h-screen flex items-center justify-center p-6">
-
-    <div class="w-full max-w-2xl bg-[#1F242D] rounded-3xl shadow-2xl p-10">
-
-        <div class="text-center mb-10">
-
-            <div class="text-6xl mb-4">
-                🏪
-            </div>
-
-           <h1 id="pageTitle" class="text-3xl font-bold">
-                Primeira Loja
-            </h1>
-            
-            <p id="pageSubtitle" class="text-slate-400 mt-2">
-                Cadastre a primeira loja da sua empresa.
-            </p>
-
+<body class="flex min-h-screen items-center justify-center px-4 py-8 text-white sm:px-6">
+<main class="w-full max-w-6xl">
+    <div class="mb-7 flex items-center justify-center gap-3 sm:justify-start">
+        <div class="flex h-11 w-11 items-center justify-center rounded-2xl border border-emerald-400/20 bg-emerald-400/10">
+            <img src="../../assets/img/nekkoOS.png" alt="" class="h-7 w-7 object-contain">
         </div>
-
-        <div
-            id="message"
-            class="hidden rounded-xl p-4 mb-6 text-sm font-medium transition-all duration-300">
-        </div>
-
-        <form id="storeForm" class="space-y-6">
-
-            <!-- Nome -->
-
-            <div>
-
-                <label class="block mb-2 text-sm text-slate-300">
-                    Nome da Loja *
-                </label>
-
-                <input
-                    id="name"
-                    type="text"
-                    required
-                    placeholder="Ex.: Loja Centro"
-                    class="w-full rounded-xl bg-[#2B313C] border border-[#3A414C] px-4 py-3 outline-none transition focus:border-green-500">
-
-            </div>
-
-            <!-- Telefone / Email -->
-
-            <div class="grid grid-cols-2 gap-4">
-
-                <div>
-
-                    <label class="block mb-2 text-sm text-slate-300">
-                        Telefone
-                    </label>
-
-                    <input
-                        id="phone"
-                        type="text"
-                        placeholder="(81) 99999-9999"
-                        class="w-full rounded-xl bg-[#2B313C] border border-[#3A414C] px-4 py-3 outline-none transition focus:border-green-500">
-
-                </div>
-
-                <div>
-
-                    <label class="block mb-2 text-sm text-slate-300">
-                        E-mail
-                    </label>
-
-                    <input
-                        id="email"
-                        type="email"
-                        placeholder="loja@email.com"
-                        class="w-full rounded-xl bg-[#2B313C] border border-[#3A414C] px-4 py-3 outline-none transition focus:border-green-500">
-
-                </div>
-
-            </div>
-
-            <!-- Rua -->
-
-            <div>
-
-                <label class="block mb-2 text-sm text-slate-300">
-                    Rua
-                </label>
-
-                <input
-                    id="street"
-                    type="text"
-                    placeholder="Rua das Flores"
-                    class="w-full rounded-xl bg-[#2B313C] border border-[#3A414C] px-4 py-3 outline-none transition focus:border-green-500">
-
-            </div>
-
-            <!-- Número / Bairro -->
-
-            <div class="grid grid-cols-3 gap-4">
-
-                <div>
-
-                    <label class="block mb-2 text-sm text-slate-300">
-                        Número
-                    </label>
-
-                    <input
-                        id="number"
-                        type="text"
-                        placeholder="123"
-                        class="w-full rounded-xl bg-[#2B313C] border border-[#3A414C] px-4 py-3 outline-none transition focus:border-green-500">
-
-                </div>
-
-                <div class="col-span-2">
-
-                    <label class="block mb-2 text-sm text-slate-300">
-                        Bairro
-                    </label>
-
-                    <input
-                        id="neighborhood"
-                        type="text"
-                        placeholder="Centro"
-                        class="w-full rounded-xl bg-[#2B313C] border border-[#3A414C] px-4 py-3 outline-none transition focus:border-green-500">
-
-                </div>
-
-            </div>
-
-            <!-- Complemento -->
-
-            <div>
-
-                <label class="block mb-2 text-sm text-slate-300">
-                    Complemento
-                </label>
-
-                <input
-                    id="complement"
-                    type="text"
-                    placeholder="Sala, bloco, etc."
-                    class="w-full rounded-xl bg-[#2B313C] border border-[#3A414C] px-4 py-3 outline-none transition focus:border-green-500">
-
-            </div>
-
-            <!-- Cidade / Estado -->
-
-            <div class="grid grid-cols-3 gap-4">
-
-                <div class="col-span-2">
-
-                    <label class="block mb-2 text-sm text-slate-300">
-                        Cidade
-                    </label>
-
-                    <input
-                        id="city"
-                        type="text"
-                        placeholder="Recife"
-                        class="w-full rounded-xl bg-[#2B313C] border border-[#3A414C] px-4 py-3 outline-none transition focus:border-green-500">
-
-                </div>
-
-                <div>
-
-                    <label class="block mb-2 text-sm text-slate-300">
-                        UF
-                    </label>
-
-                    <input
-                        id="state"
-                        maxlength="2"
-                        type="text"
-                        placeholder="PE"
-                        class="w-full rounded-xl bg-[#2B313C] border border-[#3A414C] px-4 py-3 outline-none uppercase transition focus:border-green-500">
-
-                </div>
-
-            </div>
-
-            <!-- CEP -->
-
-            <div>
-
-                <label class="block mb-2 text-sm text-slate-300">
-                    CEP
-                </label>
-
-                <input
-                    id="zip"
-                    type="text"
-                    placeholder="50000-000"
-                    class="w-full rounded-xl bg-[#2B313C] border border-[#3A414C] px-4 py-3 outline-none transition focus:border-green-500">
-
-            </div>
-
-            <!-- Botão -->
-
-            <button
-                id="btnCreate"
-                type="submit"
-                class="w-full py-4 rounded-xl bg-green-500 hover:bg-green-600 transition font-semibold text-lg">
-
-                Criar Loja
-
-            </button>
-
-        </form>
-
+        <div><p class="text-xs font-black tracking-[.24em] text-emerald-400">NEKKO SYSTEMS</p><p class="text-sm font-semibold tracking-wide text-slate-300">NEKKO OS</p></div>
     </div>
 
-    <script src="../../assets/js/config.js"></script>
-    <script src="../../assets/js/supabase.js"></script>
-    <script src="../../assets/js/ui.js"></script>
+    <section class="grid overflow-hidden rounded-[28px] glass-panel lg:grid-cols-[.82fr_1.18fr]">
+        <aside class="relative hidden flex-col justify-between overflow-hidden border-r border-white/[.07] bg-emerald-400/[.035] p-10 lg:flex xl:p-12">
+            <div class="absolute -left-24 top-28 h-72 w-72 rounded-full bg-emerald-400/[.07] blur-3xl"></div>
+            <div class="relative">
+                <span class="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/[.07] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.18em] text-emerald-300"><span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>Configuração inicial</span>
+                <h1 class="mt-8 max-w-md text-4xl font-black leading-[1.12] tracking-tight xl:text-5xl">Sua primeira unidade. <span class="text-emerald-400">Sua operação.</span></h1>
+                <p class="mt-5 max-w-md text-sm leading-7 text-slate-400">Agora vamos cadastrar a loja onde sua equipe vai gerenciar ordens de serviço, estoque, vendas e atendimento.</p>
+            </div>
+            <div class="relative mt-14 space-y-5">
+                <div class="flex items-center gap-4"><span class="flex h-9 w-9 items-center justify-center rounded-xl border border-emerald-400/30 bg-emerald-400/10 text-sm font-bold text-emerald-300">✓</span><div><p class="text-sm font-semibold text-white">Dados da empresa</p><p class="mt-0.5 text-xs text-slate-500">Etapa concluída</p></div></div>
+                <div class="ml-4 h-6 border-l border-dashed border-slate-700"></div>
+                <div class="flex items-center gap-4"><span class="flex h-9 w-9 items-center justify-center rounded-xl border border-emerald-400/30 bg-emerald-400/10 text-sm font-bold text-emerald-300">2</span><div><p class="text-sm font-semibold text-white">Primeira loja</p><p class="mt-0.5 text-xs text-slate-500">Identificação e endereço da unidade</p></div></div>
+            </div>
+            <p class="relative mt-12 text-[11px] tracking-wide text-slate-600">GESTÃO INTELIGENTE. OPERAÇÃO SIMPLIFICADA.</p>
+        </aside>
 
-    <script src="create.js"></script>
+        <div class="p-6 sm:p-9 lg:p-10 xl:p-12">
+            <div class="mb-8 lg:hidden">
+                <span class="text-[10px] font-black uppercase tracking-[.2em] text-emerald-400">Configuração inicial · etapa 02</span>
+                <h1 id="mobileTitle" class="mt-2 text-3xl font-black tracking-tight">Primeira <span class="text-emerald-400">loja</span></h1>
+                <p id="mobileSubtitle" class="mt-2 text-sm leading-6 text-slate-400">Cadastre a unidade da sua empresa para começar.</p>
+            </div>
+            <div class="mb-7 hidden lg:block">
+                <p class="text-xs font-bold uppercase tracking-[.18em] text-emerald-400">Etapa 02 / 02</p>
+                <h2 id="pageTitle" class="mt-3 text-2xl font-bold tracking-tight">Cadastre sua primeira loja</h2>
+                <p id="pageSubtitle" class="mt-2 text-sm leading-6 text-slate-400">Preencha os dados da unidade. Você poderá cadastrar outras lojas depois.</p>
+            </div>
+            <div id="message" role="status" aria-live="polite" class="hidden mb-6 rounded-xl px-4 py-3 text-sm font-medium"></div>
 
+            <form id="storeForm" class="space-y-5" novalidate>
+                <div>
+                    <label for="name" class="field-label">Nome da loja <span class="text-emerald-400">*</span></label>
+                    <input id="name" name="name" type="text" required maxlength="120" autocomplete="organization" placeholder="Ex.: Loja Centro" class="field">
+                </div>
+
+                <div class="grid gap-4 sm:grid-cols-2">
+                    <div><label for="phone" class="field-label">Telefone comercial <span class="font-normal text-slate-500">(opcional)</span></label><input id="phone" name="phone" type="tel" maxlength="20" autocomplete="tel" placeholder="(11) 99999-9999" class="field"></div>
+                    <div><label for="email" class="field-label">E-mail da loja <span class="font-normal text-slate-500">(opcional)</span></label><input id="email" name="email" type="email" maxlength="120" autocomplete="email" placeholder="loja@empresa.com" class="field"></div>
+                </div>
+
+                <div class="border-t border-white/[.07] pt-5">
+                    <div class="mb-4 flex items-center justify-between gap-3">
+                        <div><p class="text-sm font-bold text-white">Endereço da unidade</p><p class="mt-1 text-xs text-slate-500">Informe o CEP para preencher o endereço automaticamente.</p></div>
+                        <span class="hidden rounded-full border border-emerald-400/20 bg-emerald-400/[.07] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-emerald-300 sm:inline-flex">Busca por CEP</span>
+                    </div>
+                    <div class="mb-4">
+                        <label for="zip" class="field-label">CEP</label>
+                        <div class="relative"><input id="zip" name="zip" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="9" placeholder="00000-000" class="field pr-28"><span id="cepStatus" class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-slate-500" aria-live="polite">ViaCEP</span></div>
+                    </div>
+                    <div class="mb-4"><label for="street" class="field-label">Rua / Logradouro</label><input id="street" name="street" type="text" autocomplete="address-line1" placeholder="Rua das Flores" class="field"></div>
+                    <div class="grid gap-4 sm:grid-cols-[.7fr_1.3fr]">
+                        <div><label for="number" class="field-label">Número</label><input id="number" name="number" type="text" autocomplete="off" placeholder="123" class="field"></div>
+                        <div><label for="neighborhood" class="field-label">Bairro</label><input id="neighborhood" name="neighborhood" type="text" autocomplete="address-level3" placeholder="Centro" class="field"></div>
+                    </div>
+                    <div class="mt-4"><label for="complement" class="field-label">Complemento <span class="font-normal text-slate-500">(opcional)</span></label><input id="complement" name="complement" type="text" autocomplete="address-line2" placeholder="Sala, bloco, referência..." class="field"></div>
+                    <div class="mt-4 grid gap-4 sm:grid-cols-[1.35fr_.65fr]">
+                        <div><label for="city" class="field-label">Cidade</label><input id="city" name="city" type="text" autocomplete="address-level2" placeholder="São Paulo" class="field"></div>
+                        <div><label for="state" class="field-label">UF</label><input id="state" name="state" type="text" maxlength="2" autocomplete="address-level1" placeholder="SP" class="field uppercase"></div>
+                    </div>
+                </div>
+
+                <div class="pt-3">
+                    <button id="btnCreate" type="submit" class="primary-button flex w-full items-center justify-center gap-2 rounded-xl px-5 text-sm font-extrabold">
+                        Criar loja e continuar
+                        <svg aria-hidden="true" viewBox="0 0 20 20" fill="none" class="h-4 w-4"><path d="M4 10h12m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                    <p class="mt-4 text-center text-[11px] leading-5 text-slate-500">Você poderá atualizar os dados da unidade nas configurações do sistema.</p>
+                </div>
+            </form>
+        </div>
+    </section>
+    <p class="mt-6 text-center text-[10px] tracking-wide text-slate-600">NEKKO SYSTEMS <span class="mx-1 text-slate-700">•</span> CONTROLE TOTAL DA SUA ASSISTÊNCIA</p>
+</main>
+<script src="../../assets/js/config.js"></script>
+<script src="../../assets/js/supabase.js"></script>
+<script src="../../assets/js/ui.js"></script>
+<script src="../../assets/js/roles.js"></script>
+<script src="../../assets/js/bootstrap.js"></script>
+<script src="create.js"></script>
 </body>
-
 </html>
