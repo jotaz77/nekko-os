@@ -98,6 +98,7 @@ document.addEventListener(
             if (reconcileSubscriptionButton) {
                 reconcileSubscriptionButton.addEventListener("click", reconcileCompanySubscription);
             }
+            void reconcilePendingTestSubscription();
 
 
             // ---------------------------------
@@ -4200,11 +4201,27 @@ async function loadCompanySubscription() {
 }
 
 
+async function reconcilePendingTestSubscription() {
+    const button = document.getElementById("reconcileSubscriptionButton");
+    const status = document.getElementById("subscriptionStatus");
+    const subscriptionId = button?.dataset.subscriptionId;
+    if (!subscriptionId) return;
+
+    for (const delay of [0, 5000, 15000, 30000]) {
+        if (delay) await new Promise(resolve => setTimeout(resolve, delay));
+        if (button.classList.contains("hidden") || button.dataset.subscriptionId !== subscriptionId ||
+            status?.dataset.state !== "pending") return;
+        if (document.hidden || button.disabled) continue;
+
+        await reconcileCompanySubscription(null, { silent: true });
+    }
+}
+
 /* Sincroniza a assinatura de teste consultando o estado real no Mercado Pago. */
-async function reconcileCompanySubscription() {
+async function reconcileCompanySubscription(_event, { silent = false } = {}) {
     const button = document.getElementById("reconcileSubscriptionButton");
     const label = button?.querySelector("[data-button-label]");
-    if (!button || !appContext?.company?.id) return;
+    if (!button || button.disabled || !button.dataset.subscriptionId || !appContext?.company?.id) return;
 
     const originalLabel = label?.textContent || "Sincronizar assinatura";
     button.disabled = true;
@@ -4237,6 +4254,7 @@ async function reconcileCompanySubscription() {
         }
 
         await loadCompanySubscription();
+        if (silent) return;
         const statusLabels = {
             active: "ativa",
             pending: "pendente",
@@ -4248,7 +4266,7 @@ async function reconcileCompanySubscription() {
         );
     } catch (error) {
         console.error("[NEKKO OS] Erro ao sincronizar assinatura:", error);
-        window.alert(error.message || "Não foi possível sincronizar a assinatura. Tente novamente.");
+        if (!silent) window.alert(error.message || "Não foi possível sincronizar a assinatura. Tente novamente.");
     } finally {
         button.disabled = false;
         if (label) label.textContent = originalLabel;
