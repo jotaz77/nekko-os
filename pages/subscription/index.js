@@ -1,6 +1,4 @@
 // NEKKO OS — Página de planos e contratação
-// Não altera a tela de Configurações nem grava assinaturas diretamente.
-// A criação do checkout e a proteção contra duplicidade permanecem no Edge Function.
 
 (() => {
     const ACTIVE_OR_BLOCKING_STATUSES = new Set([
@@ -12,6 +10,7 @@
     let appContext = null;
     let currentSubscription = null;
     let plans = [];
+    let checkoutInProgress = false;
 
     function setState(message, type = "info") {
         const el = $("pageState");
@@ -156,15 +155,17 @@
     }
 
     async function startCheckout(planCode, button) {
-        if (!appContext?.company?.id || !planCode || currentSubscription) return;
+        if (!appContext?.company?.id || !planCode || currentSubscription || checkoutInProgress) return;
 
         const confirmed = window.confirm(
             "Você será direcionado ao Mercado Pago para autorizar a assinatura mensal. Deseja continuar?"
         );
         if (!confirmed) return;
 
+        checkoutInProgress = true;
+        const planButtons = $("plansGrid").querySelectorAll("[data-plan-code]");
+        planButtons.forEach(planButton => { planButton.disabled = true; });
         const originalText = button.textContent;
-        button.disabled = true;
         button.innerHTML = '<span class="spinner" aria-hidden="true"></span> Preparando checkout...';
 
         try {
@@ -200,10 +201,15 @@
         } catch (error) {
             console.error("[NEKKO OS] Erro ao iniciar checkout:", error);
             window.alert(error.message || "Não foi possível iniciar a contratação. Tente novamente.");
-            button.disabled = false;
+            checkoutInProgress = false;
+            planButtons.forEach(planButton => { planButton.disabled = false; });
             button.textContent = originalText;
         }
     }
+
+    window.addEventListener("pageshow", event => {
+        if (event.persisted && checkoutInProgress) window.location.reload();
+    });
 
     document.addEventListener("DOMContentLoaded", async () => {
         try {
