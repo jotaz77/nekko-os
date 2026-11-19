@@ -71,15 +71,17 @@
         .laptop-figure{width:87%}
         .phone{position:absolute;z-index:1;right:0;bottom:0;width:21%}
         .laptop{padding:0 4%}
-        .laptop .device-screen{aspect-ratio:16/10;border:clamp(3px,.8vw,8px) solid #252d29;border-radius:clamp(6px,1.4vw,16px) clamp(6px,1.4vw,16px) 2px 2px}
+        .laptop .device-screen{box-sizing:content-box;aspect-ratio:16/9;border:clamp(3px,.8vw,8px) solid #252d29;border-radius:clamp(6px,1.4vw,16px) clamp(6px,1.4vw,16px) 2px 2px}
         .laptop-base{height:clamp(5px,1vw,12px);margin:0 -4%;border-radius:1px 1px 45% 45%;background:linear-gradient(#66736a,#2a332e)}
         .phone .device-screen{aspect-ratio:9/19;border:clamp(3px,.75vw,7px) solid #283630;border-radius:clamp(8px,2vw,23px)}
         .device-screen{position:relative;display:grid;place-items:center;overflow:hidden;background:radial-gradient(ellipse at 50% 30%,#1b3527,#0a100d 75%);box-shadow:0 12px 30px #0006}
         .device-screen img{display:none;width:100%;height:100%;position:absolute;inset:0;object-fit:contain;background:#080d0a}
+        .laptop .device-screen img{object-fit:cover}
         .device-screen.has-preview img{display:block}
         .device-screen.has-preview .device-placeholder{visibility:hidden}
         .device-placeholder{color:#94a89b;font-size:clamp(.48rem,1.4vw,.83rem);text-align:center;padding:.25rem}
         .devices figcaption{margin-top:.9rem;text-align:center;color:#a7b7ac;font-size:.8rem}
+        .laptop-figure .laptop-caption{margin:0 0 .75rem;color:#d8f1e2;font-size:clamp(.85rem,2vw,1.1rem);font-weight:700}
         .spinner{width:18px;height:18px;border:2px solid rgba(6,16,9,.25);border-top-color:#061009;border-radius:50%;display:inline-block;animation:spin .7s linear infinite}
         @keyframes spin{to{transform:rotate(360deg)}}
         @media (max-width:740px){
@@ -130,6 +132,7 @@
 
         <section class="devices" aria-label="Prévias do NEKKO OS">
                 <figure class="laptop-figure">
+                    <figcaption class="laptop-caption">Modo CEO</figcaption>
                     <div class="laptop">
                         <div class="device-screen">
                             <span class="device-placeholder">Prévia em breve</span>
@@ -137,7 +140,6 @@
                         </div>
                         <div class="laptop-base" aria-hidden="true"></div>
                     </div>
-                    <figcaption>Notebook</figcaption>
                 </figure>
                 <figure class="phone">
                     <div class="device-screen">
