@@ -37,12 +37,19 @@
         .plan-price{margin-top:1.35rem;font-size:clamp(1.65rem,3.3vw,2.35rem);font-weight:850;letter-spacing:-.045em}
         .price-interval{color:#a2afa7;font-size:.9rem;font-weight:500;letter-spacing:normal}
         .billing-note{margin-top:1.15rem;font-size:.8rem;line-height:1.55}
-        .device-title{font-size:clamp(1.5rem,4vw,2.6rem);letter-spacing:-.035em;text-align:center;text-wrap:balance}
         :focus-visible{outline:2px solid #8ff2bc;outline-offset:4px}
         .panel{background:linear-gradient(145deg,rgba(17,24,20,.97),rgba(10,15,12,.97));border:1px solid #26342B;box-shadow:inset 0 1px 0 rgba(255,255,255,.025),0 24px 70px rgba(0,0,0,.22)}
         .plan-card{position:relative;display:flex;flex-direction:column;min-width:0;padding:clamp(1.1rem,2.7vw,1.7rem);border-radius:1.5rem;background:linear-gradient(145deg,#111914,#0B100D);border:1px solid #26342B;transition:transform .2s,border-color .2s,box-shadow .2s}
-        .plan-card:hover{transform:translateY(-3px);border-color:rgba(25,211,123,.5);box-shadow:0 18px 48px rgba(0,0,0,.24),0 0 30px rgba(25,211,123,.05)}
-        .plan-card.featured{border-color:rgba(25,211,123,.55);box-shadow:0 0 0 1px rgba(25,211,123,.10),0 20px 55px rgba(0,0,0,.2)}
+        .plan-card{animation:card-float 6s ease-in-out infinite}
+        .plan-card:nth-child(2){animation-delay:-2s}
+        .plan-card:nth-child(3){animation-delay:-4s}
+        @keyframes card-float{0%,100%{translate:0 0}50%{translate:0 -4px}}
+        @media (hover:hover){
+            .plan-card:hover{z-index:1;transform:translateY(-9px) scale(1.012);border-color:#46de92;box-shadow:0 22px 52px #0007,0 0 30px #19d37b18}
+        }
+        .plan-card.featured{border-color:#46de92;box-shadow:0 0 0 1px #46de9250,0 0 24px #19d37b25,0 20px 55px #0004}
+        .plan-kicker{display:flex;align-items:center;justify-content:space-between;gap:.5rem;flex-wrap:wrap;min-height:1.55rem}
+        .plan-badge{padding:.3rem .55rem;border:1px solid #46de9266;border-radius:2rem;background:#153624;color:#a4f7c5;font-size:.65rem;font-weight:800;line-height:1;white-space:nowrap}
         .primary-btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;margin-top:auto;padding:.85rem;border:0;border-radius:.75rem;background:linear-gradient(135deg,#19D37B,#12B968);color:#061009;font:inherit;font-size:.9rem;font-weight:800;cursor:pointer;transition:filter .2s,transform .2s}
         .primary-btn:hover:not(:disabled){filter:brightness(1.07);transform:translateY(-1px)}
         .primary-btn:disabled{opacity:.45;cursor:not-allowed}
@@ -60,9 +67,9 @@
         .plan-benefits ul{display:grid;gap:.65rem;list-style:none;padding:0;margin:0}
         .plan-benefits li{display:flex;align-items:center;gap:.6rem;color:#b4c3ba;font-size:.875rem}
         .plan-benefits li::before{content:"";width:.65rem;height:.38rem;flex:none;border:solid #46de92;border-width:0 0 2px 2px;transform:rotate(-45deg) translateY(-2px)}
-        .device-showcase{margin-top:clamp(3rem,8vw,6.75rem);padding:clamp(1.4rem,5vw,3.5rem);border-radius:2rem;background:radial-gradient(ellipse at 50% 100%,#132b1e,transparent 68%),#0c120f;overflow:hidden}
-        .devices{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,1fr);gap:clamp(.55rem,3vw,2.25rem);align-items:end;max-width:850px;margin:clamp(1.65rem,5vw,3.15rem) auto 0}
-        .devices figure{min-width:0}
+        .devices{position:relative;isolation:isolate;max-width:850px;margin:clamp(3.25rem,8vw,6.75rem) auto 0;padding-bottom:clamp(.35rem,2vw,1rem)}
+        .laptop-figure{width:87%}
+        .phone{position:absolute;z-index:1;right:0;bottom:0;width:21%}
         .laptop{padding:0 4%}
         .laptop .device-screen{aspect-ratio:16/10;border:clamp(3px,.8vw,8px) solid #252d29;border-radius:clamp(6px,1.4vw,16px) clamp(6px,1.4vw,16px) 2px 2px}
         .laptop-base{height:clamp(5px,1vw,12px);margin:0 -4%;border-radius:1px 1px 45% 45%;background:linear-gradient(#66736a,#2a332e)}
@@ -80,7 +87,7 @@
             .plan-profile{min-height:0}
         }
         @media (prefers-reduced-motion:reduce){
-            .ambient span,.spinner{animation:none}
+            .ambient span,.spinner,.plan-card{animation:none}
             .plan-card,.primary-btn{transition:none}
             .plan-card:hover,.primary-btn:hover:not(:disabled){transform:none}
         }
@@ -119,12 +126,10 @@
         <div id="pageState" class="panel page-state" role="status">Carregando seus dados e os planos disponíveis...</div>
         <section id="plansGrid" class="plans-grid" aria-label="Planos disponíveis"></section>
 
-        <p class="muted billing-note">Os recursos exibidos são gerais do NEKKO OS. Consulte a NEKKO para confirmar limites e diferenciais de cada plano. A cobrança recorrente é processada pelo Mercado Pago.</p>
+        <p class="muted billing-note">A cobrança recorrente é processada pelo Mercado Pago.</p>
 
-        <section class="device-showcase panel" aria-labelledby="deviceShowcaseTitle">
-            <h2 id="deviceShowcaseTitle" class="device-title">NEKKO OS no computador e no celular</h2>
-            <div class="devices">
-                <figure>
+        <section class="devices" aria-label="Prévias do NEKKO OS">
+                <figure class="laptop-figure">
                     <div class="laptop">
                         <div class="device-screen">
                             <span class="device-placeholder">Prévia em breve</span>
@@ -141,7 +146,6 @@
                     </div>
                     <figcaption>Celular</figcaption>
                 </figure>
-            </div>
         </section>
     </main>
 
