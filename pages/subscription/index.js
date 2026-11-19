@@ -6,6 +6,17 @@
         "incomplete", "unpaid", "paused"
     ]);
 
+    const PLAN_PROFILES = {
+        baixa_demanda: "Para assistências com menor volume de atendimentos.",
+        media_demanda: "Para assistências com volume intermediário de atendimentos.",
+        alta_demanda: "Para assistências com alto volume de atendimentos."
+    };
+    const PLATFORM_FEATURES = [
+        "Ordens de serviço",
+        "Registro de vendas",
+        "Dashboard de gestão"
+    ];
+
     const $ = id => document.getElementById(id);
     let appContext = null;
     let currentSubscription = null;
@@ -16,8 +27,7 @@
         const el = $("pageState");
         if (!el) return;
         el.textContent = message;
-        el.className = "panel rounded-2xl p-5 text-sm " +
-            (type === "error" ? "text-red-300 border-red-500/30" : "text-slate-300");
+        el.className = "panel page-state" + (type === "error" ? " is-error" : "");
         el.classList.remove("hidden");
     }
 
@@ -122,21 +132,26 @@
             return;
         }
 
-        plans.forEach((plan, index) => {
+        plans.forEach(plan => {
             const blocked = Boolean(currentSubscription);
             const interval = plan.billing_interval === "year" ? "ano" : "mês";
-            const featured = index === 1 && plans.length === 3;
+            const featured = plan.code === "media_demanda";
+            const description = plan.description?.trim();
+            const profile = description && description !== "Plano mensal NEKKO OS"
+                ? description
+                : PLAN_PROFILES[plan.code] ?? "Assinatura NEKKO OS";
             const card = document.createElement("article");
-            card.className = `plan-card rounded-3xl p-6 md:p-7 flex flex-col ${featured ? "featured" : ""}`;
+            card.className = `plan-card ${featured ? "featured" : ""}`;
             card.innerHTML = `
-                ${featured ? '<span class="absolute top-4 right-4 text-[9px] uppercase tracking-wider font-extrabold text-green-300 bg-green-500/10 border border-green-500/25 rounded-full px-3 py-1">Mais escolhido</span>' : ""}
-                <p class="text-[10px] tracking-[.2em] uppercase text-green-400 font-extrabold">NEKKO OS</p>
-                <h2 class="text-2xl font-black mt-3">${escapeHtml(plan.name)}</h2>
-                <p class="muted text-sm mt-2 min-h-10">${escapeHtml(plan.description || "Plano mensal NEKKO OS")}</p>
-                <p class="text-3xl font-black mt-7">${money(plan.amount, plan.currency || "BRL")}<span class="text-sm font-medium text-slate-400"> / ${interval}</span></p>
-                <div class="h-px bg-[#26342B] my-6"></div>
-                <p class="text-xs text-slate-400 mb-6">Cobrança recorrente processada pelo Mercado Pago.</p>
-                <button type="button" class="primary-btn w-full rounded-xl py-3.5 mt-auto" data-plan-code="${escapeHtml(plan.code)}" ${blocked ? "disabled" : ""}>
+                <p class="eyebrow">NEKKO OS</p>
+                <h2 class="plan-title">${escapeHtml(plan.name)}</h2>
+                <p class="muted plan-profile">${escapeHtml(profile)}</p>
+                <p class="plan-price">${money(plan.amount, plan.currency || "BRL")}<span class="price-interval"> / ${interval}</span></p>
+                <div class="plan-benefits">
+                    <p class="plan-benefits-title">Recursos do NEKKO OS</p>
+                    <ul>${PLATFORM_FEATURES.map(feature => `<li>${escapeHtml(feature)}</li>`).join("")}</ul>
+                </div>
+                <button type="button" class="primary-btn" data-plan-code="${escapeHtml(plan.code)}" ${blocked ? "disabled" : ""}>
                     ${blocked ? "Assinatura já vinculada" : "Assinar este plano"}
                 </button>
             `;
@@ -212,11 +227,18 @@
     });
 
     document.addEventListener("DOMContentLoaded", async () => {
+        document.querySelectorAll(".device-screen img").forEach(preview => {
+            const showPreview = () => {
+                if (preview.naturalWidth > 0) preview.closest(".device-screen").classList.add("has-preview");
+            };
+            preview.addEventListener("load", showPreview, { once: true });
+            if (preview.complete) showPreview();
+        });
+
         try {
             if (!(await loadContext())) return;
             await Promise.all([loadSubscription(), loadPlans()]);
             renderPlans();
-            if (window.lucide) window.lucide.createIcons();
         } catch (error) {
             console.error("[NEKKO OS] Erro na página de planos:", error);
             setState(error.message || "Não foi possível carregar os planos. Tente novamente mais tarde.", "error");
