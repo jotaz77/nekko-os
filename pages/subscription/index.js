@@ -17,6 +17,7 @@
         alta_demanda: ["Ordens de serviço ilimitadas", "Até 4 filiais", "Todos os recursos dos outros planos", "Emissão de nota fiscal"]
     };
     const PLATFORM_FEATURES = ["Registro de vendas", "Dashboard de gestão"];
+    const DAILY_TEST_COMPANY_ID = "39a3915a-9c0d-449c-9776-b93c650f222d";
 
     const $ = id => document.getElementById(id);
     let appContext = null;
@@ -137,6 +138,9 @@
             const blocked = Boolean(currentSubscription);
             const interval = plan.billing_interval === "year" ? "ano" : "mês";
             const featured = plan.code === "alta_demanda";
+            const showDailyTest = plan.code === "baixa_demanda" &&
+                appContext.company.id === DAILY_TEST_COMPANY_ID &&
+                new URLSearchParams(window.location.search).get("teste_diario") === "1";
             const features = [...(PLAN_FEATURES[plan.code] ?? []), ...PLATFORM_FEATURES];
             const description = plan.description?.trim();
             const profile = description && description !== "Plano mensal NEKKO OS"
@@ -159,6 +163,7 @@
                 <button type="button" class="primary-btn" data-plan-code="${escapeHtml(plan.code)}" ${blocked ? "disabled" : ""}>
                     ${blocked ? "Assinatura já vinculada" : "Assinar este plano"}
                 </button>
+                ${showDailyTest && !blocked ? `<button type="button" class="primary-btn" style="margin-top:.65rem" data-plan-code="${escapeHtml(plan.code)}" data-daily-test="true">Testar ONE diário · Sandbox</button>` : ""}
             `;
             grid.appendChild(card);
         });
@@ -177,8 +182,11 @@
     async function startCheckout(planCode, button) {
         if (!appContext?.company?.id || !planCode || currentSubscription || checkoutInProgress) return;
 
+        const dailyTest = button.dataset.dailyTest === "true";
         const confirmed = window.confirm(
-            "Você será direcionado ao Mercado Pago para autorizar a assinatura mensal. Deseja continuar?"
+            dailyTest
+                ? "Você será direcionado ao Mercado Pago para autorizar a assinatura diária no Sandbox. Deseja continuar?"
+                : "Você será direcionado ao Mercado Pago para autorizar a assinatura mensal. Deseja continuar?"
         );
         if (!confirmed) return;
 
@@ -194,7 +202,7 @@
             if (!session?.access_token) throw new Error("Sua sessão expirou. Entre novamente no NEKKO OS.");
 
             const response = await fetch(
-                `${CONFIG.SUPABASE_URL}/functions/v1/create-subscription-checkout`,
+                `${CONFIG.SUPABASE_URL}/functions/v1/${dailyTest ? "create-daily-test-checkout" : "create-subscription-checkout"}`,
                 {
                     method: "POST",
                     headers: {
