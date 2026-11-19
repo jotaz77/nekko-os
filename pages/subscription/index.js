@@ -11,11 +11,12 @@
         media_demanda: "Para assistências com volume intermediário de atendimentos.",
         alta_demanda: "Para assistências com alto volume de atendimentos."
     };
-    const PLATFORM_FEATURES = [
-        "Ordens de serviço",
-        "Registro de vendas",
-        "Dashboard de gestão"
-    ];
+    const PLAN_FEATURES = {
+        baixa_demanda: ["Até 10 ordens de serviço por semana", "1 loja por empresa"],
+        media_demanda: ["Até 15 ordens de serviço por semana", "Até 2 lojas por empresa"],
+        alta_demanda: ["Ordens de serviço ilimitadas", "Até 4 filiais", "Todos os recursos dos outros planos", "Emissão de nota fiscal"]
+    };
+    const PLATFORM_FEATURES = ["Registro de vendas", "Dashboard de gestão"];
 
     const $ = id => document.getElementById(id);
     let appContext = null;
@@ -135,7 +136,8 @@
         plans.forEach(plan => {
             const blocked = Boolean(currentSubscription);
             const interval = plan.billing_interval === "year" ? "ano" : "mês";
-            const featured = plan.code === "media_demanda";
+            const featured = plan.code === "alta_demanda";
+            const features = [...(PLAN_FEATURES[plan.code] ?? []), ...PLATFORM_FEATURES];
             const description = plan.description?.trim();
             const profile = description && description !== "Plano mensal NEKKO OS"
                 ? description
@@ -143,13 +145,16 @@
             const card = document.createElement("article");
             card.className = `plan-card ${featured ? "featured" : ""}`;
             card.innerHTML = `
-                <p class="eyebrow">NEKKO OS</p>
+                <div class="plan-kicker">
+                    <p class="eyebrow">NEKKO OS</p>
+                    ${featured ? '<span class="plan-badge">Mais escolhido</span>' : ""}
+                </div>
                 <h2 class="plan-title">${escapeHtml(plan.name)}</h2>
                 <p class="muted plan-profile">${escapeHtml(profile)}</p>
                 <p class="plan-price">${money(plan.amount, plan.currency || "BRL")}<span class="price-interval"> / ${interval}</span></p>
                 <div class="plan-benefits">
-                    <p class="plan-benefits-title">Recursos do NEKKO OS</p>
-                    <ul>${PLATFORM_FEATURES.map(feature => `<li>${escapeHtml(feature)}</li>`).join("")}</ul>
+                    <p class="plan-benefits-title">O que inclui</p>
+                    <ul>${features.map(feature => `<li>${escapeHtml(feature)}</li>`).join("")}</ul>
                 </div>
                 <button type="button" class="primary-btn" data-plan-code="${escapeHtml(plan.code)}" ${blocked ? "disabled" : ""}>
                     ${blocked ? "Assinatura já vinculada" : "Assinar este plano"}
