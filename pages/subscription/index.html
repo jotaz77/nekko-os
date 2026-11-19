@@ -6,58 +6,143 @@
     <meta name="theme-color" content="#070A08">
     <link rel="icon" type="image/png" href="../../assets/img/nekkoOS.png">
     <title>Planos e assinatura | NEKKO OS</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root{color-scheme:dark}
         *{box-sizing:border-box}
         body{margin:0;min-height:100vh;background:radial-gradient(850px 420px at 10% -10%,rgba(25,211,123,.10),transparent 65%),radial-gradient(700px 420px at 100% 20%,rgba(25,211,123,.05),transparent 65%),#070A08;color:#F8FAFC;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+        h1,h2,p,figure{margin:0}
+        .hidden{display:none}
+        .page-container{width:min(100%,72rem);margin-inline:auto;padding-inline:clamp(1rem,3vw,2rem)}
+        .page-header{border-bottom:1px solid #202c25;background:#0004}
+        .header-inner,.current-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+        .header-inner{padding-block:1.1rem}
+        .brand{display:flex;align-items:center;gap:.75rem;color:inherit;text-decoration:none}
+        .brand-title{display:block;margin-top:.2rem;font-size:1.05rem}
+        .eyebrow{display:block;color:#61e6a0;font-size:.65rem;letter-spacing:.19em;font-weight:800;text-transform:uppercase}
+        .back-link{color:#b7c4bc;text-decoration:none;font-size:.85rem}
+        .back-link:hover{color:#61e6a0}
+        .page-main{padding-block:clamp(2.5rem,7vw,5rem)}
+        .intro{max-width:48rem;margin-bottom:2rem}
+        .intro-title{font-size:clamp(2.1rem,5.6vw,4.05rem);line-height:1.05;letter-spacing:-.055em;font-weight:850;text-wrap:balance}
+        .intro-copy{margin-top:1rem;line-height:1.6}
+        .current-subscription{border-radius:1.35rem;padding:clamp(1.15rem,3vw,1.65rem);margin-bottom:1.5rem}
+        .current-title{margin-top:.4rem;font-size:1.45rem}
+        .current-details,.current-note{margin-top:.6rem;font-size:.875rem;line-height:1.5}
+        .current-badge{padding:.4rem .65rem;border-radius:2rem;border:1px solid #36825a;background:#133425;color:#a0f4c4;font-size:.75rem;font-weight:700}
+        .page-state{padding:.85rem 1rem;border-radius:1rem;color:#c2d1c8;font-size:.875rem;line-height:1.45}
+        .page-state.is-error{color:#ffb4b4;border-color:#72373e}
+        .plans-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.2rem;margin-top:1.35rem}
+        .plan-title{margin-top:.65rem;font-size:clamp(1.2rem,2.35vw,1.55rem);line-height:1.15;overflow-wrap:anywhere}
+        .plan-profile{margin-top:.55rem;font-size:.875rem;line-height:1.5;min-height:2.65rem}
+        .plan-price{margin-top:1.35rem;font-size:clamp(1.65rem,3.3vw,2.35rem);font-weight:850;letter-spacing:-.045em}
+        .price-interval{color:#a2afa7;font-size:.9rem;font-weight:500;letter-spacing:normal}
+        .billing-note{margin-top:1.15rem;font-size:.8rem;line-height:1.55}
+        .device-title{font-size:clamp(1.5rem,4vw,2.6rem);letter-spacing:-.035em;text-align:center;text-wrap:balance}
+        :focus-visible{outline:2px solid #8ff2bc;outline-offset:4px}
         .panel{background:linear-gradient(145deg,rgba(17,24,20,.97),rgba(10,15,12,.97));border:1px solid #26342B;box-shadow:inset 0 1px 0 rgba(255,255,255,.025),0 24px 70px rgba(0,0,0,.22)}
-        .plan-card{position:relative;background:linear-gradient(145deg,#111914,#0B100D);border:1px solid #26342B;transition:transform .2s,border-color .2s,box-shadow .2s}
+        .plan-card{position:relative;display:flex;flex-direction:column;min-width:0;padding:clamp(1.1rem,2.7vw,1.7rem);border-radius:1.5rem;background:linear-gradient(145deg,#111914,#0B100D);border:1px solid #26342B;transition:transform .2s,border-color .2s,box-shadow .2s}
         .plan-card:hover{transform:translateY(-3px);border-color:rgba(25,211,123,.5);box-shadow:0 18px 48px rgba(0,0,0,.24),0 0 30px rgba(25,211,123,.05)}
         .plan-card.featured{border-color:rgba(25,211,123,.55);box-shadow:0 0 0 1px rgba(25,211,123,.10),0 20px 55px rgba(0,0,0,.2)}
-        .primary-btn{background:linear-gradient(135deg,#19D37B,#12B968);color:#061009;font-weight:800;transition:filter .2s,transform .2s}
+        .primary-btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;margin-top:auto;padding:.85rem;border:0;border-radius:.75rem;background:linear-gradient(135deg,#19D37B,#12B968);color:#061009;font:inherit;font-size:.9rem;font-weight:800;cursor:pointer;transition:filter .2s,transform .2s}
         .primary-btn:hover:not(:disabled){filter:brightness(1.07);transform:translateY(-1px)}
         .primary-btn:disabled{opacity:.45;cursor:not-allowed}
-        .muted{color:#829087}
+        .muted{color:#a2afa7}
+        .ambient{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+        .ambient::before{content:"";position:absolute;inset:0;background:linear-gradient(rgba(126,216,160,.075) 1px,transparent 1px),linear-gradient(90deg,rgba(126,216,160,.075) 1px,transparent 1px);background-size:54px 54px;mask-image:linear-gradient(#000 0%,transparent 82%)}
+        .ambient span{position:absolute;display:block;width:min(65vw,780px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(28,180,104,.20),transparent 70%);animation:drift 23s ease-in-out infinite alternate}
+        .ambient span:first-child{top:-42%;left:-13%}
+        .ambient span:last-child{right:-24%;top:10%;opacity:.65;animation-delay:-11s;animation-duration:29s}
+        @keyframes drift{to{transform:translate3d(16vw,12vh,0) scale(1.18)}}
+        header,main{position:relative;z-index:1}
+        .brand-mark{display:block;width:48px;height:48px;object-fit:contain;flex:none}
+        .plan-benefits{margin:1.5rem 0;padding-top:1.15rem;border-top:1px solid #29382f}
+        .plan-benefits-title{font-size:.78rem;font-weight:700;color:#f0f8f3;margin-bottom:.8rem}
+        .plan-benefits ul{display:grid;gap:.65rem;list-style:none;padding:0;margin:0}
+        .plan-benefits li{display:flex;align-items:center;gap:.6rem;color:#b4c3ba;font-size:.875rem}
+        .plan-benefits li::before{content:"";width:.65rem;height:.38rem;flex:none;border:solid #46de92;border-width:0 0 2px 2px;transform:rotate(-45deg) translateY(-2px)}
+        .device-showcase{margin-top:clamp(3rem,8vw,6.75rem);padding:clamp(1.4rem,5vw,3.5rem);border-radius:2rem;background:radial-gradient(ellipse at 50% 100%,#132b1e,transparent 68%),#0c120f;overflow:hidden}
+        .devices{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,1fr);gap:clamp(.55rem,3vw,2.25rem);align-items:end;max-width:850px;margin:clamp(1.65rem,5vw,3.15rem) auto 0}
+        .devices figure{min-width:0}
+        .laptop{padding:0 4%}
+        .laptop .device-screen{aspect-ratio:16/10;border:clamp(3px,.8vw,8px) solid #252d29;border-radius:clamp(6px,1.4vw,16px) clamp(6px,1.4vw,16px) 2px 2px}
+        .laptop-base{height:clamp(5px,1vw,12px);margin:0 -4%;border-radius:1px 1px 45% 45%;background:linear-gradient(#66736a,#2a332e)}
+        .phone .device-screen{aspect-ratio:9/19;border:clamp(3px,.75vw,7px) solid #283630;border-radius:clamp(8px,2vw,23px)}
+        .device-screen{position:relative;display:grid;place-items:center;overflow:hidden;background:radial-gradient(ellipse at 50% 30%,#1b3527,#0a100d 75%);box-shadow:0 12px 30px #0006}
+        .device-screen img{display:none;width:100%;height:100%;position:absolute;inset:0;object-fit:contain;background:#080d0a}
+        .device-screen.has-preview img{display:block}
+        .device-screen.has-preview .device-placeholder{visibility:hidden}
+        .device-placeholder{color:#94a89b;font-size:clamp(.48rem,1.4vw,.83rem);text-align:center;padding:.25rem}
+        .devices figcaption{margin-top:.9rem;text-align:center;color:#a7b7ac;font-size:.8rem}
         .spinner{width:18px;height:18px;border:2px solid rgba(6,16,9,.25);border-top-color:#061009;border-radius:50%;display:inline-block;animation:spin .7s linear infinite}
         @keyframes spin{to{transform:rotate(360deg)}}
+        @media (max-width:740px){
+            .plans-grid{grid-template-columns:1fr}
+            .plan-profile{min-height:0}
+        }
+        @media (prefers-reduced-motion:reduce){
+            .ambient span,.spinner{animation:none}
+            .plan-card,.primary-btn{transition:none}
+            .plan-card:hover,.primary-btn:hover:not(:disabled){transform:none}
+        }
     </style>
 </head>
 <body>
-    <header class="border-b border-[#202C25] bg-black/25">
-        <div class="max-w-6xl mx-auto px-5 py-5 flex items-center justify-between gap-4">
-            <a href="../menu/index.html" class="flex items-center gap-3 text-white no-underline">
-                <span class="w-10 h-10 rounded-xl border border-green-500/20 bg-green-500/10 flex items-center justify-center"><i data-lucide="cat" class="w-5 h-5 text-green-400"></i></span>
-                <span><span class="block text-[9px] tracking-[.25em] font-extrabold text-green-400">NEKKO OS</span><strong class="text-lg">Planos e assinatura</strong></span>
+    <div class="ambient" aria-hidden="true"><span></span><span></span></div>
+    <header class="page-header">
+        <div class="page-container header-inner">
+            <a href="../menu/index.html" class="brand">
+                <img class="brand-mark" src="/assets/img/nekkoOS.png" alt="" width="48" height="48">
+                <span><span class="eyebrow">NEKKO OS</span><strong class="brand-title">Planos e assinatura</strong></span>
             </a>
-            <a href="../settings/index.html" class="text-sm text-slate-400 hover:text-green-300">Voltar às configurações</a>
+            <a href="../settings/index.html" class="back-link">Voltar às configurações</a>
         </div>
     </header>
 
-    <main class="max-w-6xl mx-auto px-5 py-12 md:py-16">
-        <section class="max-w-3xl mb-10">
-            <p class="text-[10px] tracking-[.25em] uppercase font-extrabold text-green-400">Escolha seu próximo nível</p>
-            <h1 class="text-3xl md:text-5xl font-black tracking-tight mt-3">Um plano para cada fase da sua assistência.</h1>
-            <p class="muted mt-4 leading-relaxed">Compare as opções do NEKKO OS e escolha a assinatura mensal que acompanha o ritmo da sua empresa.</p>
+    <main class="page-container page-main">
+        <section class="intro">
+            <h1 class="intro-title">Um plano para cada fase da sua assistência.</h1>
+            <p class="muted intro-copy">Compare as opções do NEKKO OS e escolha a assinatura mensal que acompanha o ritmo da sua empresa.</p>
         </section>
 
-        <section id="currentSubscription" class="panel rounded-3xl p-6 md:p-7 mb-8 hidden" aria-live="polite">
-            <div class="flex flex-wrap items-center justify-between gap-3">
+        <section id="currentSubscription" class="panel current-subscription hidden" aria-live="polite">
+            <div class="current-top">
                 <div>
-                    <p class="text-[10px] tracking-[.2em] uppercase text-green-400 font-extrabold">Sua assinatura</p>
-                    <h2 id="currentPlanName" class="text-2xl font-black mt-2">—</h2>
-                    <p id="currentPlanDetails" class="muted text-sm mt-1">—</p>
+                    <p class="eyebrow">Sua assinatura</p>
+                    <h2 id="currentPlanName" class="current-title">—</h2>
+                    <p id="currentPlanDetails" class="muted current-details">—</p>
                 </div>
-                <span id="currentStatus" class="rounded-full px-3 py-1.5 text-xs font-bold border border-green-500/30 bg-green-500/10 text-green-300">—</span>
+                <span id="currentStatus" class="current-badge">—</span>
             </div>
-            <p id="subscriptionLockMessage" class="text-sm text-slate-300 mt-5 leading-relaxed">Sua assinatura está vinculada a esta empresa. Para evitar cobranças duplicadas ou alterações indevidas, não é possível contratar outro plano enquanto ela estiver ativa.</p>
+            <p id="subscriptionLockMessage" class="current-note">Sua assinatura está vinculada a esta empresa. Para evitar cobranças duplicadas ou alterações indevidas, não é possível contratar outro plano enquanto ela estiver ativa.</p>
         </section>
 
-        <div id="pageState" class="panel rounded-2xl p-5 text-sm text-slate-300" role="status">Carregando seus dados e os planos disponíveis...</div>
-        <section id="plansGrid" class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-6" aria-label="Planos disponíveis"></section>
+        <div id="pageState" class="panel page-state" role="status">Carregando seus dados e os planos disponíveis...</div>
+        <section id="plansGrid" class="plans-grid" aria-label="Planos disponíveis"></section>
 
-        <p class="muted text-xs leading-relaxed mt-8 max-w-3xl">A contratação é processada pelo Mercado Pago em ambiente seguro. A assinatura só será considerada ativa depois da confirmação do provedor pelo fluxo de notificações do NEKKO OS. Os valores e condições exibidos são carregados do cadastro de planos.</p>
+        <p class="muted billing-note">Os recursos exibidos são gerais do NEKKO OS. Consulte a NEKKO para confirmar limites e diferenciais de cada plano. A cobrança recorrente é processada pelo Mercado Pago.</p>
+
+        <section class="device-showcase panel" aria-labelledby="deviceShowcaseTitle">
+            <h2 id="deviceShowcaseTitle" class="device-title">NEKKO OS no computador e no celular</h2>
+            <div class="devices">
+                <figure>
+                    <div class="laptop">
+                        <div class="device-screen">
+                            <span class="device-placeholder">Prévia em breve</span>
+                            <img src="/assets/img/nekko-os-notebook.png" alt="Tela do NEKKO OS no notebook" loading="lazy" decoding="async">
+                        </div>
+                        <div class="laptop-base" aria-hidden="true"></div>
+                    </div>
+                    <figcaption>Notebook</figcaption>
+                </figure>
+                <figure class="phone">
+                    <div class="device-screen">
+                        <span class="device-placeholder">Prévia em breve</span>
+                        <img src="/assets/img/nekko-os-celular.png" alt="Tela do NEKKO OS no celular" loading="lazy" decoding="async">
+                    </div>
+                    <figcaption>Celular</figcaption>
+                </figure>
+            </div>
+        </section>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -69,6 +154,5 @@
     <script src="../../assets/js/bootstrap.js"></script>
     <script src="../../assets/js/roles.js"></script>
     <script src="./index.js"></script>
-    <script>if(window.lucide)lucide.createIcons();</script>
 </body>
 </html>
