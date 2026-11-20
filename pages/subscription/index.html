@@ -51,6 +51,11 @@
         .plan-kicker{display:flex;align-items:center;justify-content:space-between;gap:.5rem;flex-wrap:wrap;min-height:1.55rem}
         .plan-badge{padding:.3rem .55rem;border:1px solid #46de9266;border-radius:2rem;background:#153624;color:#a4f7c5;font-size:.65rem;font-weight:800;line-height:1;white-space:nowrap}
         .primary-btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;margin-top:auto;padding:.85rem;border:0;border-radius:.75rem;background:linear-gradient(135deg,#19D37B,#12B968);color:#061009;font:inherit;font-size:.9rem;font-weight:800;cursor:pointer;transition:filter .2s,transform .2s}
+        .pending-actions{margin-top:1rem}
+        .pending-buttons{display:flex;flex-wrap:wrap;gap:.65rem}
+        .pending-buttons .primary-btn{width:auto;margin:0}
+        .pending-buttons .cancel-attempt{background:#111b16;color:#e2eee7;border:1px solid #35483b}
+        .pending-actions [role="status"]:not(:empty){margin-top:.65rem}
         .primary-btn:hover:not(:disabled){filter:brightness(1.07);transform:translateY(-1px)}
         .primary-btn:disabled{opacity:.45;cursor:not-allowed}
         .muted{color:#a2afa7}
@@ -123,6 +128,13 @@
                 <span id="currentStatus" class="current-badge">—</span>
             </div>
             <p id="subscriptionLockMessage" class="current-note">Sua assinatura está vinculada a esta empresa. Para evitar cobranças duplicadas ou alterações indevidas, não é possível contratar outro plano enquanto ela estiver ativa.</p>
+            <div id="pendingActions" class="pending-actions" hidden>
+                <div class="pending-buttons">
+                    <button id="resumePending" class="primary-btn" type="button">Continuar pagamento</button>
+                    <button id="cancelPending" class="primary-btn cancel-attempt" type="button">Cancelar tentativa</button>
+                </div>
+                <p id="pendingActionMessage" class="muted" role="status"></p>
+            </div>
         </section>
 
         <div id="pageState" class="panel page-state" role="status">Carregando seus dados e os planos disponíveis...</div>
