@@ -73,7 +73,7 @@
     async function loadSubscription() {
         const { data, error } = await supabaseClient
             .from("company_subscriptions")
-            .select("id, plan_id, status, amount, currency, created_at, next_payment_at, cancel_at_period_end")
+            .select("id, plan_id, status, amount, currency, created_at, next_payment_at, cancel_at_period_end, billing_provider, external_subscription_id, last_paid_at, environment:metadata->>environment")
             .eq("company_id", appContext.company.id)
             .order("created_at", { ascending: false })
             .limit(20);
@@ -109,10 +109,19 @@
         $("currentStatus").textContent = statusLabel(currentSubscription.status);
         $("currentSubscription").classList.remove("hidden");
 
+        const canManagePending = currentSubscription.status === "pending" &&
+            currentSubscription.billing_provider === "mercadopago" &&
+            currentSubscription.environment === "test" &&
+            currentSubscription.external_subscription_id &&
+            !currentSubscription.last_paid_at;
+        $("pendingActions").hidden = !canManagePending;
+
         const isActive = String(currentSubscription.status).toLowerCase() === "active";
         $("subscriptionLockMessage").textContent = isActive
             ? "Sua assinatura está ativa. Por segurança, não é possível trocar de plano nem iniciar outra contratação enquanto esta assinatura estiver ativa. Entre em contato com o atendimento NEKKO para tratar de qualquer solicitação."
-            : "Já existe uma assinatura em andamento ou com pendência para esta empresa. Aguarde a confirmação ou regularize a situação antes de iniciar outra contratação.";
+            : canManagePending
+                ? "Retome o checkout ou cancele a tentativa antes de escolher outro plano."
+                : "Já existe uma assinatura em andamento ou com pendência para esta empresa. Aguarde a confirmação ou regularize a situação antes de iniciar outra contratação.";
     }
 
     async function loadPlans() {
@@ -235,11 +244,60 @@
         }
     }
 
+    async function managePending(action) {
+        if (checkoutInProgress || currentSubscription?.status !== "pending") return;
+        if (action === "cancel" && !window.confirm("Cancelar esta tentativa de pagamento? Você poderá contratar novamente após a confirmação.")) return;
+
+        const buttons = [$("resumePending"), $("cancelPending")];
+        checkoutInProgress = true;
+        buttons.forEach(button => { button.disabled = true; });
+        const message = $("pendingActionMessage");
+        message.textContent = "Consultando o Mercado Pago…";
+        let leaving = false;
+
+        try {
+            const { data: { session }, error } = await supabaseClient.auth.getSession();
+            if (error || !session?.access_token) throw new Error("Sua sessão expirou. Entre novamente.");
+            const response = await fetch(`${CONFIG.SUPABASE_URL}/functions/v1/manage-pending-subscription`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${session.access_token}`,
+                    "apikey": CONFIG.SUPABASE_ANON_KEY
+                },
+                body: JSON.stringify({
+                    action,
+                    company_id: appContext.company.id,
+                    subscription_id: currentSubscription.id
+                })
+            });
+            const result = await response.json().catch(() => ({}));
+            if (!response.ok) throw new Error(result.error || "Não foi possível concluir a solicitação.");
+            if (action === "resume" && result.checkout_url) {
+                window.location.assign(result.checkout_url);
+            } else if (action === "cancel" && result.status === "canceled") {
+                window.location.reload();
+            } else {
+                throw new Error("O servidor ainda não confirmou a operação.");
+            }
+            leaving = true;
+        } catch (error) {
+            message.textContent = error.message || "Tente novamente.";
+        } finally {
+            if (!leaving) {
+                checkoutInProgress = false;
+                buttons.forEach(button => { button.disabled = false; });
+            }
+        }
+    }
+
     window.addEventListener("pageshow", event => {
         if (event.persisted && checkoutInProgress) window.location.reload();
     });
 
     document.addEventListener("DOMContentLoaded", async () => {
+        $("resumePending").addEventListener("click", () => managePending("resume"));
+        $("cancelPending").addEventListener("click", () => managePending("cancel"));
         document.querySelectorAll(".device-screen img").forEach(preview => {
             const showPreview = () => {
                 if (preview.naturalWidth > 0) preview.closest(".device-screen").classList.add("has-preview");
