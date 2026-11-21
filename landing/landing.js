@@ -14,6 +14,9 @@ const video = document.querySelector("#demo-video");
 const placeholder = document.querySelector("#video-placeholder");
 
 video.addEventListener("loadedmetadata", () => {
+    if (video.videoWidth && video.videoHeight) {
+        video.parentElement.style.setProperty("--demo-ratio", `${video.videoWidth} / ${video.videoHeight}`);
+    }
     video.hidden = false;
     placeholder.hidden = true;
 }, { once: true });
