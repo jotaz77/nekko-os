@@ -1,3 +1,15 @@
+const heroPreview = document.querySelector(".preview img");
+
+function syncPreviewRatio() {
+    const { naturalWidth, naturalHeight } = heroPreview;
+    if (naturalWidth && naturalHeight) {
+        document.documentElement.style.setProperty("--preview-ratio", `${naturalWidth} / ${naturalHeight}`);
+    }
+}
+
+heroPreview.addEventListener("load", syncPreviewRatio);
+if (heroPreview.complete) syncPreviewRatio();
+
 const video = document.querySelector("#demo-video");
 const placeholder = document.querySelector("#video-placeholder");
 
